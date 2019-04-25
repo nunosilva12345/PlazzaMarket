@@ -5,6 +5,8 @@
  */
 package ua.tqs.g6.project.Controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,17 +23,20 @@ import ua.tqs.g6.project.Repositories.ProductRepository;
 
 @Controller
 @RequestMapping(path = "/product")
+@Api(value="Product", description="Operations with entity product")
 public class ProductController {
     
     @Autowired
     private ProductRepository productRepo;
     
+    @ApiOperation(value = "Get all products")
     @CrossOrigin(origins = "*")
     @GetMapping
     public @ResponseBody Iterable<Product> findAll() {
         return productRepo.findAll();
     }
-
+    
+    @ApiOperation(value = "Get product by id")
     @GetMapping(path = "/{id}")
     public Product find(@PathVariable("id") int id) {
         Product product = null;
@@ -39,7 +44,8 @@ public class ProductController {
         return product;
        
     }
-
+    
+    @ApiOperation(value = "Add product to database")
     @PostMapping(consumes = "application/json")
     public Product create(@RequestBody Product product) {
         return productRepo.save(product);

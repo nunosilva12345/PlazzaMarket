@@ -4,13 +4,11 @@ ua/tqs/g6/project/Controllers/ProductNameController.class
 ua/tqs/g6/project/Repositories/CategoryRepository.class
 ua/tqs/g6/project/Entities/Category.class
 ua/tqs/g6/project/Controllers/SalesController.class
-ua/tqs/g6/project/Repositories/UserRepository.class
 ua/tqs/g6/project/Repositories/SalesRepository.class
 ua/tqs/g6/project/Controllers/ProducerController.class
 ua/tqs/g6/project/Entities/Consumer.class
 ua/tqs/g6/project/Repositories/ProductRepository.class
 ua/tqs/g6/project/Entities/Product.class
-ua/tqs/g6/project/Entities/User.class
 ua/tqs/g6/project/Entities/Producer.class
 ua/tqs/g6/project/Repositories/ProductNameRepository.class
 ua/tqs/g6/project/Repositories/ConsumerRepository.class
@@ -18,5 +16,5 @@ ua/tqs/g6/project/Controllers/ConsumerController.class
 ua/tqs/g6/project/Controllers/CategoryController.class
 ua/tqs/g6/project/ProjectApplication.class
 ua/tqs/g6/project/Controllers/ProductController.class
-ua/tqs/g6/project/Controllers/UserController.class
 ua/tqs/g6/project/Entities/ProductName.class
+.netbeans_automatic_build
