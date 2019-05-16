@@ -24,14 +24,12 @@ public class Sales {
     private Consumer consumer;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Producer_id")
-    private Producer producer;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Product_id")
     private Product product;
     
     private double quantity;
+    private double price;
+    
     private String status;
 
     public int getId() {
@@ -51,11 +49,11 @@ public class Sales {
     }
 
     public Producer getProducer() {
-        return producer;
+        return product.getProducer();
     }
 
     public void setProducer(Producer producer) {
-        this.producer = producer;
+        product.setProducer(producer);
     }
 
     public Product getProduct() {
@@ -81,6 +79,12 @@ public class Sales {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 }
