@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ua.tqs.g6.project.Controllers;
+package ua.tqs.g6.project.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.tqs.g6.project.Entities.Consumer;
-import ua.tqs.g6.project.Repositories.ConsumerRepository;
+import ua.tqs.g6.project.entities.Consumer;
+import ua.tqs.g6.project.repositories.ConsumerRepository;
 
 @Controller
 @RequestMapping(path = "/consumer")

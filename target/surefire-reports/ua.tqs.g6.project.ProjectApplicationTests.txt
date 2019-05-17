@@ -1,4 +1,9 @@
 -------------------------------------------------------------------------------
 Test set: ua.tqs.g6.project.ProjectApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.618 s - in ua.tqs.g6.project.ProjectApplicationTests
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 11.496 s <<< FAILURE! - in ua.tqs.g6.project.ProjectApplicationTests
+contextLoads(ua.tqs.g6.project.ProjectApplicationTests)  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: mappedBy reference an unknown target entity property: ua.tqs.g6.project.Entities.Sales.producer in ua.tqs.g6.project.Entities.Producer.sales
+Caused by: org.hibernate.AnnotationException: mappedBy reference an unknown target entity property: ua.tqs.g6.project.Entities.Sales.producer in ua.tqs.g6.project.Entities.Producer.sales
+

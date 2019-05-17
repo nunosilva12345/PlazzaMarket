@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.tqs.g6.project.Repositories;
+package ua.tqs.g6.project.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.tqs.g6.project.Entities.Product;
+import ua.tqs.g6.project.entities.Product;
 
 
 public interface ProductRepository extends JpaRepository<Product, Integer>{
