@@ -1,4 +1,3 @@
-
 package ua.tqs.g6.project.controllers;
 
 import io.swagger.annotations.Api;

@@ -1,4 +1,3 @@
-
 package ua.tqs.g6.project.entities;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class ProductName {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String product_Name;
+    private String prodName;
     
     @OneToMany(
         mappedBy = "productName",
@@ -32,11 +31,11 @@ public class ProductName {
     }
 
     public String getProductName() {
-        return product_Name;
+        return prodName;
     }
 
-    public void setProductName(String productName) {
-        this.product_Name = product_Name;
+    public void setProductName(String prodName) {
+        this.prodName = prodName;
     }
     
     
