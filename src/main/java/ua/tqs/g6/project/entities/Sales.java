@@ -24,11 +24,11 @@ public class Sales
 	private Consumer consumer;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Product_id")
+	@JoinColumn(name = "product_id")
 	private Product product;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Producer_id")
+	@JoinColumn(name = "producer_id")
 	private Producer producer;
 
 	private double quantity;
