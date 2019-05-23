@@ -29,11 +29,11 @@ public class Product {
     private List<Sales> sales;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Producer_id")
+    @JoinColumn(name = "producer_id")
     private Producer producer;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
     
     private String description;
