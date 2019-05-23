@@ -1,112 +1,131 @@
 package ua.tqs.g6.project.entities;
 
 import java.util.List;
+import java.util.ArrayList;
+
+import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
-public class Consumer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
-    private String username;
-    private String email;
-    private String password;
-    private String address;
-    private String zipCode;
-    
-    @ManyToMany
-    @JoinTable(
-        name = "followers", 
-        joinColumns = @JoinColumn(name = "id"))
-    private List<Producer> following;
-    
-    @OneToMany(
-        mappedBy = "consumer",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Sales> sales;
+public class Consumer
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	private String name;
+	private String username;
+	private String email;
+	private String password;
+	private String address;
+	private String zipCode;
 
-    public int getId() {
-        return id;
-    }
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "producer_followers", joinColumns = @JoinColumn(name = "consumer_id"), inverseJoinColumns = @JoinColumn(name = "producer_id"))
+	private List<Producer> following = new ArrayList<>();
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Sales> sales = new ArrayList<>();
 
-    public String getName() {
-        return name;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getUsername()
+	{
+		return username;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getEmail()
+	{
+		return email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getPassword()
+	{
+		return password;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
 
-    public String getZipCode() {
-        return zipCode;
-    }
+	public String getAddress()
+	{
+		return address;
+	}
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
 
-    public List<Producer> getFollowing() {
-        return following;
-    }
+	public String getZipCode()
+	{
+		return zipCode;
+	}
 
-    public void setFollowing(List<Producer> following) {
-        this.following = following;
-    }
+	public void setZipCode(String zipCode)
+	{
+		this.zipCode = zipCode;
+	}
 
-    public List<Sales> getSales() {
-        return sales;
-    }
+	public List<Producer> getFollowing()
+	{
+		return following;
+	}
 
-    public void setSales(List<Sales> sales) {
-        this.sales = sales;
-    }
+	public void setFollowing(List<Producer> following)
+	{
+		this.following = following;
+	}
 
-    
+	public List<Sales> getSales()
+	{
+		return sales;
+	}
+
+	public void setSales(List<Sales> sales)
+	{
+		this.sales = sales;
+	}
+
 }

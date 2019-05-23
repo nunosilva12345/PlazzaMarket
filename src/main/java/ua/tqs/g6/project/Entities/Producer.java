@@ -1,142 +1,158 @@
 package ua.tqs.g6.project.entities;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import javax.persistence.ManyToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 @Entity
-public class Producer {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
-    private String username;
-    private String email;
-    private String password;
-    private String address;
-    private String zipCode;
-    private String type;
-    private String website;
-    
-    @OneToMany(
-        mappedBy = "producer",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Product> products;
-    
-    @ManyToMany(mappedBy = "following")
-    private List<Consumer> followers;
-    
-    @OneToMany(
-        mappedBy = "producer",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Sales> sales;
+public class Producer
+{
 
-    public int getId() {
-        return id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	private String name;
+	private String username;
+	private String email;
+	private String password;
+	private String address;
+	private String zipCode;
+	private String type;
+	private String website;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Product> products;
 
-    public String getName() {
-        return name;
-    }
+	@ManyToMany(mappedBy = "following")
+	private List<Consumer> followers;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Sales> sales;
 
-    public String getUsername() {
-        return username;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUsername()
+	{
+		return username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getEmail()
+	{
+		return email;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
 
-    public String getZipCode() {
-        return zipCode;
-    }
+	public String getPassword()
+	{
+		return password;
+	}
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getAddress()
+	{
+		return address;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
 
-    public String getWebsite() {
-        return website;
-    }
+	public String getZipCode()
+	{
+		return zipCode;
+	}
 
-    public void setWebsite(String website) {
-        this.website = website;
-    }
+	public void setZipCode(String zipCode)
+	{
+		this.zipCode = zipCode;
+	}
 
-    public List<Product> getProducts() {
-        return products;
-    }
+	public String getType()
+	{
+		return type;
+	}
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+	public void setType(String type)
+	{
+		this.type = type;
+	}
 
-    public List<Consumer> getFollowers() {
-        return followers;
-    }
+	public String getWebsite()
+	{
+		return website;
+	}
 
-    public void setFollowers(List<Consumer> followers) {
-        this.followers = followers;
-    }
+	public void setWebsite(String website)
+	{
+		this.website = website;
+	}
 
-    public List<Sales> getSales() {
-        return sales;
-    }
+	public List<Product> getProducts()
+	{
+		return products;
+	}
 
-    public void setSales(List<Sales> sales) {
-        this.sales = sales;
-    }
+	public void setProducts(List<Product> products)
+	{
+		this.products = products;
+	}
 
-    
-    
+	public List<Consumer> getFollowers()
+	{
+		return followers;
+	}
+
+	public void setFollowers(List<Consumer> followers)
+	{
+		this.followers = followers;
+	}
+
+	public List<Sales> getSales()
+	{
+		return sales;
+	}
+
+	public void setSales(List<Sales> sales)
+	{
+		this.sales = sales;
+	}
+
 }
