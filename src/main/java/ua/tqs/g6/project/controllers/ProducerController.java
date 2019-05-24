@@ -28,12 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.tqs.g6.project.entities.Product;
-import ua.tqs.g6.project.entities.Category;
 import ua.tqs.g6.project.entities.Producer;
 import ua.tqs.g6.project.entities.ProductName;
 
 import ua.tqs.g6.project.repositories.ProductRepository;
-import ua.tqs.g6.project.repositories.CategoryRepository;
 import ua.tqs.g6.project.repositories.ProducerRepository;
 import ua.tqs.g6.project.repositories.ProductNameRepository;
 
@@ -44,9 +42,6 @@ public class ProducerController
 {
 	@Autowired
 	private ProductNameRepository productNameRepository;
-	
-	@Autowired
-	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private ProducerRepository producerRepository;
@@ -125,11 +120,11 @@ public class ProducerController
 
 	// Product related endpoints
 
-	@PostMapping(path = "/{id}/product")
+	@PostMapping(path = "/{id}/product", consumes = "application/json")
 	@ApiOperation(value = "Create product for given producer")
 	public ResponseEntity<Product> createProduct(@RequestBody Product product, @PathVariable("id") int id)
 	{
-		if (product.getProductName() == null || product.getCategory() == null)
+		if (product.getProductName() == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		Optional<Producer> producer = producerRepository.findById(id);
 		if (!producer.isPresent())
@@ -137,11 +132,7 @@ public class ProducerController
 		Optional<ProductName> productName = productNameRepository.findById(product.getProductName().getId());
 		if (!productName.isPresent())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		Optional<Category> category = categoryRepository.findById(product.getCategory().getId());
-		if (!category.isPresent())
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		product.setProducer(producer.get());
-		product.setCategory(category.get());
 		product.setProductName(productName.get());
 		return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.OK);
 	}

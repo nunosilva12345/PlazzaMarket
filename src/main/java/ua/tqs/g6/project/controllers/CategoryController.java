@@ -25,12 +25,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.tqs.g6.project.entities.Product;
 import ua.tqs.g6.project.entities.Category;
+import ua.tqs.g6.project.entities.ProductName;
+
+import ua.tqs.g6.project.repositories.ProductRepository;
 import ua.tqs.g6.project.repositories.CategoryRepository;
+import ua.tqs.g6.project.repositories.ProductNameRepository;
 
 @Controller
 @RequestMapping(path = "/category")
@@ -38,7 +41,13 @@ import ua.tqs.g6.project.repositories.CategoryRepository;
 public class CategoryController
 {
 	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private ProductNameRepository productNameRepository;
 
 	@ApiOperation(value = "Add category to database")
 	@PostMapping(consumes = "application/json")
@@ -109,13 +118,59 @@ public class CategoryController
 		return new ResponseEntity<>(categoryRepository.saveAndFlush(category), HttpStatus.OK);
 	}
 	
+	@PostMapping(path = "/{id}/productName", consumes = "application/json")
+	@ApiOperation(value = "Create productName for given category")
+	public ResponseEntity<ProductName> createProductName(@RequestBody ProductName productName, @PathVariable("id") int id)
+	{
+		Optional<Category> category = categoryRepository.findById(id);
+		if (!category.isPresent())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		productName.setCategory(category.get());
+		return new ResponseEntity<>(productNameRepository.saveAndFlush(productName), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path = "/{id}/productName")
+	@ApiOperation(value = "Delete all productName for give category")
+	public ResponseEntity<Iterable<ProductName>> deleteAllProductName(@PathVariable("id") int id)
+	{
+		Optional<Category> category = categoryRepository.findById(id);
+		if (!category.isPresent())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Iterable<ProductName> all = category.get().getProductNames();
+		productNameRepository.deleteAll(all);
+		return new ResponseEntity<>(all, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "{id}/productName")
+	@ApiOperation(value = "Get all productNames for given category")
+	public ResponseEntity<Iterable<ProductName>> findAllProductName(@PathVariable("id") int id)
+	{
+		Optional<Category> category = categoryRepository.findById(id);
+		if (!category.isPresent())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(category.get().getProductNames(), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path = "/{id}/product")
+	@ApiOperation(value = "Delete all product for given category")
+	public ResponseEntity<Iterable<Product>> deleteAllProduct(@PathVariable("id") int id)
+	{
+		Optional<Category> category = categoryRepository.findById(id);
+		if (!category.isPresent())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Iterable<ProductName> productNames = category.get().getProductNames();
+		Iterable<Product> all = productRepository.findAll(productNames);
+		productRepository.deleteAll(all);
+		return new ResponseEntity<>(all, HttpStatus.OK);
+	}
+	
 	@GetMapping(path = "{id}/product")
-	@ApiOperation(value = "Get all products for given productName")
+	@ApiOperation(value = "Get all products for given category")
 	public ResponseEntity<Iterable<Product>> findAllProduct(@PathVariable("id") int id)
 	{
 		Optional<Category> category = categoryRepository.findById(id);
 		if (!category.isPresent())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(category.get().getProducts(), HttpStatus.OK);
+		return new ResponseEntity<>(productRepository.findAll(category.get().getProductNames()), HttpStatus.OK);
 	}
 }

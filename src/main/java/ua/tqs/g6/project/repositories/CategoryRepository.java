@@ -8,6 +8,7 @@ package ua.tqs.g6.project.repositories;
 import ua.tqs.g6.project.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    
+public interface CategoryRepository extends JpaRepository<Category, Integer>
+{
+
 }

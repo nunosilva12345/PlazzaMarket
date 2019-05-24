@@ -29,8 +29,8 @@ public class Category
 	@JsonIgnore
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Product> products = new ArrayList<>();
-
+	private List<ProductName> productNames = new ArrayList<>();
+	
 	public int getId()
 	{
 		return id;
@@ -51,13 +51,13 @@ public class Category
 		this.name = name;
 	}
 	
-	public List<Product> getProducts()
+	public List<ProductName> getProductNames()
 	{
-		return products;
+		return productNames;
 	}
 	
-	public void setProducts(List<Product> products)
+	public void setProductNames(List<ProductName> productNames)
 	{
-		this.products = products;
+		this.productNames = productNames;
 	}
 }

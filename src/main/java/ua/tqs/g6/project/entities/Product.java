@@ -1,5 +1,6 @@
 package ua.tqs.g6.project.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,15 +30,11 @@ public class Product
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Sales> sales;
+	private List<Sales> sales = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producer_id")
 	private Producer producer;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private Category category;
 
 	private String description;
 	private double price;
@@ -81,16 +78,6 @@ public class Product
 	public void setProducer(Producer producer)
 	{
 		this.producer = producer;
-	}
-
-	public Category getCategory()
-	{
-		return category;
-	}
-
-	public void setCategory(Category category)
-	{
-		this.category = category;
 	}
 
 	public String getDescription()

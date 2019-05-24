@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.LazyCollection;
@@ -24,6 +27,10 @@ public class ProductName
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String prodName;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "productName", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -48,6 +55,16 @@ public class ProductName
 	public void setProductName(String prodName)
 	{
 		this.prodName = prodName;
+	}
+	
+	public Category getCategory()
+	{
+		return category;
+	}
+
+	public void setCategory(Category category)
+	{
+		this.category = category;
 	}
 	
 	public List<Product> getProducts()

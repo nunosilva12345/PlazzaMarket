@@ -22,7 +22,6 @@ import javax.persistence.GenerationType;
 @Proxy(lazy = false)
 public class Producer
 {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
