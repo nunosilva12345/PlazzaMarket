@@ -1,9 +1,17 @@
 package ua.tqs.g6.project.entities;
 
 import java.util.List;
+import java.util.ArrayList;
+
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Proxy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
@@ -11,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
+@Proxy(lazy = false)
 public class Producer
 {
 
@@ -26,14 +35,18 @@ public class Producer
 	private String type;
 	private String website;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Product> products;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Product> products = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "following")
-	private List<Consumer> followers;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Consumer> followers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Sales> sales;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Sales> sales = new ArrayList<>();
 
 	public int getId()
 	{
@@ -154,5 +167,4 @@ public class Producer
 	{
 		this.sales = sales;
 	}
-
 }

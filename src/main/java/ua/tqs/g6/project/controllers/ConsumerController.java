@@ -46,6 +46,15 @@ public class ConsumerController
 		return consumerRepository.saveAndFlush(consumer);
     }
     
+    @DeleteMapping
+	@ApiOperation(value = "Delete all consumers")
+	public Iterable<Consumer> deleteAll()
+	{
+		Iterable<Consumer> all = consumerRepository.findAll();
+		consumerRepository.deleteAll();
+		return all;
+	}
+    
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value = "Delete consumer by id")
     public ResponseEntity<Consumer> delete(@PathVariable("id") int id)

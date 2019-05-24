@@ -1,41 +1,63 @@
 package ua.tqs.g6.project.entities;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Proxy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 @Entity
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
-    
-    @OneToMany(
-        mappedBy = "category",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Product> products;
-    
+@Proxy(lazy = false)
+public class Category
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	private String name;
 
-    public int getId() {
-        return id;
-    }
+	@JsonIgnore
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Product> products = new ArrayList<>();
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public List<Product> getProducts()
+	{
+		return products;
+	}
+	
+	public void setProducts(List<Product> products)
+	{
+		this.products = products;
+	}
 }

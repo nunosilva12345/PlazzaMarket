@@ -15,8 +15,10 @@ import javax.persistence.GenerationType;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Proxy;
 
 @Entity
+@Proxy(lazy = false)
 public class Consumer
 {
 	@Id

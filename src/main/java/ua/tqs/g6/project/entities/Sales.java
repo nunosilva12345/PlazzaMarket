@@ -7,12 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
+@Proxy(lazy = false)
 public class Sales
 {
 	@Id

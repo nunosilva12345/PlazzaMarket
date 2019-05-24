@@ -11,98 +11,116 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Proxy;
+
 @Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductName_id")
-    private ProductName productName;
-    
-    @OneToMany(
-        mappedBy = "product",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Sales> sales;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "producer_id")
-    private Producer producer;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-    
-    private String description;
-    private double price;
-    private double quantity;
+@Proxy(lazy = false)
+public class Product
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "productName_id")
+	private ProductName productName;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Sales> sales;
 
-    public ProductName getProductName() {
-        return productName;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "producer_id")
+	private Producer producer;
 
-    public void setProductName(ProductName productName) {
-        this.productName = productName;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-    public List<Sales> getSales() {
-        return sales;
-    }
+	private String description;
+	private double price;
+	private double quantity;
 
-    public void setSales(List<Sales> sales) {
-        this.sales = sales;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public Producer getProducer() {
-        return producer;
-    }
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public void setProducer(Producer producer) {
-        this.producer = producer;
-    }
+	public ProductName getProductName()
+	{
+		return productName;
+	}
 
-    public Category getCategory() {
-        return category;
-    }
+	public void setProductName(ProductName productName)
+	{
+		this.productName = productName;
+	}
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+	public List<Sales> getSales()
+	{
+		return sales;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setSales(List<Sales> sales)
+	{
+		this.sales = sales;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public Producer getProducer()
+	{
+		return producer;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public void setProducer(Producer producer)
+	{
+		this.producer = producer;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public Category getCategory()
+	{
+		return category;
+	}
 
-    public double getQuantity() {
-        return quantity;
-    }
+	public void setCategory(Category category)
+	{
+		this.category = category;
+	}
 
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-    
-    
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	public double getPrice()
+	{
+		return price;
+	}
+
+	public void setPrice(double price)
+	{
+		this.price = price;
+	}
+
+	public double getQuantity()
+	{
+		return quantity;
+	}
+
+	public void setQuantity(double quantity)
+	{
+		this.quantity = quantity;
+	}
+
 }
