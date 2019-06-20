@@ -15,9 +15,15 @@ pipeline {
                 sh 'mvn --version'
             }
         }
-        stage('Build') { 
+        stage('build') { 
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                withSonarQubeEnv(...) {
+                    dir ('PlazzaMarket') {
+                        withMaven(maven: 'mvn3') {
+                            sh 'mvn clean package sonar:sonar' 
+                        }
+                    }
+                }
             }
         }
     }
