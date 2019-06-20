@@ -20,7 +20,7 @@ pipeline {
         stage('deliver') {
             steps {
                 sh 'chmod +x ./jenkins/scripts/deliver.sh'
-                ssh-agent('tqs-machine') {
+                sshagent([ 'tqs-machine' ]) {
                     sh './jenkins/scripts/deliver.sh'
                 }
             }
