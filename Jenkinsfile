@@ -4,24 +4,22 @@ pipeline {
         jdk 'jdk8'
         maven 'mvn3'
     }
+    options {
+        skipStageAfterUnstable()
+    }
     stages {
-        stage('test java installation') {
-            steps {
-                sh 'java -version'
-            }
-        }
-        stage('test maven installation') {
-            steps {
-                sh 'mvn --version'
-            }
-        }
-        stage('build') { 
+        stage('build, test and static analysis') { 
             steps {
                 withSonarQubeEnv('mySonar') {
                     withMaven(maven: 'mvn3') {
                         sh 'mvn clean package sonar:sonar' 
                     }
                 }
+            }
+        }
+        stage('deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
