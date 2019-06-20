@@ -5,7 +5,7 @@ pipeline {
         maven 'mvn3'
     }
     options {
-        skipStageAfterUnstable()
+        skipStagesAfterUnstable()
     }
     stages {
         stage('build, test and static analysis') { 
