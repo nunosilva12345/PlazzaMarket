@@ -20,7 +20,9 @@ pipeline {
         stage('deliver') {
             steps {
                 sh 'chmod +x ./jenkins/scripts/deliver.sh'
-                sh './jenkins/scripts/deliver.sh'
+                sshagent('tqs-machine') {
+                    sh './jenkins/scripts/deliver.sh'
+                }
             }
         }
     }

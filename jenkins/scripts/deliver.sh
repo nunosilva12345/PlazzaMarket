@@ -23,4 +23,10 @@ set +x
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 set -x
-java -jar target/${NAME}-${VERSION}.jar
+
+scp target/${NAME}-${VERSION}.jar tqs@192.168.160.77:~/target/
+scp Dockerfile tqs@192.168.160.77:~/
+
+ssh tqs@192.168.160.77 'docker stop plazzamarket'
+ssh tqs@192.168.160.77 'docker build -t plazzamarket/app .'
+ssh tqs@192.168.160.77 'docker run -p 8080:8080 --name plazzamarket plazzamarket/app &'
