@@ -18,7 +18,7 @@ pipeline {
         stage('build') { 
             steps {
                 withSonarQubeEnv('mySonar') {
-                    dir ('PlazzaMarket') {
+                    dir ('plazzamarket') {
                         withMaven(maven: 'mvn3') {
                             sh 'mvn clean package sonar:sonar' 
                         }
