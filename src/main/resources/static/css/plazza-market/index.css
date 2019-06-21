@@ -1,0 +1,199 @@
+.jumbotron.overrider {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0;
+    background-color: #fff;
+}
+
+@media (min-width: 768px) {
+    .jumbotron.overrider {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}
+
+.jumbotron.overrider p:last-child {
+    margin-bottom: 0;
+}
+
+.jumbotron.overrider .jumbotron-heading {
+    font-weight: 300;
+}
+
+.jumbotron.overrider .container {
+    max-width: 40rem;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.bg-white {
+    background-color: white !important;
+}
+
+.bg-green {
+    background-color: #4caf50 !important;
+}
+
+.btn-outline-default {
+    color: gray !important;
+    border-color: #ced4da !important;
+}
+
+.btn-outline-default:hover {
+    color: #fff !important;
+    background-color: #ced4da !important;
+    border-color: #ced4da !important;
+}
+
+.btn-outline-default:focus, .btn-outline-default.focus {
+    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, 0.5) !important;
+}
+
+.btn-outline-default.disabled, .btn-outline-default:disabled {
+    color: gray !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-default:not(:disabled):not(.disabled):active, .btn-outline-default:not(:disabled):not(.disabled).active, .show>.btn-outline-default.dropdown-toggle {
+    color: gray !important;
+    background-color: #ced4da !important;
+    border-color: #ced4da !important;
+}
+
+.btn-outline-default:not(:disabled):not(.disabled):active:focus, .btn-outline-default:not(:disabled):not(.disabled).active:focus, .show>.btn-outline-default.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, 0.5) !important;
+}
+
+.btn-inline-default {
+    color: #ced4da;
+}
+
+.btn-inline-default:hover {
+    color: #fff;
+    background-color: #ced4da;
+}
+
+.btn-inline-default:focus, .btn-inline-default.focus {
+    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, 0.5);
+}
+
+.btn-inline-default.disabled, .btn-inline-default:disabled {
+    color: #ced4da;
+}
+
+.btn-inline-default:not(:disabled):not(.disabled):active, .btn-inline-default:not(:disabled):not(.disabled).active, .show>.btn-inline-default.dropdown-toggle {
+    color: #fff;
+    background-color: #ced4da;
+}
+
+.btn-inline-default:not(:disabled):not(.disabled):active:focus, .btn-inline-default:not(:disabled):not(.disabled).active:focus, .show>.btn-inline-default.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, 0.5);
+}
+
+.nav-pills.navbar-dark .nav-link:not(.active) {
+    color: #ced4da !important;
+}
+
+.nav-pills.navbar-dark .nav-link.active {
+    color: white !important;
+    background-color: inherit !important;
+    border-bottom: 3px solid white;
+    border-radius: 0px;
+}
+
+.navbar-toggler.overrider {
+    color: white;
+    border-color: #ced4da;
+}
+
+.navbar-brand.overrider {
+    background-color: #f8f9fa !important;
+    border-radius: 50%;
+    max-height: 40px;
+    padding: 0;
+}
+
+.navbar-brand.overrider img {
+    height: 100%;
+    width: auto;
+}
+
+.navbar-brand.overrider.mh-3 {
+    height: 30px;
+}
+
+.px-4-5 {
+    padding-left: 1.75rem !important;
+}
+
+.px-4-5 {
+    padding-right: 1.75rem !important;
+}
+
+.cart-list .list-group-item:last-child {
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    border-bottom: 0;
+}
+
+.cart-list .list-group-item {
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+}
+
+/* width */
+.cart-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.cart-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.cart-list::-webkit-scrollbar-thumb {
+    background: #ced4da;
+}
+
+/* Handle on hover */
+.cart-list::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+.dropdown.overrider.show .dropdown-toggle {
+    box-shadow: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.dropdown.overrider.show .dropdown-toggle::after {
+    border-top: 0;
+    border-right: .3em solid transparent;
+    border-bottom: .3em solid;
+    border-left: .3em solid transparent;
+}
+
+.dropdown.overrider.show .dropdown-menu {
+    margin-top: 0;
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.fa-btn:hover {
+    cursor: pointer;
+}
