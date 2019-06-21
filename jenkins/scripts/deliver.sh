@@ -28,5 +28,6 @@ scp -i /root/.ssh/id_rsa target/${NAME}-${VERSION}.jar tqs@192.168.160.77:~/targ
 scp -i /root/.ssh/id_rsa Dockerfile tqs@192.168.160.77:~/
 
 ssh -i /root/.ssh/id_rsa tqs@192.168.160.77 'docker stop plazzamarket'
+ssh -i /root/.ssh/id_rsa tqs@192.168.160.77 'docker container rm plazzamarket'
 ssh -i /root/.ssh/id_rsa tqs@192.168.160.77 'docker build -t plazzamarket/app .'
 ssh -i /root/.ssh/id_rsa tqs@192.168.160.77 'docker run -p 8080:8080 --name plazzamarket plazzamarket/app &'
