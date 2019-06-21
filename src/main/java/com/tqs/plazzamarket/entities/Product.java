@@ -18,7 +18,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_name")
     private Category category;
@@ -62,7 +62,7 @@ public class Product {
         return receipts;
     }
 
-    public void setReceiptd(List<Receipt> receipts) {
+    public void setReceipts(List<Receipt> receipts) {
         this.receipts = receipts;
     }
 
@@ -96,5 +96,66 @@ public class Product {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((category == null) ? 0 : category.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(price);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((producer == null) ? 0 : producer.hashCode());
+        temp = Double.doubleToLongBits(quantity);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((receipts == null) ? 0 : receipts.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Product other = (Product) obj;
+        if (category == null) {
+            if (other.category != null)
+                return false;
+        } else if (!category.equals(other.category))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (id != other.id)
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+            return false;
+        if (producer == null) {
+            if (other.producer != null)
+                return false;
+        } else if (!producer.equals(other.producer))
+            return false;
+        if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
+            return false;
+        if (receipts == null) {
+            if (other.receipts != null)
+                return false;
+        } else if (!receipts.equals(other.receipts))
+            return false;
+        return true;
     }
 }

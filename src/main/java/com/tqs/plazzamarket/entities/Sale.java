@@ -33,53 +33,85 @@ public class Sale {
 	@Enumerated(EnumType.ORDINAL)
 	private Status status;
 
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Consumer getConsumer()
-	{
+	public Consumer getConsumer() {
 		return consumer;
 	}
 
-	public void setConsumer(Consumer consumer)
-	{
+	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;
 	}
 
-	public Receipt getReceipt()
-	{
+	public Receipt getReceipt() {
 		return receipt;
 	}
 
-	public void setReceipt(Receipt receipt)
-	{
+	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
 	}
 
-	public double getQuantity()
-	{
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(double quantity)
-	{
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
-	public Status getStatus()
-	{
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status)
-	{
+	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((consumer == null) ? 0 : consumer.hashCode());
+		result = prime * result + id;
+		long temp;
+		temp = Double.doubleToLongBits(quantity);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((receipt == null) ? 0 : receipt.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sale other = (Sale) obj;
+		if (consumer == null) {
+			if (other.consumer != null)
+				return false;
+		} else if (!consumer.equals(other.consumer))
+			return false;
+		if (id != other.id)
+			return false;
+		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
+			return false;
+		if (receipt == null) {
+			if (other.receipt != null)
+				return false;
+		} else if (!receipt.equals(other.receipt))
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
 	}
 }

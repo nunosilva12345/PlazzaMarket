@@ -2,16 +2,41 @@ package com.tqs.plazzamarket.utils;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
 
 @MappedSuperclass
 public abstract class BaseUser {
-    @Id
-    private String username;
-    private String name;
-    private String email;
-    private String password;
-    private String address;
-    private String zipCode;
+	@Id
+	@NotNull(message = "Username is mandatory!")
+	@NotBlank(message = "Username is mandatory!")
+	private String username;
+
+	@NotNull(message = "Name is mandatory!")
+	@NotBlank(message = "Name is mandatory!")
+	private String name;
+
+	@NotNull(message = "Email is mandatory!")
+	@NotBlank(message = "Email is mandatory!")
+	@Email(message = "Email format incorrect!")
+	private String email;
+
+	@NotNull(message = "Password is mandatory!")
+	@NotBlank(message = "Password is mandatory!")
+	@Length(min = 8, message = "Password must have at least 8 characters!")
+	private String password;
+
+	@NotNull(message = "Address is mandatory!")
+	@NotBlank(message = "Address is mandatory!")
+	private String address;
+
+	@NotNull(message = "Zip code is mandatory!")
+	@NotBlank(message = "Zip code is mandatory!")
+	private String zipCode;
 
 	public String getUsername() {
 		return this.username;
@@ -61,4 +86,57 @@ public abstract class BaseUser {
 		this.zipCode = zipCode;
 	}
 
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((zipCode == null) ? 0 : zipCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BaseUser other = (BaseUser) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		if (zipCode == null) {
+			if (other.zipCode != null)
+				return false;
+		} else if (!zipCode.equals(other.zipCode))
+			return false;
+		return true;
+	}
 }
