@@ -1,7 +1,9 @@
 package com.tqs.plazzamarket.utils;
 
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class BaseUser {
     @Id
     private String username;
