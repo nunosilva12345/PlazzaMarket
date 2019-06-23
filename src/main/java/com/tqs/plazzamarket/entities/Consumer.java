@@ -12,7 +12,7 @@ import com.tqs.plazzamarket.utils.BaseUser;
 
 @Entity
 public class Consumer extends BaseUser {
-    @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL)
     private List<Sale> sales = new ArrayList<>();
 
     public List<Sale> getSales() {
