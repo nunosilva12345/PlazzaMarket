@@ -1,13 +1,9 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tqs.plazzamarket.entities.Consumer;
-import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
-import com.tqs.plazzamarket.repositories.ConsumerRepository;
-import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +19,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,11 +45,10 @@ public class ProductControllerIntegrationTest {
     public void beforeEach() {
         productRepository.deleteAll();
         categoryRepository.deleteAll();
-
     }
 
-
     @Test
+    @Transactional
     public void testCreateProduct() throws Exception{
         Map<String, Object> productJSON = new HashMap<>();
         productJSON.put("name", "Potato");

@@ -1,20 +1,39 @@
 package com.tqs.plazzamarket.web;
 
-import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations = "classpath:test.properties")
 public class TestCreateProduct {
+
+    @LocalServerPort
+	private int port;
+
     private WebDriver driver;
-    private String baseUrl;
     private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
+
+    @BeforeClass
+    public static void setupClass() {
+        WebDriverManager.chromedriver().setup();
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -24,7 +43,8 @@ public class TestCreateProduct {
 
     @Test
     public void testCreateProduct() throws Exception {
-        driver.get("http://localhost:8080/createproduct");
+        String url = String.format("http://localhost:%d/createproduct", port);
+        driver.get(url);
         driver.findElement(By.id("name")).click();
         driver.findElement(By.id("name")).clear();
         driver.findElement(By.id("name")).sendKeys("Batata");
@@ -73,27 +93,10 @@ public class TestCreateProduct {
         }
     }
 
-    private boolean isElementPresent(By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    private boolean isAlertPresent() {
-        try {
-            driver.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
-
     private String closeAlertAndGetItsText() {
         try {
-            Alert alert = driver.switchTo().alert();
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             String alertText = alert.getText();
             if (acceptNextAlert) {
                 alert.accept();
