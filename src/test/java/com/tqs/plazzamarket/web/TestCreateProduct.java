@@ -15,10 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-<<<<<<< HEAD
-=======
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 3ad721aa9813f03b8d8cc79a2b8358d64be248d0
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
