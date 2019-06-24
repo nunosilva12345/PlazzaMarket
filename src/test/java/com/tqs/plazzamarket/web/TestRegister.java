@@ -1,4 +1,4 @@
-/*package com.tqs.plazzamarket.web;
+package com.tqs.plazzamarket.web;
 
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
@@ -18,12 +18,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class TestRegister {
 
     @LocalServerPort
-	private int port;
+    private int port;
 
     private WebDriver driver;
     private boolean acceptNextAlert = true;
@@ -105,4 +105,4 @@ public class TestRegister {
             acceptNextAlert = true;
         }
     }
-}*/
+}
