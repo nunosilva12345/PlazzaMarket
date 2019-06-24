@@ -1,16 +1,13 @@
 package com.tqs.plazzamarket.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 public class Product {
@@ -19,6 +16,7 @@ public class Product {
     private int id;
     private String name;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_name")
     private Category category;
@@ -33,6 +31,10 @@ public class Product {
     private String description;
     private double price;
     private double quantity;
+
+    @Transient
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public int getId() {
         return id;
@@ -157,5 +159,20 @@ public class Product {
         } else if (!receipts.equals(other.receipts))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", receipts=" + receipts +
+                ", producer=" + producer +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", categoryRepository=" + categoryRepository +
+                '}';
     }
 }
