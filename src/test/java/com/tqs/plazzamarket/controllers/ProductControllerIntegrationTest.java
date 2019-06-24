@@ -25,6 +25,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
@@ -64,7 +67,7 @@ public class ProductControllerIntegrationTest {
         p.setQuantity(4);
         p.setPrice(5);
         p.setDescription("test");
-        p.setId(1);
+        p.setId(2);
 
         String result = mvc
             .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
@@ -74,9 +77,28 @@ public class ProductControllerIntegrationTest {
             .andReturn().getResponse().getContentAsString();
         Assert.assertEquals(p, mapper.readValue(result, Product.class));
 
-        Optional<Product> optional = productRepository.findById(1);
+        Optional<Product> optional = productRepository.findById(2);
         Assert.assertTrue(optional.isPresent());
         Assert.assertEquals(p, optional.get());
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
+        Product p = new Product();
+        p.setName("Potato");
+        p.setQuantity(4);
+        p.setPrice(5);
+        p.setDescription("test");
+
+        productRepository.saveAndFlush(p);
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/products/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", is(p.getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity", is(p.getQuantity())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].price", is(p.getPrice())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].description", is(p.getDescription())));
     }
 
 }
