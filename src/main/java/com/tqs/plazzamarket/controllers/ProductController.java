@@ -37,8 +37,4 @@ public class ProductController {
         return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/products/")
-    public @ResponseBody Iterable<Product> findAll() {
-        return productRepository.findAll();
-    }
 }

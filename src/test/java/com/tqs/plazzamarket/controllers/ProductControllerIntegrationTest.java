@@ -1,9 +1,11 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -56,15 +59,24 @@ public class ProductControllerIntegrationTest {
         productJSON.put("price", "5");
         productJSON.put("description", "test");
 
-        System.out.println(mapper.writeValueAsString(productJSON));
+        Product p = new Product();
+        p.setName("Potato");
+        p.setQuantity(4);
+        p.setPrice(5);
+        p.setDescription("test");
+        p.setId(1);
 
-        mvc
+        String result = mvc
             .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(productJSON)))
-            .andExpect(MockMvcResultMatchers.status().isCreated());
+            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andReturn().getResponse().getContentAsString();
+        Assert.assertEquals(p, mapper.readValue(result, Product.class));
 
-        //Optional<Product> optional = productRepository.findById(0);
-        //Assert.assertTrue(optional.isPresent());
+        Optional<Product> optional = productRepository.findById(1);
+        Assert.assertTrue(optional.isPresent());
+        Assert.assertEquals(p, optional.get());
     }
 
 }
