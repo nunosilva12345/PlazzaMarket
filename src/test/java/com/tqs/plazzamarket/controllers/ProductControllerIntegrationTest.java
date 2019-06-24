@@ -29,10 +29,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-
-
-
-@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")
@@ -50,7 +47,6 @@ public class ProductControllerIntegrationTest {
     @Autowired
     private ProductRepository productRepository;
 
-
     @Before
     public void beforeEach() {
         productRepository.deleteAll();
@@ -59,13 +55,12 @@ public class ProductControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testCreateProduct() throws Exception{
+    public void testCreateProduct() throws Exception {
         Map<String, Object> productJSON = new HashMap<>();
         productJSON.put("name", "Potato");
         productJSON.put("quantity", "4");
         productJSON.put("price", "5");
         productJSON.put("description", "test");
-
 
         String result = mvc
                 .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +85,6 @@ public class ProductControllerIntegrationTest {
         Assert.assertEquals(p, optional.get());
     }
 
-
     @Test
     public void testFindAll() throws Exception {
         Product p = new Product();
@@ -110,8 +104,6 @@ public class ProductControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].description", is(p.getDescription())));
     }
 
-
-
     @Test
     @Transactional
     public void testRemoveProduct() throws Exception {
@@ -121,12 +113,12 @@ public class ProductControllerIntegrationTest {
         product.setPrice(5);
         product.setDescription("test");
         product.setName("Potato");
-        
+
         productRepository.saveAndFlush(product);
 
-
         int size_beforeDelete = (int) productRepository.count();
-        mvc.perform(MockMvcRequestBuilders.get("/api/products/remove/1")).andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/api/products/remove/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
         int size_atferDelete = (int) productRepository.count();
 
         Assert.assertEquals(size_beforeDelete - 1, size_atferDelete);
