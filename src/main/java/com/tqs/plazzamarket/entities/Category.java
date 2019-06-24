@@ -1,5 +1,7 @@
 package com.tqs.plazzamarket.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import javax.persistence.Id;
@@ -8,11 +10,14 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Category {
+
 	@Id
 	private String name;
 
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
+
+	public Category() {}
 
 	public Category(String name) {
 		this.name = name;
@@ -63,5 +68,13 @@ public class Category {
 		} else if (!products.equals(other.products))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Category{" +
+				"name='" + name + '\'' +
+				'}';
 	}
 }
