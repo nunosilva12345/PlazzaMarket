@@ -10,4 +10,9 @@ public class WebController {
 	public String register(Model model) {
 		return "register";
 	}
+
+	@GetMapping(value = "/createproduct")
+	public String createProduct(Model model) {
+    	return "createproduct";
+	}
 }

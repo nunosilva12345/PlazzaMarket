@@ -1,5 +1,9 @@
 package com.tqs.plazzamarket.controllers;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
@@ -25,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")
-public class AuthenticationControllerTest {
+public class AuthenticationControllerIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
@@ -45,6 +49,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @Transactional
     public void testConsumerRegister() throws Exception {
         Consumer consumer = new Consumer();
         consumer.setUsername("luiso");
@@ -60,9 +65,13 @@ public class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
         Assert.assertEquals(consumer, mapper.readValue(result, Consumer.class));
+        Optional<Consumer> optional = consumerRepository.findById(consumer.getUsername());
+        Assert.assertTrue(optional.isPresent());
+        Assert.assertEquals(consumer, optional.get());
     }
 
     @Test
+    @Transactional
     public void testProducerRegister() throws Exception {
         Producer producer = new Producer();
         producer.setUsername("luiso");
@@ -79,9 +88,13 @@ public class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
         Assert.assertEquals(producer, mapper.readValue(result, Producer.class));
+        Optional<Producer> optional = producerRepository.findById(producer.getUsername());
+        Assert.assertTrue(optional.isPresent());
+        Assert.assertEquals(producer, optional.get());
     }
 
     @Test
+    @Transactional
     public void testFailRegister() throws Exception {
         testConsumerRegister();
         Producer producer = new Producer();
