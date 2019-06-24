@@ -32,9 +32,6 @@ public class Product {
     private double price;
     private double quantity;
 
-    @Transient
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public int getId() {
         return id;
@@ -172,7 +169,6 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", categoryRepository=" + categoryRepository +
                 '}';
     }
 }

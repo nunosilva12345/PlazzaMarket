@@ -25,15 +25,17 @@ public class ProductController {
 
     @PostMapping(path = "/products/add", consumes = "application/json")
     public ResponseEntity<? extends  Object> createProduct(@RequestBody Map<String, Object> productJson) {
-        Category category = new Category("Flowers");
-        categoryRepository.saveAndFlush(category);
+        System.out.println(productJson);
         Product product = new Product();
         product.setName(productJson.get("name").toString());
         product.setDescription(productJson.get("description").toString());
         product.setPrice(Double.parseDouble(productJson.get("price").toString()));
         product.setQuantity(Double.parseDouble(productJson.get("quantity").toString()));
-        product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
-        return new ResponseEntity<Product>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
+        if (productJson.containsKey("category"))
+            product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
+        System.out.println(product);
+        productRepository.save(product);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/products/")
