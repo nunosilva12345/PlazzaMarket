@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-@SpringBootTest
+@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")

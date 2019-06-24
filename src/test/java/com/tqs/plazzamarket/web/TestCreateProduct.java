@@ -1,4 +1,4 @@
-package com.tqs.plazzamarket.web;
+/*package com.tqs.plazzamarket.web;
 
 import java.util.concurrent.TimeUnit;
 
@@ -117,4 +117,4 @@ public class TestCreateProduct {
             acceptNextAlert = true;
         }
     }
-}
+}*/
