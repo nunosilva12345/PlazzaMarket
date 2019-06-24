@@ -56,6 +56,37 @@ public class ProductRepositoryTest {
         Assert.assertTrue(found.contains(product));
     }
 
+    @Test
+    public void whenGetByID_removeProduct() {
+        int size_beforeDelete = (int) productRepository.count();
+        
+  
+        
+        productRepository.deleteById(product.getId());
+        int size_afterDelete = (int) productRepository.count();
+        
+        Assert.assertFalse(size_beforeDelete == size_afterDelete );
+        Assert.assertEquals(size_beforeDelete, size_afterDelete +1);
+    }
+    
+    @Test
+    public void whenGetByNonID_dontRemove() {
+        int size_beforeDelete = (int) productRepository.count();
+        Optional<Product> found = productRepository.findById(500000000);
+
+
+        if(found.isPresent()){
+            productRepository.deleteById(500000);
+        }
+        int size_afterDelete = (int) productRepository.count();
+
+        System.out.println("size: " + size_afterDelete);
+        Assert.assertTrue(size_beforeDelete == size_afterDelete);
+        Assert.assertEquals(size_beforeDelete, size_afterDelete);
+
+    }
+
+
     @After
     public void afterEach() {
         entityManager.clear();

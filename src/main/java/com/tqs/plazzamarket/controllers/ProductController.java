@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.controllers;
 
+
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping(path = "/api")
@@ -32,6 +35,7 @@ public class ProductController {
         if (productJson.containsKey("category"))
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
         System.out.println(product);
+
         return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
@@ -39,5 +43,17 @@ public class ProductController {
     public @ResponseBody Iterable<Product> findAll() {
         return productRepository.findAll();
     }
+
+    @GetMapping(path = "/products/remove/{id}")
+    public ResponseEntity<? extends Object> removeProduct(@PathVariable("id") int id) {
+        System.out.println(productRepository.findAll());
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            productRepository.deleteById(id);
+            return new ResponseEntity<Product>(HttpStatus.OK);
+        }
+        return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+    }
+
 
 }
