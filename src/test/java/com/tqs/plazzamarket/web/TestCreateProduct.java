@@ -41,16 +41,15 @@ public class TestCreateProduct {
 
     @BeforeClass
     public static void setupClass() {
-        // WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().setup();
     }
 
     @Before
     public void setUp() throws Exception {
         Category category = new Category("Flowers");
         categoryRepository.saveAndFlush(category);
-
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--start-maximized");
+        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
