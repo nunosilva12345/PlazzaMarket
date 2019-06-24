@@ -1,9 +1,12 @@
 package com.tqs.plazzamarket.controllers;
 
 
+import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,10 @@ public class ProductController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    //new
+    @Autowired
+    private ProducerRepository producerRepository;
 
 
     @PostMapping(path = "/products/add", consumes = "application/json")
@@ -57,11 +64,12 @@ public class ProductController {
     }
     
     @GetMapping(path = "/products/{producer_id}")
-    public Optional<Product> listProducerProducts(@PathVariable("producer_id") int producer_id) {
-        //System.out.println(productRepository.findAllById(Iterable<Integer> producer_id));
-        Optional<Product> product = productRepository.findById(producer_id);
-        return product;
+    public List<Product> listProducerProducts(@PathVariable("producer_id") String producer_id) {
+        Optional<Producer> producer = producerRepository.findById(producer_id);
+        
+        if(!producer.isPresent()){
+            return null;
+        }
+        return producer.get().getProducts();
     }
-
-
 }
