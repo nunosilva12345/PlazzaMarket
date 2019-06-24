@@ -30,17 +30,17 @@ public class TestRegister {
     private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
 
-    @BeforeClass
-    public static void setupClass() {
-        WebDriverManager.chromedriver().setup();
-    }
-
     @Before
     public void setUp() throws Exception {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        
+        try {
+            newChromeSession(chromeOptions);
+        } catch (SessionNotCreatedException e) {
+            WebDriverManager.chromedriver().setup();
+            newChromeSession(chromeOptions);
+        }
     }
 
     @Test
@@ -107,5 +107,10 @@ public class TestRegister {
         } finally {
             acceptNextAlert = true;
         }
+    }
+
+    private void newChromeSession(ChromeOptions chromeOptions) {
+        driver = new ChromeDriver(chromeOptions);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 }
