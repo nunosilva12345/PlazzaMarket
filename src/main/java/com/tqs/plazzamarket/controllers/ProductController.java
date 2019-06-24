@@ -34,8 +34,7 @@ public class ProductController {
         if (productJson.containsKey("category"))
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
         System.out.println(product);
-        productRepository.save(product);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/products/")
