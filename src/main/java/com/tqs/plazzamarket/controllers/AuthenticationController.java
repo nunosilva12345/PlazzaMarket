@@ -3,6 +3,7 @@ package com.tqs.plazzamarket.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.tqs.plazzamarket.entities.Consumer;
@@ -44,6 +45,37 @@ public class AuthenticationController {
         ResponseEntity<? extends Object> re = usernameExists(producer);
         return re != null ? re : new ResponseEntity<>(producerRepository.saveAndFlush(producer), HttpStatus.CREATED);
     }
+
+    @PostMapping(path = "/login", consumes = "application/json")
+    public ResponseEntity<? extends Object> login(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
+        String username = credentials.get("username").toString();
+        String password = credentials.get("password").toString();
+
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+
+        if (consumerRepository.existsById(username)) {
+            Consumer consumer = consumerRepository.getOne(username);
+            if (consumer.getPassword().equals(password)) {
+                httpSession.setAttribute("user", consumer);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } else if (producerRepository.existsById(username)) {
+            Producer producer = producerRepository.getOne(username);
+            if (producer.getPassword().equals(password)) {
+                httpSession.setAttribute("user", producer);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity<? extends Object> logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

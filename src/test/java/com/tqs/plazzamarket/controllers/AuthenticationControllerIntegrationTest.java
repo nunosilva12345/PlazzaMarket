@@ -1,5 +1,7 @@
 package com.tqs.plazzamarket.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -107,5 +109,46 @@ public class AuthenticationControllerIntegrationTest {
         producer.setWebsite("https://www.example.com");
         mvc.perform(MockMvcRequestBuilders.post("/api/register/producer/").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(producer))).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void testLoginConsumer() throws Exception {
+        Consumer consumer = new Consumer();
+        consumer.setUsername("luiso");
+        consumer.setName("Luis Oliveira");
+        consumer.setEmail("luis@ua.pt");
+        consumer.setPassword("12345678");
+        consumer.setAddress("Aveiro");
+        consumer.setZipCode("3060-500");
+        consumerRepository.saveAndFlush(consumer);
+
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", consumer.getUsername());
+        credentials.put("password", consumer.getPassword());
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/login").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @Transactional
+    public void testLoginProducer() throws  Exception {
+        Producer producer = new Producer();
+        producer.setUsername("luiso");
+        producer.setName("Luis Oliveira");
+        producer.setEmail("luis@ua.pt");
+        producer.setPassword("12345678");
+        producer.setAddress("Aveiro");
+        producer.setZipCode("3060-500");
+        producer.setWebsite("https://www.example.com");
+        producerRepository.saveAndFlush(producer);
+
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", producer.getUsername());
+        credentials.put("password", producer.getPassword());
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/login").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
