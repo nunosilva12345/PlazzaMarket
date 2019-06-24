@@ -21,9 +21,4 @@ public class CategoryController {
         categoryRepository.save(c);
     }
 
-    @GetMapping(path = "/categories/")
-    public @ResponseBody
-    Iterable<Category> findAll() {
-        return categoryRepository.findAll();
-    }
 }

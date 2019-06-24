@@ -1,11 +1,12 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tqs.plazzamarket.entities.Consumer;
+
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +25,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
-import org.junit.Assert;
-import org.springframework.test.web.servlet.ResultActions;
 
-@SpringBootTest
+
+@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")
@@ -61,16 +61,28 @@ public class ProductControllerIntegrationTest {
         productJSON.put("price", "5");
         productJSON.put("description", "test");
 
-        System.out.println(mapper.writeValueAsString(productJSON));
 
-        mvc
-            .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
-                    .content(mapper.writeValueAsString(productJSON)))
-            .andExpect(MockMvcResultMatchers.status().isCreated());
+        String result = mvc
+                .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(productJSON)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
 
-        //Optional<Product> optional = productRepository.findById(0);
-        //Assert.assertTrue(optional.isPresent());
+        Product p = new Product();
+        p.setName("Potato");
+        p.setQuantity(4);
+        p.setPrice(5);
+        p.setDescription("test");
+        p.setId(mapper.readValue(result, Product.class).getId());
+
+        Assert.assertEquals(p, mapper.readValue(result, Product.class));
+
+        Optional<Product> optional = productRepository.findById(mapper.readValue(result, Product.class).getId());
+        Assert.assertTrue(optional.isPresent());
+        Assert.assertEquals(p, optional.get());
     }
+
     
     
     
@@ -78,39 +90,25 @@ public class ProductControllerIntegrationTest {
     @Transactional
     public void testRemoveProduct() throws Exception {
         Product product = new Product();
+        product.setId(1);
         product.setQuantity(4);
         product.setPrice(5);
         product.setDescription("test");
         product.setName("Potato");
         
-        System.out.println("ID: " + product.getId());
-        
-        
+        productRepository.saveAndFlush(product);
+
+
+        int size_beforeDelete = (int) productRepository.count();
         mvc.perform(MockMvcRequestBuilders.get("/api/products/remove/1")).andExpect(MockMvcResultMatchers.status().isOk());
+        int size_atferDelete = (int) productRepository.count();
+
+        Assert.assertEquals(size_beforeDelete - 1, size_atferDelete);
 
         Optional<Product> optional = productRepository.findById(product.getId());
-        int size_beforeDelete = (int) productRepository.count();
-
-        System.out.println("PRODUCT: " + product);
-        System.out.println("size: " + size_beforeDelete);
-        
-        
-        Assert.assertTrue(optional.isPresent());
-
-        if (optional.isPresent()) {
-            System.out.println("entrou no if");
-            productRepository.deleteById(product.getId());
-        }
-        
-        int size_atferDelete = (int) productRepository.count();
-        
-        System.out.println("size: " + size_atferDelete);
-
-        //nao existe depois do remove, logo reusltou com sucesso
-        Assert.assertEquals(size_beforeDelete, size_atferDelete + 1);
+        Assert.assertFalse(optional.isPresent());
 
     }
-
 
 
 }

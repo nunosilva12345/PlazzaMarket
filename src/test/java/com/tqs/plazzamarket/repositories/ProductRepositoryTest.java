@@ -55,7 +55,7 @@ public class ProductRepositoryTest {
         List<Product> found = productRepository.findAll();
         Assert.assertTrue(found.contains(product));
     }
-    
+
     @Test
     public void whenGetByID_removeProduct() {
         int size_beforeDelete = (int) productRepository.count();
@@ -85,6 +85,7 @@ public class ProductRepositoryTest {
         Assert.assertEquals(size_beforeDelete, size_afterDelete);
 
     }
+
 
     @After
     public void afterEach() {
