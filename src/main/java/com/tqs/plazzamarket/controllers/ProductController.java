@@ -47,13 +47,13 @@ public class ProductController {
     
     //@RequestMapping(params={"id"}, method = RequestMethod.GET)
     @GetMapping(path = "/products/remove/{id}")
-    public ResponseEntity<? extends Object> removeProduct(@RequestParam(value = "id") int id) {
+    public ResponseEntity<? extends Object> removeProduct(@PathVariable("id") int id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
-            System.out.println("entrou no if");
             productRepository.deleteById(id);
             return new ResponseEntity<Product>(HttpStatus.OK);
         }
         return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
     }
+
 }

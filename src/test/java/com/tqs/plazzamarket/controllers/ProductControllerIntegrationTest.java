@@ -86,8 +86,7 @@ public class ProductControllerIntegrationTest {
         System.out.println("ID: " + product.getId());
         
         
-        mvc
-                .perform(MockMvcRequestBuilders.get("/api/products/remove/1")).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/api/products/remove/1")).andExpect(MockMvcResultMatchers.status().isOk());
 
         Optional<Product> optional = productRepository.findById(product.getId());
         int size_beforeDelete = (int) productRepository.count();
