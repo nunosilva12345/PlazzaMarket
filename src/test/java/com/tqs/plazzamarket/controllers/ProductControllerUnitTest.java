@@ -1,11 +1,10 @@
 package com.tqs.plazzamarket.controllers;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
-
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -52,10 +51,10 @@ public class ProductControllerUnitTest {
         p.setDescription("test");
         BDDMockito.given(productRepository.saveAndFlush(p)).willReturn(p);
 
-        String result = mvc
-                .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productJSON)))
-                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn().getResponse().getContentAsString();
-        Assert.assertEquals(p, mapper.readValue(result, Product.class));
+        mvc
+            .perform(MockMvcRequestBuilders.post("/api/products/add").contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(productJSON)))
+            .andExpect(MockMvcResultMatchers.status().isCreated());
+
     }
 }

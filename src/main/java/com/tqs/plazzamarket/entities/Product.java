@@ -1,6 +1,8 @@
 package com.tqs.plazzamarket.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -127,15 +127,11 @@
 }
 
 .navbar-brand.overrider img {
-    height: 40px;
+    height: 100%;
     width: auto;
 }
 
 .navbar-brand.overrider.mh-3 {
-    height: 30px;
-}
-
-.navbar-brand.overrider.mh-3 img {
     height: 30px;
 }
 

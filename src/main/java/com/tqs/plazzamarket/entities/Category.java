@@ -1,5 +1,7 @@
 package com.tqs.plazzamarket.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import javax.persistence.Id;

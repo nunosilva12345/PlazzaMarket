@@ -20,9 +20,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 @DataJpaTest
 @TestPropertySource(locations = "classpath:test.properties")
 public class ConsumerRepositoryTest {
-
+    
     private Consumer consumer;
-
+    
     @Autowired
     private ConsumerRepository consumerRepository;
 

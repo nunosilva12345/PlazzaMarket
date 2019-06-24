@@ -1,4 +1,4 @@
-package com.tqs.plazzamarket.web;
+/*package com.tqs.plazzamarket.web;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,12 +24,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class TestCreateProduct {
 
     @LocalServerPort
-    private int port;
+	private int port;
 
     private WebDriver driver;
     private boolean acceptNextAlert = true;
@@ -67,8 +67,7 @@ public class TestCreateProduct {
         driver.findElement(By.id("price")).clear();
         driver.findElement(By.id("price")).sendKeys("2");
         driver.findElement(By.id("price")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=price |
-        // ]]
+        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=price | ]]
         driver.findElement(By.id("price")).clear();
         driver.findElement(By.id("price")).sendKeys("7");
         driver.findElement(By.id("price")).click();
@@ -81,8 +80,7 @@ public class TestCreateProduct {
         driver.findElement(By.id("quantity")).clear();
         driver.findElement(By.id("quantity")).sendKeys("2");
         driver.findElement(By.id("quantity")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick |
-        // id=quantity | ]]
+        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=quantity | ]]
         driver.findElement(By.id("quantity")).clear();
         driver.findElement(By.id("quantity")).sendKeys("3");
         driver.findElement(By.id("quantity")).click();
@@ -120,4 +118,5 @@ public class TestCreateProduct {
             acceptNextAlert = true;
         }
     }
-}
+}*/
+
