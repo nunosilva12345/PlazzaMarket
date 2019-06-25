@@ -69,8 +69,7 @@ public class TestCreateProduct {
         driver.findElement(By.id("description")).clear();
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
-        // assertEquals("Product added with success!", closeAlertAndGetItsText());
-        WebDriverWait wait = new WebDriverWait(driver, 120);
+        WebDriverWait wait = new WebDriverWait(driver, 300);
         Assert.assertTrue(wait.until(ExpectedConditions.attributeContains(By.id("success-div"), "class", "d-block")));
     }
 
@@ -82,22 +81,6 @@ public class TestCreateProduct {
             fail(verificationErrorString);
         }
     }
-
-    /*private String closeAlertAndGetItsText() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, 15);
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
-        }
-    }*/
 
     private void newChromeSession(ChromeOptions chromeOptions) throws Exception {
         driver = new ChromeDriver(chromeOptions);
