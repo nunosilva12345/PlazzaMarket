@@ -70,7 +70,7 @@ public class TestCreateProduct {
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
         // assertEquals("Product added with success!", closeAlertAndGetItsText());
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, 120);
         Assert.assertTrue(wait.until(ExpectedConditions.attributeContains(By.id("success-div"), "class", "d-block")));
     }
 
