@@ -69,9 +69,9 @@ public class TestCreateProduct {
         driver.findElement(By.id("description")).clear();
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
-        // assertEquals("Product added with success!", closeAlertAndGetItsText());
-        WebDriverWait wait = new WebDriverWait(driver, 60);
-        Assert.assertTrue(wait.until(ExpectedConditions.attributeContains(By.id("success-div"), "class", "d-block")));
+        assertEquals("Product added with success!", closeAlertAndGetItsText());
+        // WebDriverWait wait = new WebDriverWait(driver, 60);
+        // Assert.assertTrue(wait.until(ExpectedConditions.attributeContains(By.id("success-div"), "class", "d-block")));
     }
 
     @After
@@ -83,9 +83,9 @@ public class TestCreateProduct {
         }
     }
 
-    /*private String closeAlertAndGetItsText() {
+    private String closeAlertAndGetItsText() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 15);
+            WebDriverWait wait = new WebDriverWait(driver, 60);
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             String alertText = alert.getText();
             if (acceptNextAlert) {
@@ -97,7 +97,7 @@ public class TestCreateProduct {
         } finally {
             acceptNextAlert = true;
         }
-    }*/
+    }
 
     private void newChromeSession(ChromeOptions chromeOptions) throws Exception {
         driver = new ChromeDriver(chromeOptions);
