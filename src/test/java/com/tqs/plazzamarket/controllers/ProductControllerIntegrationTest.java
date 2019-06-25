@@ -1,9 +1,11 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Producer;
 
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
 import org.junit.Assert;
@@ -25,6 +27,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.web.servlet.ResultActions;
 
 
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -44,6 +48,10 @@ public class ProductControllerIntegrationTest {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    //new
+    @Autowired
+    private ProducerRepository producerRepository;
 
 
     @Before
@@ -109,5 +117,51 @@ public class ProductControllerIntegrationTest {
         Assert.assertFalse(optional.isPresent());
 
     }
+    
+    @Test
+    @Transactional
+    public void testListProducerProducts() throws Exception {
+        Producer producer = new Producer();
+        producer.setUsername("luiso");
+        producer.setName("Luis Oliveira");
+        producer.setEmail("luis@ua.pt");
+        producer.setPassword("12345678");
+        producer.setAddress("Aveiro");
+        producer.setZipCode("3060-500");
+        producerRepository.saveAndFlush(producer);
+        
+        
+        Product product = new Product();
+        product.setId(1);
+        product.setQuantity(4);
+        product.setPrice(5);
+        product.setDescription("test");
+        product.setName("Potato");
+        product.setProducer(producer);
+        
+        productRepository.saveAndFlush(product);
+
+
+        Product product1 = new Product();
+        product.setId(2);
+        product.setQuantity(10);
+        product.setPrice(3);
+        product.setDescription("test too");
+        product.setName("Sweet Potato");
+        product.setProducer(producer);
+        
+        productRepository.saveAndFlush(product1);
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/products/luiso")).andExpect(MockMvcResultMatchers.status().isOk());
+        
+        //testar, ver se o resultado(lista é igual a 2, numero de products do "luiso")
+        Assert.assertEquals(x.andReturn(),2);
+
+
+    }
+    
+    
+    
+    
     
 }
