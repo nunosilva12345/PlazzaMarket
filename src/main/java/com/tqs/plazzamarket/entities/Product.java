@@ -23,9 +23,11 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_name")
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<Receipt> receipts = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producer_id")
     private Producer producer;
@@ -129,5 +131,19 @@ public class Product implements Serializable {
                 && Objects.equals(receipts, product.receipts) && Objects.equals(producer, product.producer)
                 && Objects.equals(description, product.description) && price == product.price
                 && quantity == product.quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoty=" + category + '\'' +
+                ", receipts=" + receipts +
+                ", producer=" + producer +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

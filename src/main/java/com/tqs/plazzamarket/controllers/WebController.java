@@ -1,5 +1,7 @@
 package com.tqs.plazzamarket.controllers;
 
+import com.tqs.plazzamarket.entities.Consumer;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpSession;
 public class WebController {
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private ProducerRepository producerRepository;
 
 	@GetMapping(value = "/")
 	public String login(Model model) {
@@ -33,9 +38,15 @@ public class WebController {
 	@GetMapping(value = "/listproduct")
 	public String listProduct(Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
-		model.addAttribute("user", user);
-		model.addAttribute("products", productRepository.findAll());
-		return "listproduct";
+		if (user.getClass()== Consumer.class) {
+			model.addAttribute("user", user);
+			model.addAttribute("products", productRepository.findAll());
+			return "listproduct";
+		} else {
+			model.addAttribute("user", user);
+			model.addAttribute("products", producerRepository.getOne(user.getUsername()).getProducts());
+			return "listProducerProducts";
+		}
 	}
 
 	@GetMapping(value = "/home")

@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -15,7 +16,7 @@ public class Category implements Serializable {
 	private String name;
 
 	@OneToMany(mappedBy = "category")
-	private List<Product> products;
+	private List<Product> products = new ArrayList<>();
 
 	public Category() {
 	}
@@ -36,8 +37,8 @@ public class Category implements Serializable {
 		return this.products;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setProducts(Product products) {
+		this.products.add(products);
 	}
 
 	@Override
@@ -77,6 +78,7 @@ public class Category implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Category{" + "name='" + name + '\'' + '}';
+		return "Category{" +
+				"name='" + name;
 	}
 }

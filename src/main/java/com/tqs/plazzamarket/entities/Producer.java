@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class Producer extends BaseUser {
     private String website;
 
     @OneToMany(mappedBy = "producer")
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public String getWebsite() {
         return this.website;
@@ -33,8 +34,8 @@ public class Producer extends BaseUser {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProducts(Product products) {
+        this.products.add(products);
     }
 
     @Override
@@ -66,5 +67,10 @@ public class Producer extends BaseUser {
         } else if (!website.equals(other.website))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return super.getUsername();
     }
 }

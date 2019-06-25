@@ -2,8 +2,11 @@ package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.tqs.plazzamarket.entities.Category;
+import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
 
@@ -24,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,6 +50,9 @@ public class ProductControllerIntegrationTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProducerRepository producerRepository;
 
     @Before
     public void beforeEach() {
@@ -125,6 +132,53 @@ public class ProductControllerIntegrationTest {
 
         Optional<Product> optional = productRepository.findById(product.getId());
         Assert.assertFalse(optional.isPresent());
+
+    }
+
+    @Test
+    @Transactional
+    public void testListProducerProducts() throws Exception {
+        Producer producer = new Producer();
+        producer.setUsername("nunosilva");
+        producer.setName("Nuno Silva");
+        producer.setEmail("nuno1@ua.pt");
+        producer.setPassword("12345678");
+        producer.setAddress("Porto");
+        producer.setZipCode("4470-587");
+        producer.setWebsite("https://www.olaadeus.pt");
+        producer = producerRepository.saveAndFlush(producer);
+
+        Category category = new Category("Flowers");
+        categoryRepository.saveAndFlush(category);
+
+
+        Product product = new Product();
+        product.setQuantity(4);
+        product.setPrice(5);
+        product.setDescription("test");
+        product.setName("Red Potato");
+        product.setCategory(category);
+        product.setProducer(producer);
+        producer.setProducts(product);
+        category.setProducts(product);
+        productRepository.saveAndFlush(product);
+
+
+        Product product1 = new Product();
+        product1.setQuantity(10);
+        product1.setPrice(3);
+        product1.setDescription("test too");
+        product1.setName("Sweet Potato");
+        product1.setProducer(producer);
+        producer.setProducts(product1);
+        category.setProducts(product1);
+        productRepository.saveAndFlush(product1);
+
+
+        String responseList = mvc.perform(MockMvcRequestBuilders.get("/api/products/" + producer.getUsername())).andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+        List<Object> list = mapper.readValue(responseList, List.class);
+
+        Assert.assertEquals(list.size(),2);
 
     }
 
