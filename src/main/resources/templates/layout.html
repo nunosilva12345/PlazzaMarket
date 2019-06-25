@@ -16,6 +16,25 @@
     <script th:src="@{js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{js/knockout.min.js}"></script>
     <script th:src="@{js/plazza-market/index.js}"></script>
+
+    <script>
+        $(function () {
+            $('#logout').click(function () {
+                console.log("Aqui")
+                $.ajax({
+                    url: `/api/logout`,
+                    method: 'POST',
+                    success: function (response) {
+                        alert("logout");
+                        location.href = "/"
+                    }, error: function (response) {
+                        alert("ERROR");
+                    }
+                })
+            });
+        });
+
+    </script>
 </head>
 
 
@@ -54,7 +73,7 @@
                         <input id="autocomplete" class="form-control" type="text" placeholder="Search For Products">
                         <input id="search" class="btn bg-white btn-outline-default my-0 my-sm-0 mx-2" type="button"
                             value="Search" />
-                        <a class="btn bg-white btn-outline-default my-0 my-sm-0" href="/signin.html">Logout</a>
+                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0" id="logout" >Logout</button>
                     </div>
                 </form>
             </div>

@@ -2,11 +2,14 @@ package com.tqs.plazzamarket.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
+import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
@@ -44,6 +47,38 @@ public class AuthenticationController {
         ResponseEntity<? extends Object> re = usernameExists(producer);
         return re != null ? re : new ResponseEntity<>(producerRepository.saveAndFlush(producer), HttpStatus.CREATED);
     }
+
+    @PostMapping(path = "/login", consumes = "application/json")
+    public ResponseEntity<? extends Object> login(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
+
+        if (!credentials.containsKey("username") || !credentials.containsKey("password")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        String username = credentials.get("username").toString();
+        String password = credentials.get("password").toString();
+
+        Optional<Consumer> consumer = consumerRepository.findById(username);
+        if (consumer.isPresent() && consumer.get().getPassword().equals(password)) {
+            httpSession.setAttribute("user", consumer.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        Optional<Producer> producer = producerRepository.findById(username);
+        if (producer.isPresent() && producer.get().getPassword().equals(password)) {
+            httpSession.setAttribute("user", producer.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity<? extends Object> logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
