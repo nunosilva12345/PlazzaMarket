@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,12 +57,12 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products/{username}")
-    public @ResponseBody Iterable<Product> listProducerProducts(@PathVariable("username") String username) {
+    public ResponseEntity<List<Product>> listProducerProducts(@PathVariable("username") String username) {
         Optional<Producer> producer = producerRepository.findById(username);
         if (producer.isPresent()) {
-            return producer.get().getProducts();
+            return new ResponseEntity<>(producer.get().getProducts(), HttpStatus.OK);
         }
-        return new ArrayList<>();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

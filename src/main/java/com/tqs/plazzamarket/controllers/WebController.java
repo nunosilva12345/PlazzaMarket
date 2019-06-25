@@ -38,12 +38,11 @@ public class WebController {
 	@GetMapping(value = "/listproduct")
 	public String listProduct(Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
+		model.addAttribute("user", user);
 		if (user.getClass()== Consumer.class) {
-			model.addAttribute("user", user);
 			model.addAttribute("products", productRepository.findAll());
 			return "listproduct";
 		} else {
-			model.addAttribute("user", user);
 			model.addAttribute("products", producerRepository.getOne(user.getUsername()).getProducts());
 			return "listProducerProducts";
 		}
