@@ -37,8 +37,8 @@ public class Category implements Serializable {
 		return this.products;
 	}
 
-	public void setProducts(Product products) {
-		this.products.add(products);
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.tqs.plazzamarket.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
 import org.junit.Assert;
@@ -36,6 +37,9 @@ public class ProductControllerUnitTest {
 
     @MockBean
     private CategoryRepository categoryRepository;
+
+    @MockBean
+    private ProducerRepository producerRepository;
 
     @Test
     public void testCreateProduct() throws Exception {

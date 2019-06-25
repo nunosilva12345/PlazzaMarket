@@ -159,8 +159,6 @@ public class ProductControllerIntegrationTest {
         product.setName("Red Potato");
         product.setCategory(category);
         product.setProducer(producer);
-        producer.setProducts(product);
-        category.setProducts(product);
         productRepository.saveAndFlush(product);
 
 
@@ -170,8 +168,6 @@ public class ProductControllerIntegrationTest {
         product1.setDescription("test too");
         product1.setName("Sweet Potato");
         product1.setProducer(producer);
-        producer.setProducts(product1);
-        category.setProducts(product1);
         productRepository.saveAndFlush(product1);
 
 

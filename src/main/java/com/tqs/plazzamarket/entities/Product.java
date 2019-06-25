@@ -58,6 +58,7 @@ public class Product implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+        category.getProducts().add(this);
     }
 
     public List<Receipt> getReceipts() {
@@ -74,6 +75,7 @@ public class Product implements Serializable {
 
     public void setProducer(Producer producer) {
         this.producer = producer;
+        producer.getProducts().add(this);
     }
 
     public String getDescription() {
