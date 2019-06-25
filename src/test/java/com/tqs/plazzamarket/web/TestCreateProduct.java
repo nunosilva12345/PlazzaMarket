@@ -45,7 +45,7 @@ public class TestCreateProduct {
         categoryRepository.saveAndFlush(category);
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+        // chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         try {
             newChromeSession(chromeOptions);
@@ -59,41 +59,13 @@ public class TestCreateProduct {
     public void testCreateProduct() throws Exception {
         String url = String.format("http://localhost:%d/createproduct", port);
         driver.get(url);
-        driver.findElement(By.id("name")).click();
         driver.findElement(By.id("name")).clear();
         driver.findElement(By.id("name")).sendKeys("Batata");
-        driver.findElement(By.id("category")).click();
         new Select(driver.findElement(By.id("category"))).selectByVisibleText("Flowers");
-        driver.findElement(By.id("category")).click();
-        driver.findElement(By.id("price")).clear();
-        driver.findElement(By.id("price")).sendKeys("1");
-        driver.findElement(By.id("price")).click();
-        driver.findElement(By.id("price")).clear();
-        driver.findElement(By.id("price")).sendKeys("2");
-        driver.findElement(By.id("price")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=price |
-        // ]]
-        driver.findElement(By.id("price")).clear();
-        driver.findElement(By.id("price")).sendKeys("7");
-        driver.findElement(By.id("price")).click();
         driver.findElement(By.id("price")).clear();
         driver.findElement(By.id("price")).sendKeys("8");
-        driver.findElement(By.id("price")).click();
-        driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("1");
-        driver.findElement(By.id("quantity")).click();
-        driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("2");
-        driver.findElement(By.id("quantity")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick |
-        // id=quantity | ]]
-        driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("3");
-        driver.findElement(By.id("quantity")).click();
         driver.findElement(By.id("quantity")).clear();
         driver.findElement(By.id("quantity")).sendKeys("4");
-        driver.findElement(By.id("quantity")).click();
-        driver.findElement(By.id("description")).click();
         driver.findElement(By.id("description")).clear();
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
