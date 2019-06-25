@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dashboard</title>
+    </h:head>
+    <h:body style="padding-top: 60px">
+        <h:outputScript library="holder" name="holder.js" />
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.5.2/holder.min.js"></script-->
+        <b:navBar brand="handsfree" brandHref="home.xhtml" fixed="top" fluid="true" style="background-color: lightblue;">
+
+            <b:navbarLinks pull="right">
+                <b:navLink value="Logout" icon="log-out" outcome="/index.xhtml"></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <p style="margin-top: 4%">Welcome #{authenticationbean.email}</p>
+            </h:form>
+        </b:navBar>
+        <b:container fluid="true">
+            <b:row>
+                <b:column col-sm="4" col-md="3" styleClass="sidebar" >
+                    <h:form>
+                        <p:accordionPanel value="#{profilesbean.profilesApp}" var="perfil">
+                            <p:tab title="#{perfil.nome}">
+                                <b:commandButton look="link" action="#{menuappbean.showGestureCommands}"><b:iconAwesome name="fa-hand-paper-o"/> Gesture Commands<br/>
+                                    <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
+                                </b:commandButton>
+                                <br/>
+                                <b:commandButton  look="link" action="#{menuappbean.showVoiceCommands}"><b:iconAwesome name="fa-microphone"/> &nbsp;Voice Commands<br/>
+                                    <f:setPropertyActionListener target="#{menuappbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{profilesbean.selectedProfile}" value="#{perfil}" />
+                                    <f:setPropertyActionListener target="#{menuappbean.email}" value="#{authenticationbean.email}" />
+                                </b:commandButton>
+
+                            </p:tab>
+                            <br/>
+                        </p:accordionPanel>
+
+                    </h:form>
+                </b:column>
+
+                <style type="text/css">
+                    .value {
+                        font-weight: bold;
+                    }
+                </style>
+
+
+                <h:form id="form">
+                    <b:column col-sm="8" offset-sm="4" col-md="9" offset="3" styleClass="main">
+                        
+                        <h1>Voice Commands Management</h1>
+                        <hr/>
+                        
+                        <p:dataTable widgetVar="voicesTable" var="voz" value="#{voicesbean.voices}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+
+                            <p:column filterMatchMode="exact" headerText="Voice Command">
+                                <img src="resources/images/sound-waves.png" alt=""/>&nbsp;&nbsp;
+                                <h:outputText style="" value="#{voz.voice}" />
+                            </p:column>
+
+                            <p:column headerText="Action" style="text-align: center;">
+                                <h:outputText value="#{voz.action.nome}" />
+                            </p:column>
+
+                            <p:column style="text-align: center;">
+                                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" value="Change Voice">
+                                    <f:setPropertyActionListener value="#{voz}" target="#{voicesbean.selectedVoice}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:dialog header="Change Voice Commands" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="carDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty voicesbean.selectedVoice}" columnClasses="value,value">
+
+                                    <h:outputText value="Id" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.id}" />
+
+                                    <h:outputText value="Action" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.action.nome}" />
+
+                                    <h:outputText value="Atual Voice Command" />
+                                    <h:outputText value="#{voicesbean.selectedVoice.voice}" />
+
+                                    <h:outputText value="New Voice Command " />
+                                    <b:selectOneMenu value="#{voicesbean.newVoice}" required="true">
+                                        <f:selectItem itemLabel="(Please select)" itemValue="" />
+                                        <f:selectItems value="${voicesbean.addVoicesUnsed()}" var="voz" itemValue="#{voz}" itemLabel="#{voz.voice}" />
+                                    </b:selectOneMenu>
+                                </p:panelGrid>
+                                <br/>
+                                <b:commandButton action="${voicesbean.updateVoiceCommands()}" icon="ok" value="Save Changes" look="info" > 
+                                </b:commandButton>
+
+                            </p:outputPanel>
+                        </p:dialog>
+                    </b:column>
+                </h:form>
+
+            </b:row>
+
+        </b:container> 
+
+
+        <style type="text/css">
+            .sub-header {
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+            .navbar-fixed-top {
+                border: 0 none;
+            }
+            .sidebar {
+                display: none;
+            }
+            @media (min-width: 768px) {
+                .sidebar {
+                    background-color: lightblue;
+                    border-right: 1px solid #eee;
+                    bottom: 0;
+                    display: block;
+                    left: 0;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    padding: 20px;
+                    position: fixed;
+                    top: 51px;
+                    z-index: 1000;
+                }
+            }
+            .nav-list {
+                margin-bottom: 20px;
+                margin-left: -20px;
+                margin-right: -21px;
+            }
+            .nav-list > li > a {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .nav-list > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+                background-color: #428bca;
+                color: #fff;
+            }
+            .main {
+                padding: 20px;
+            }
+            @media (min-width: 768px) {
+                .main {
+                    padding-left: 40px;
+                    padding-right: 40px;
+                }
+            }
+            .main .page-header {
+                margin-top: 0;
+            }
+            .placeholders {
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            .placeholders h4 {
+                margin-bottom: 0;
+            }
+            .placeholder {
+                margin-bottom: 20px;
+            }
+            .placeholder img {
+                border-radius: 50%;
+                display: inline-block;
+            }
+        </style>
+    </h:body>
+</html>
+
+
+
+
