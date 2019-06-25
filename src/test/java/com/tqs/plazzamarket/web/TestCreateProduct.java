@@ -83,7 +83,7 @@ public class TestCreateProduct {
 
     private String closeAlertAndGetItsText() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 60);
+            WebDriverWait wait = new WebDriverWait(driver, 120);
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             String alertText = alert.getText();
             if (acceptNextAlert) {
