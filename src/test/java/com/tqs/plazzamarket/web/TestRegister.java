@@ -93,7 +93,7 @@ public class TestRegister {
 
     private String closeAlertAndGetItsText() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 15);
+            WebDriverWait wait = new WebDriverWait(driver, 60);
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             String alertText = alert.getText();
             if (acceptNextAlert) {
