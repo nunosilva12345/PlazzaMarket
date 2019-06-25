@@ -12,6 +12,8 @@ import org.hibernate.validator.constraints.URL;
 
 @Entity
 public class Producer extends BaseUser {
+    private static final long serialVersionUID = 5290073270256936397L;
+
     @URL
     @NotNull(message = "Website is mandatory")
     private String website;

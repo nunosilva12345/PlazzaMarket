@@ -1,6 +1,10 @@
 package com.tqs.plazzamarket.entities;
 
 import javax.persistence.Id;
+
+import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
@@ -10,7 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
-public class Receipt {
+public class Receipt implements Serializable {
+	private static final long serialVersionUID = 7491573502632013934L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -77,21 +83,8 @@ public class Receipt {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Receipt other = (Receipt) obj;
-		if (id != other.id)
-			return false;
-		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
-			return false;
-		if (product == null) {
-			if (other.product != null)
-				return false;
-		} else if (!product.equals(other.product))
-			return false;
-		if (sale == null) {
-			if (other.sale != null)
-				return false;
-		} else if (!sale.equals(other.sale))
-			return false;
-		return true;
+		Receipt receipt = (Receipt) obj;
+		return id == receipt.id && Objects.equals(product, receipt.product) && price == receipt.price
+				&& Objects.equals(sale, receipt.sale);
 	}
 }

@@ -24,7 +24,7 @@ public class ProductController {
     private CategoryRepository categoryRepository;
 
     @PostMapping(path = "/products/add", consumes = "application/json")
-    public ResponseEntity<? extends Object> createProduct(@RequestBody Map<String, Object> productJson, HttpSession httpSession) {
+    public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> productJson, HttpSession httpSession) {
         Product product = new Product();
         product.setName(productJson.get("name").toString());
         product.setDescription(productJson.get("description").toString());
@@ -42,11 +42,11 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products/remove/{id}")
-    public ResponseEntity<? extends Object> removeProduct(@PathVariable("id") int id) {
+    public ResponseEntity<Object> removeProduct(@PathVariable("id") int id) {
         Optional<Product> product = productRepository.findById(id);
         if (!product.isPresent())
-            return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         productRepository.deleteById(id);
-        return new ResponseEntity<Product>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

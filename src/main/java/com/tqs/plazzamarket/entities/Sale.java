@@ -8,6 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+
+import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +19,9 @@ import javax.persistence.GenerationType;
 import com.tqs.plazzamarket.utils.Status;
 
 @Entity
-public class Sale {
+public class Sale implements Serializable {
+	private static final long serialVersionUID = 1042731005745320411L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -95,23 +101,8 @@ public class Sale {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Sale other = (Sale) obj;
-		if (consumer == null) {
-			if (other.consumer != null)
-				return false;
-		} else if (!consumer.equals(other.consumer))
-			return false;
-		if (id != other.id)
-			return false;
-		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
-			return false;
-		if (receipt == null) {
-			if (other.receipt != null)
-				return false;
-		} else if (!receipt.equals(other.receipt))
-			return false;
-		if (status != other.status)
-			return false;
-		return true;
+		Sale sale = (Sale) obj;
+		return id == sale.id && Objects.equals(consumer, sale.consumer) && Objects.equals(receipt, sale.receipt)
+				&& quantity == sale.quantity && Objects.equals(status, sale.status);
 	}
 }

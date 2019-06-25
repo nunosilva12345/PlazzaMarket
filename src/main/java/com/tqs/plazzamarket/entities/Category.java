@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -7,7 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Category {
+public class Category implements Serializable {
+	private static final long serialVersionUID = -6537986399758769971L;
 
 	@Id
 	private String name;
@@ -15,7 +17,8 @@ public class Category {
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
 
-	public Category() {}
+	public Category() {
+	}
 
 	public Category(String name) {
 		this.name = name;
@@ -58,21 +61,22 @@ public class Category {
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
-			return false;
+		} else {
+			if (!name.equals(other.name))
+				return false;
+		}
 		if (products == null) {
 			if (other.products != null)
 				return false;
-		} else if (!products.equals(other.products))
-			return false;
+		} else {
+			if (!products.equals(other.products))
+				return false;
+		}
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Category{" +
-				"name='" + name + '\'' +
-				'}';
+		return "Category{" + "name='" + name + '\'' + '}';
 	}
 }

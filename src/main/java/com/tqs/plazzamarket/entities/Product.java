@@ -3,12 +3,16 @@ package com.tqs.plazzamarket.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
+import java.util.Objects;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.persistence.*;
 
 @Entity
-public class Product {
+public class Product implements Serializable {
+    private static final long serialVersionUID = -8481045555806348788L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -29,7 +33,6 @@ public class Product {
     private String description;
     private double price;
     private double quantity;
-
 
     public int getId() {
         return id;
@@ -121,52 +124,10 @@ public class Product {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Product other = (Product) obj;
-        if (category == null) {
-            if (other.category != null)
-                return false;
-        } else if (!category.equals(other.category))
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
-            return false;
-        if (producer == null) {
-            if (other.producer != null)
-                return false;
-        } else if (!producer.equals(other.producer))
-            return false;
-        if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
-            return false;
-        if (receipts == null) {
-            if (other.receipts != null)
-                return false;
-        } else if (!receipts.equals(other.receipts))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category=" + category +
-                ", receipts=" + receipts +
-                ", producer=" + producer +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
+        Product product = (Product) obj;
+        return id == product.id && Objects.equals(name, product.name) && Objects.equals(category, product.category)
+                && Objects.equals(receipts, product.receipts) && Objects.equals(producer, product.producer)
+                && Objects.equals(description, product.description) && price == product.price
+                && quantity == product.quantity;
     }
 }
