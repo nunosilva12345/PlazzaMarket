@@ -2,12 +2,14 @@ package com.tqs.plazzamarket.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
+import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
@@ -48,25 +50,26 @@ public class AuthenticationController {
 
     @PostMapping(path = "/login", consumes = "application/json")
     public ResponseEntity<? extends Object> login(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
+
+        if (!credentials.containsKey("username") || !credentials.containsKey("password")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         String username = credentials.get("username").toString();
         String password = credentials.get("password").toString();
 
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
-
-        if (consumerRepository.existsById(username)) {
-            Consumer consumer = consumerRepository.getOne(username);
-            if (consumer.getPassword().equals(password)) {
-                httpSession.setAttribute("user", consumer);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        } else if (producerRepository.existsById(username)) {
-            Producer producer = producerRepository.getOne(username);
-            if (producer.getPassword().equals(password)) {
-                httpSession.setAttribute("user", producer);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
+        Optional<Consumer> consumer = consumerRepository.findById(username);
+        if (consumer.isPresent() && consumer.get().getPassword().equals(password)) {
+            httpSession.setAttribute("user", consumer.get());
+            return new ResponseEntity<>(HttpStatus.OK);
         }
+
+        Optional<Producer> producer = producerRepository.findById(username);
+        if (producer.isPresent() && producer.get().getPassword().equals(password)) {
+            httpSession.setAttribute("user", producer.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
