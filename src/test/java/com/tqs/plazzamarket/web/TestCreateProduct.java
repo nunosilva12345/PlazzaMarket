@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.web;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import com.tqs.plazzamarket.entities.Category;
@@ -69,7 +70,8 @@ public class TestCreateProduct {
         driver.findElement(By.id("description")).clear();
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
-        assertEquals("Product added with success!", closeAlertAndGetItsText());
+        WebDriverWait wait = new WebDriverWait(driver, 15);
+        Assert.assertTrue(wait.until(ExpectedConditions.attributeContains(By.id("success-div"), "class", "d-block")));
     }
 
     @After
@@ -78,22 +80,6 @@ public class TestCreateProduct {
         String verificationErrorString = verificationErrors.toString();
         if (!"".equals(verificationErrorString)) {
             fail(verificationErrorString);
-        }
-    }
-
-    private String closeAlertAndGetItsText() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, 30);
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
         }
     }
 

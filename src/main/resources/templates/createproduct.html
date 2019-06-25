@@ -59,9 +59,11 @@
                     contentType: 'application/json',
                     data: JSON.stringify(product),
                     success: function (response) {
-                        alert("Product added with success!");
+                        $('#failed-div').removeClass('d-block');
+                        $('#success-div').addClass('d-block');
                     }, error: function (response) {
-                        alert("Product not added!");
+                        $('#failed-div').addClass('d-block');
+                        $('#success-div').removeClass('d-block');
                     }
                 });
             });
@@ -80,8 +82,7 @@
                     <h4 class="col-12 mb-3">Product</h4>
                     <div class="col-12 col-sm-6 form-group pr-sm-1">
                         <label for="name">Product Name</label>
-                        <input id="name" class="form-control" type="text" name="name"
-                            placeholder="Product Name">
+                        <input id="name" class="form-control" type="text" name="name" placeholder="Product Name">
                     </div>
                     <div class="col-12 col-sm-6 form-group pl-sm-1">
                         <label for="category">Category</label>
@@ -120,6 +121,8 @@
                         <button class="btn btn-primary w-100" type="button" id="submit">
                             Add Product
                         </button>
+                        <div class="valid-feedback" id="success-div">Success!</div>
+                        <div class="invalid-feedback" id="failed-div">Failed!</div>
                     </div>
                     <p class="col-12 mt-3 mb-4 text-center text-muted">
                         &copy; 2019 - 2019
