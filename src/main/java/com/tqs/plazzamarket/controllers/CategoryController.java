@@ -11,7 +11,7 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @RequestMapping(path = "/category/init", method = RequestMethod.GET)
+    @GetMapping(path = "/category/init")
     public void init() {
         Category c = new Category("Flowers");
         categoryRepository.saveAndFlush(c);

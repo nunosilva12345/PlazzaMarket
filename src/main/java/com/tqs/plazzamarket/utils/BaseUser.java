@@ -1,5 +1,8 @@
 package com.tqs.plazzamarket.utils;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
@@ -10,7 +13,9 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 @MappedSuperclass
-public abstract class BaseUser {
+public abstract class BaseUser implements Serializable {
+	private static final long serialVersionUID = -8426863896784752433L;
+
 	@Id
 	@NotNull(message = "Username is mandatory!")
 	@NotBlank(message = "Username is mandatory!")
@@ -106,37 +111,9 @@ public abstract class BaseUser {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BaseUser other = (BaseUser) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		if (zipCode == null) {
-			if (other.zipCode != null)
-				return false;
-		} else if (!zipCode.equals(other.zipCode))
-			return false;
-		return true;
+		BaseUser baseUser = (BaseUser) obj;
+		return Objects.equals(username, baseUser.username) && Objects.equals(name, baseUser.name)
+				&& Objects.equals(email, baseUser.email) && Objects.equals(password, baseUser.password)
+				&& Objects.equals(address, baseUser.address) && Objects.equals(zipCode, baseUser.zipCode);
 	}
 }
