@@ -20,7 +20,6 @@
     <script>
         $(function () {
             $('#logout').click(function () {
-                console.log("Aqui")
                 $.ajax({
                     url: `/api/logout`,
                     method: 'POST',
@@ -33,20 +32,8 @@
                 })
             });
         });
-
     </script>
 </head>
-
-
-<!--head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
-    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-</head-->
 
 <body class="bg-light">
     <header>

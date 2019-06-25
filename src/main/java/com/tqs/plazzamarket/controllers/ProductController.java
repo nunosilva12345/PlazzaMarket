@@ -32,7 +32,9 @@ public class ProductController {
         product.setQuantity(Double.parseDouble(productJson.get("quantity").toString()));
         if (productJson.containsKey("category"))
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
-        product.setProducer((Producer) httpSession.getAttribute("user"));
+        Producer producer = (Producer) httpSession.getAttribute("user");
+        if (producer != null)
+            product.setProducer(producer);
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
     }
 
