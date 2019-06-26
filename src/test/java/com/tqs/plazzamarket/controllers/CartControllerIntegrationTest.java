@@ -83,13 +83,23 @@ public class CartControllerIntegrationTest {
     }
 
     @Test
-    public void testAddProductToCard() throws UnsupportedEncodingException, JsonProcessingException, Exception {
+    public void testAddProductToCard() throws Exception {
         String result = mvc
                 .perform(MockMvcRequestBuilders.post("/api/cart/add").contentType(MediaType.APPLICATION_JSON).accept("application/json;charset=UTF-8")
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn()
                 .getResponse().getContentAsString();
         Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
+    }
+
+    @Test
+    public void testRemoveProductToCart() throws Exception {
+        cart.add(product, 4.);
+        String result = mvc
+                .perform(MockMvcRequestBuilders.delete("/api/cart/remove/" + product.getId())
+                        .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
     }
 
     

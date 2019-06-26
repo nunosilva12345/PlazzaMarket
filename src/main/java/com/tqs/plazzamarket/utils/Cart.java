@@ -40,4 +40,14 @@ public class Cart {
     public Map<Integer, Double[]> getItems() {
         return this.items;
     }
+
+    public boolean removeProduct(int productId) {
+        if (items.containsKey(productId)) {
+            total -= items.get(productId)[1];
+            items.remove(productId);
+            return true;
+        }
+        return false;
+    }
+
 }

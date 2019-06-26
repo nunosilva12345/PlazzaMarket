@@ -30,6 +30,18 @@
             $('.buy-button').click(function (event) {
                 $('#submit').attr('data-id', $(event.target).attr('data-id'));
             });
+
+            $('.remove-product').click(function () {
+                $.ajax({
+                    url: `/api/cart/remove/` + this.id,
+                    method: 'DELETE',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            });
         });
 
     </script>
@@ -58,6 +70,9 @@
                                     </small>
                                 </div>
                                 <span class="text-muted" th:text="${instance.value[1]}"></span>
+                                <a class="nav-link float-right remove-product" th:id="${instance.key.getId()}">
+                                    <i class="fas fa-trash" style="border-width: 1px;"></i>
+                                </a>
                             </li>
                             </th:block>
                         </ul>
