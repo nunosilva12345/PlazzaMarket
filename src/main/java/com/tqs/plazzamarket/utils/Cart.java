@@ -12,16 +12,11 @@ public class Cart {
     private double total = 0;
 
     public Double add(Product product, Double quantity) {
-        //Double cartQuantity = items.get(product.getId())[0];
-        //quantity = cartQuantity != null ? cartQuantity + quantity : quantity;
         if (product.getQuantity() < quantity)
             return null;
-        double totalCompra = product.getPrice()*quantity;
-        Double[] pair = new Double[2];
-        pair[0] = quantity;
-        pair[1] = totalCompra;
-        items.put(product.getId(), pair);
-        total += product.getPrice()*quantity;
+        double totalCompra = product.getPrice() * quantity;
+        items.put(product.getId(), new Double[] { quantity, totalCompra });
+        total += totalCompra;
         return quantity;
     }
 
