@@ -120,11 +120,10 @@ public class ProductControllerIntegrationTest {
         product.setPrice(5);
         product.setDescription("test");
         product.setName("Potato");
-
-        productRepository.saveAndFlush(product);
-
+        product = productRepository.saveAndFlush(product);
+        
         int size_beforeDelete = (int) productRepository.count();
-        mvc.perform(MockMvcRequestBuilders.get("/api/products/remove/1"))
+        mvc.perform(MockMvcRequestBuilders.get(String.format("/api/products/remove/%d", product.getId())))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         int size_atferDelete = (int) productRepository.count();
 
