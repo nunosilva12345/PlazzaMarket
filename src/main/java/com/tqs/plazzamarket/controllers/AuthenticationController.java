@@ -13,6 +13,7 @@ import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
+import com.tqs.plazzamarket.utils.Cart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -73,6 +74,7 @@ public class AuthenticationController {
             if (!consumer.getPassword().equals(password))
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             httpSession.setAttribute(userAttr, consumer);
+            httpSession.setAttribute("cart", new Cart());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

@@ -1,5 +1,12 @@
 package com.tqs.plazzamarket.web;
 
+import java.util.regex.Pattern;
+
+import com.tqs.plazzamarket.entities.Consumer;
+import com.tqs.plazzamarket.entities.Product;
+import com.tqs.plazzamarket.repositories.ConsumerRepository;
+import com.tqs.plazzamarket.repositories.ProductRepository;
+
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -9,8 +16,11 @@ import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
@@ -21,7 +31,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
-public class TestRegister {
+public class TestAddProductCart {
 
     @LocalServerPort
     private int port;
@@ -30,56 +40,60 @@ public class TestRegister {
     private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
 
+    @Autowired
+    private ConsumerRepository consumerRepository;
+
+    @Autowired
+    private ProductRepository ProductRepository;
+
     @Before
     public void setUp() throws Exception {
+
+
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080");
-        
+
         try {
             newChromeSession(chromeOptions);
         } catch (SessionNotCreatedException e) {
             WebDriverManager.chromedriver().setup();
             newChromeSession(chromeOptions);
         }
+
+        Consumer consumer = new Consumer();
+        consumer.setUsername("luispaisalves");
+        consumer.setName("Luis Oliveira");
+        consumer.setEmail("luis@ua.pt");
+        consumer.setPassword("12345678");
+        consumer.setAddress("Aveiro");
+        consumer.setZipCode("3060-500");
+        consumerRepository.saveAndFlush(consumer);
+
+        Product p = new Product();
+        p.setName("Potato");
+        p.setQuantity(4);
+        p.setPrice(5);
+        p.setDescription("test");
+        ProductRepository.saveAndFlush(p);
     }
 
     @Test
-    public void testRegister() throws Exception {
-        String url = String.format("http://localhost:%d/register", port);
+    public void testAddProductCart() throws Exception {
+        String url = String.format("http://localhost:%d", port);
         driver.get(url);
-        driver.findElement(By.id("firstname")).clear();
-        driver.findElement(By.id("firstname")).sendKeys("Pedro");
-        driver.findElement(By.id("lastname")).clear();
-        driver.findElement(By.id("lastname")).sendKeys("Cavadas");
         driver.findElement(By.id("username")).clear();
-        driver.findElement(By.id("username")).sendKeys("lengors");
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("pedrocavadas@ua.pt");
+        driver.findElement(By.id("username")).sendKeys("luispaisalves");
         driver.findElement(By.id("password")).clear();
-        driver.findElement(By.id("password")).sendKeys("pedroxp1");
-        driver.findElement(By.id("address")).clear();
-        driver.findElement(By.id("address")).sendKeys("1234 Main St");
-        driver.findElement(By.id("zipCode")).clear();
-        driver.findElement(By.id("zipCode")).sendKeys("3720-400");
+        driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
-        assertEquals("User registered with success!", closeAlertAndGetItsText());
-        driver.get(url);
-        driver.findElement(By.id("firstname")).clear();
-        driver.findElement(By.id("firstname")).sendKeys("Pedro");
-        driver.findElement(By.id("lastname")).clear();
-        driver.findElement(By.id("lastname")).sendKeys("Cavadas");
-        driver.findElement(By.id("username")).clear();
-        driver.findElement(By.id("username")).sendKeys("lengors");
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("pedrocavadas@ua.pt");
-        driver.findElement(By.id("password")).clear();
-        driver.findElement(By.id("password")).sendKeys("pedroxp1");
-        driver.findElement(By.id("address")).clear();
-        driver.findElement(By.id("address")).sendKeys("1234 Main St");
-        driver.findElement(By.id("zipCode")).clear();
-        driver.findElement(By.id("zipCode")).sendKeys("3720-300");
+        assertEquals("Login", closeAlertAndGetItsText());
+        driver.findElement(
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]"))
+                .click();
+        driver.findElement(By.id("quantity")).clear();
+        driver.findElement(By.id("quantity")).sendKeys("3");
         driver.findElement(By.id("submit")).click();
-        assertThat("User registered with success!", is(not(closeAlertAndGetItsText())));
+        assertEquals("Success!", closeAlertAndGetItsText());
     }
 
     @After
