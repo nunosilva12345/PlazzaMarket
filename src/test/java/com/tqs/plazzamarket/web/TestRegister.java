@@ -33,7 +33,7 @@ public class TestRegister {
     @Before
     public void setUp() throws Exception {
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080");
         
         try {
             newChromeSession(chromeOptions);

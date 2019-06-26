@@ -1,10 +1,41 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
     layout:decorate="~{./layout}">
 
+<head>
+    <style>
+        .modal-body {
+            padding: 0 !important;
+        }
+    </style>
+
+    <script>
+
+        $(function () {
+            $('#submit').click(function () {
+                let quantity = parseFloat($('#quantity').val());
+                $.ajax({
+                    url: `/api/cart/add`,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ quantity, productId: parseInt($('#submit').attr('data-id')) }),
+                    success: function (response) {
+                        alert('Success!');
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            });
+
+            $('.buy-button').click(function (event) {
+                $('#submit').attr('data-id', $(event.target).attr('data-id'));
+            });
+        });
+
+    </script>
+</head>
+
 <body>
     <main role="main" layout:fragment="content">
-        <div th:text="${user.username}">
-
         </div>
         <div class="album py-3 py-lg-5 bg-light d-none d-lg-block">
             <div class="container-fluid">
@@ -84,8 +115,8 @@
                                                     <div class="btn-group">
                                                         <button type="button"
                                                             class="btn btn-sm btn-outline-secondary">View</button>
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                            data-bind="click: $root.buy">Buy</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary buy-button"
+                                                            data-toggle="modal" data-target="#buy" th:data-id="${product.id}">Buy</button>
                                                     </div>
                                                     <small class="text-muted"
                                                         th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
@@ -179,8 +210,8 @@
                                                             <button type="button"
                                                                 class="btn btn-sm btn-outline-secondary">View</button>
                                                             <button type="button"
-                                                                class="btn btn-sm btn-outline-secondary"
-                                                                data-bind="click: $root.buy">Buy</button>
+                                                                class="btn btn-sm btn-outline-secondary  buy-button"
+                                                                data-toggle="modal" data-target="#buy" th:data-id="${product.id}">Buy</button>
                                                         </div>
                                                         <small class="text-muted"
                                                             th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
@@ -223,6 +254,24 @@
                                     </li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="buy" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body input-group">
+                        
+                        <input id="quantity" class="form-control" type="number" name="quantity" placeholder="Quantity">
+                        <div class="input-group-append">
+                            <button class="btn bg-white btn-outline-default" type="button" id="submit" min='0'>
+                                Shop
+                            </button>
                         </div>
                     </div>
                 </div>
