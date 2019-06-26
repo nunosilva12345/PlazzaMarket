@@ -52,9 +52,8 @@ public class CartUnitTest {
     public void testClearCard(){
         final double quantity = 4.;
         cart.add(product, quantity);
-        
+        Assert.assertEquals(1, cart.size());
         cart.clearList();
-        
         Assert.assertEquals(0, cart.size());
     }
 

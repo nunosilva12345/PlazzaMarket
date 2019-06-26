@@ -73,4 +73,14 @@ public class CartControllerUnitTest {
         // Map obj = mapper.readValue(result, Map.class);
         Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
     }
+
+    @Test
+    public void testClearSuccess() throws Exception {
+        MockHttpServletRequestBuilder result = mvc
+                .perform(MockMvcRequestBuilders.delete("/api/cart/clear"));
+        this.mockMvc.perform(result)
+                .andExpect(ok);
+        
+        Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
+    }
 }
