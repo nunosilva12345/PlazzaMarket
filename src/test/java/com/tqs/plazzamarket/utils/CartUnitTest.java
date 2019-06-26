@@ -55,6 +55,7 @@ public class CartUnitTest {
         Assert.assertEquals(1, cart.size());
         cart.clearList();
         Assert.assertEquals(0, cart.size());
+        Assert.assertTrue(cart.getTotal() == 0);
     }
 
 

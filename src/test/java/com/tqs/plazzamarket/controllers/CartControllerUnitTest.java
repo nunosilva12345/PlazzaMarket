@@ -22,6 +22,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class CartControllerUnitTest {
     @Autowired
     private MockMvc mvc;
+
 
     @Autowired
     private ObjectMapper mapper;
@@ -76,11 +79,11 @@ public class CartControllerUnitTest {
 
     @Test
     public void testClearSuccess() throws Exception {
-        MockHttpServletRequestBuilder result = mvc
-                .perform(MockMvcRequestBuilders.delete("/api/cart/clear"));
-        this.mockMvc.perform(result)
-                .andExpect(ok);
-        
-        Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
+        String result = mvc
+                .perform(MockMvcRequestBuilders.delete("/api/cart/clear").sessionAttr("cart", cart).sessionAttr("user", consumer))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertTrue(Integer.valueOf(result) == 0);
     }
 }

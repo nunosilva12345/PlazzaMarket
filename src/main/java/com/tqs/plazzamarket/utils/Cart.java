@@ -43,5 +43,6 @@ public class Cart {
     
     public void clearList(){
         items.clear();
+        total = 0;
     }
 }
