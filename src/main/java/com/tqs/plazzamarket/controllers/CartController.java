@@ -13,10 +13,7 @@ import com.tqs.plazzamarket.utils.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/cart")
@@ -42,4 +39,18 @@ public class CartController {
         return new ResponseEntity<>(quantity.doubleValue(), HttpStatus.CREATED);
     }
     
+    
+    @DeleteMapping(path = "/clear")
+    public ResponseEntity<Integer> clearList(@RequestBody Map<String, Object> content, HttpSession session) {
+        if (session.getAttribute("user") == null || session.getAttribute("cart") == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.clearList();
+        int quantity = cart.size();
+        if (quantity != 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(quantity, HttpStatus.OK);
+    }
 }

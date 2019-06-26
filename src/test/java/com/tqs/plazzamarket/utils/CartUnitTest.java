@@ -17,9 +17,12 @@ public class CartUnitTest {
     @Mock
     private Product product;
 
+    private int productId = 1;
+
     @Before
     public void beforeEach() {
         cart = new Cart();
+        Mockito.when(product.getId()).thenReturn(productId);
         Mockito.when(product.getQuantity()).thenReturn(5.);
     }
 
@@ -37,4 +40,23 @@ public class CartUnitTest {
         Assert.assertEquals(null, cart.add(product, quantity));
         Assert.assertEquals(0, cart.size());
     }
+
+    @Test
+    public void testSize() {
+        final Double quantity = 4.;
+        Assert.assertEquals(quantity, cart.add(product, quantity));
+        Assert.assertEquals(1, cart.size());
+    }
+    
+    @Test
+    public void testClearCard(){
+        final double quantity = 4.;
+        cart.add(product, quantity);
+        
+        cart.clearList();
+        
+        Assert.assertEquals(0, cart.size());
+    }
+
+
 }
