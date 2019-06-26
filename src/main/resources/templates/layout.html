@@ -19,7 +19,7 @@
 
     <script>
         $(function () {
-            $('#logout').click(function () {
+            $('.logout').click(function () {
                 $.ajax({
                     url: `/api/logout`,
                     method: 'POST',
@@ -60,7 +60,7 @@
                         <input id="autocomplete" class="form-control" type="text" placeholder="Search For Products">
                         <input id="search" class="btn bg-white btn-outline-default my-0 my-sm-0 mx-2" type="button"
                             value="Search" />
-                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0" id="logout" >Logout</button>
+                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0 logout" id="logout" >Logout</button>
                     </div>
                 </form>
             </div>
@@ -108,7 +108,7 @@
                             </div>
                             Plazza Market
                         </a>
-                        <a class="nav-link float-right" href="/signin.html">
+                        <a class="nav-link float-right logout">
                             <i class="fal fa-sign-out-alt" style="border-width: 1px;"></i> Logout
                         </a>
                     </li>
