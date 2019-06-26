@@ -14,6 +14,7 @@ import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.utils.Cart;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,9 +55,12 @@ public class CartControllerIntegrationTest {
 
     @Before
     public void beforeEach() {
+        Double quantity = 4.;
+        Integer productId = 1;
+
         product = new Product();
-        product.setId(1);
-        product.setQuantity(4);
+        product.setId(productId);
+        product.setQuantity(quantity);
         product.setPrice(5);
         product.setDescription("test");
         product.setName("Potato");
@@ -74,8 +78,6 @@ public class CartControllerIntegrationTest {
         cart = new Cart();
 
         map = new HashMap<>();
-        Double quantity = 4.;
-        Integer productId = 1;
         map.put("quantity", quantity);
         map.put("productId", productId);
     }
@@ -87,6 +89,7 @@ public class CartControllerIntegrationTest {
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn()
                 .getResponse().getContentAsString();
+        Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
     }
 
     

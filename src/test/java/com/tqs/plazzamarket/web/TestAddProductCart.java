@@ -46,6 +46,8 @@ public class TestAddProductCart {
     @Autowired
     private ProductRepository ProductRepository;
 
+    Product p;
+
     @Before
     public void setUp() throws Exception {
 
@@ -69,7 +71,7 @@ public class TestAddProductCart {
         consumer.setZipCode("3060-500");
         consumerRepository.saveAndFlush(consumer);
 
-        Product p = new Product();
+        p = new Product();
         p.setName("Potato");
         p.setQuantity(4);
         p.setPrice(5);
@@ -78,23 +80,25 @@ public class TestAddProductCart {
     }
 
     @Test
-    public void testAddProductCart() throws Exception {
-        String url = String.format("http://localhost:%d", port);
-        driver.get(url);
-        driver.findElement(By.id("username")).clear();
-        driver.findElement(By.id("username")).sendKeys("luispaisalves");
-        driver.findElement(By.id("password")).clear();
-        driver.findElement(By.id("password")).sendKeys("12345678");
-        driver.findElement(By.id("submit")).click();
-        assertEquals("Login", closeAlertAndGetItsText());
-        driver.findElement(
-                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]"))
-                .click();
-        driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("3");
-        driver.findElement(By.id("submit")).click();
-        assertEquals("Success!", closeAlertAndGetItsText());
-    }
+  public void testUntitledTestCase() throws Exception {
+    driver.get("http://localhost:" + port + "/");
+    driver.findElement(By.id("username")).click();
+    driver.findElement(By.id("username")).clear();
+    driver.findElement(By.id("username")).sendKeys("luispaisalves");
+    driver.findElement(By.id("password")).clear();
+    driver.findElement(By.id("password")).sendKeys("12345678");
+    driver.findElement(By.id("submit")).click();
+    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]")).click();
+    driver.findElement(By.id("quantity")).clear();
+    driver.findElement(By.id("quantity")).sendKeys("1");
+    driver.findElement(By.id("quantity")).click();
+    driver.findElement(By.id("quantity")).clear();
+    driver.findElement(By.id("quantity")).sendKeys("2");
+    driver.findElement(By.id("quantity")).click();
+    // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=quantity | ]]
+    driver.findElement(By.id("submit")).click();
+    assertEquals(p.getName(), driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Your Cart'])[1]/following::h6[1]")).getText());
+  }
 
     @After
     public void tearDown() throws Exception {
