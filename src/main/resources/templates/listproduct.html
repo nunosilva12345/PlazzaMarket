@@ -63,7 +63,7 @@
                         <ul class="cart-list list-group" style="max-height: 300px; overflow: auto;">
                             <th:block th:each="instance: ${items}">
                             <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div>
+                                <div style="flex: 1;">
                                     <h6 class="my-0" th:text="${instance.key.name}"></h6>
                                     <small class="text-muted form-group">
                                         <span th:text="${instance.value[0]}"></span>
@@ -262,7 +262,7 @@
                             <ul class="list-group">
                                 <th:block th:each="instance: ${items}">
                                     <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                        <div>
+                                        <div style="flex: 1;">
                                             <h6 class="my-0" th:text="${instance.key.name}"></h6>
                                             <small class="text-muted form-group">
                                                 <span th:text="${instance.value[0]}"></span>
