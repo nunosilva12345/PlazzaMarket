@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -57,6 +58,7 @@ public class CartControllerUnitTest {
         Integer productId = 1;
         map.put("quantity", quantity);
         map.put("productId", productId);
+        Mockito.when(product.getId()).thenReturn(productId);
         BDDMockito.when(cart.add(product, quantity)).thenReturn(quantity);
         BDDMockito.given(productRepository.findById(productId)).willReturn(Optional.of(product));
     }

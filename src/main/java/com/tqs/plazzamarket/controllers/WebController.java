@@ -1,9 +1,11 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.tqs.plazzamarket.entities.Consumer;
+import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
+import com.tqs.plazzamarket.utils.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebController {
@@ -40,7 +45,10 @@ public class WebController {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
 		model.addAttribute("user", user);
 		if (user.getClass()== Consumer.class) {
+			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
 			model.addAttribute("products", productRepository.findAll());
+			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
+			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
 			return "listproduct";
 		} else {
 			model.addAttribute("products", producerRepository.getOne(user.getUsername()).getProducts());
