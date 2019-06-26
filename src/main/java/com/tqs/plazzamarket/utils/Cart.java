@@ -17,6 +17,27 @@ public class Cart {
         return quantity;
     }
 
+    //new
+    public void remove(Product product) {
+        for (Product inList : items.keySet()) {
+            if (product.equals(inList)) {
+                items.remove(product);
+            }
+        }
+    }
+    
+    
+    //new
+    //replace
+    public void removeQuantity(Product product, Double quantity) {
+        for (Product inList : items.keySet()) {
+            if (product.equals(inList)) {
+                items.put(product, quantity);
+            }
+        }
+    }
+
+
     public Double get(Product product) {
         return items.get(product);
     }
