@@ -1,0 +1,362 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{./layout}">
+
+<head>
+    <style>
+        .modal-body {
+            padding: 0 !important;
+        }
+
+        .remove-product {
+            background-color: transparent;
+            border: 0;
+        }
+
+        .confirm-buy {
+            background-color: transparent;
+            border: 0;
+        }
+
+    </style>
+
+    <script>
+
+        $(function () {
+            $('#submit').click(function () {
+                console.log($('#quantity').val());
+                let quantity = parseFloat($('#quantity').val());
+                $.ajax({
+                    url: `/api/cart/add`,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({quantity, productId: parseInt($('#submit').attr('data-id'))}),
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            });
+
+            $('.buy-button').click(function (event) {
+                $('#submit').attr('data-id', $(event.target).attr('data-id'));
+            });
+
+            $('.clear').click(function (event) {
+                $.ajax({
+                    url: `/api/cart/clear`,
+                    method: 'DELETE',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            });
+
+            $('.remove-product').click(function () {
+                $.ajax({
+                    url: `/api/cart/remove/` + this.id,
+                    method: 'DELETE',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            });
+
+            $('.confirm-buy').click(function () {
+                console.log("Aqui");
+                $.ajax({
+                    url: `/api/cart/confirm` + this.id,
+                    method: 'POST',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            })
+        });
+
+
+    </script>
+</head>
+
+<body>
+<main role="main" layout:fragment="content">
+
+    <div class="album py-3 py-lg-5 bg-light d-none d-lg-block">
+        <div class="container-fluid">
+            <div class="col-lg-12 offset-lg-0 col-xl-10 offset-xl-1">
+                <div class="row mx-md-4">
+                    <div class="col-md-5 col-lg-4 offset-lg-0 col-xl-3 order-md-2 mb-3">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted" th:data-count="${items.size()}" style="flex: 1">Your Cart</span>
+                            <span class="badge badge-secondary badge-pill" th:text="${items.size()}"></span>
+                            <a class="nav-link float-right clear pr-0">
+                                <i class="fas fa-trash" style="border-width: 1px;">
+                                </i>
+                            </a>
+                        </h4>
+                        <ul class="cart-list list-group" style="max-height: 300px; overflow: auto;">
+                            <th:block th:each="instance: ${items}">
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div style="flex: 1;">
+                                        <h6 class="my-0 cart-name" th:text="${instance.key.name}"></h6>
+                                        <small class="text-muted form-group">
+                                            <span th:text="${instance.value[0]}"></span>
+                                        </small>
+                                    </div>
+                                    <span class="text-muted pt-2" th:text="${instance.value[1]}"></span>
+                                    <button class="nav-link float-right remove-product pr-0"
+                                            th:id="${instance.key.getId()}" type="button">
+                                        <i class="fas fa-trash" style="border-width: 1px;"></i>
+                                    </button>
+                                </li>
+                            </th:block>
+                        </ul>
+                        <div class="cart-total list-group-item d-flex justify-content-between lh-condensed">
+                            <span>Total (USD)</span>
+                            <strong th:text="${totalCart}"></strong>
+                            <button class="nav-link float-right pr-0 confirm-buy"
+                                    type="button">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                        <div class="dropdown overrider mt-4">
+                            <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="categories"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Categories
+                            </button>
+                            <ul class="dropdown-menu overrider w-100 mb-4" aria-labelledby="categories"
+                                data-bind="foreach: categories" style="position: relative">
+                                <li class="dropdown-item px-4-5">
+                                    <input class="form-check-input" type="checkbox" data-bind="attr: { id: name }">
+                                    <label class="form-check-label"
+                                           data-bind="text: name, attr: { for: name }"></label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown overrider mt-4">
+                            <button class="btn btn-outline-dark dropdown-toggle w-100" type="button" id="companies"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Companies
+                            </button>
+                            <ul class="dropdown-menu override w-100" aria-labelledby="companies"
+                                data-bind="foreach: companies">
+                                <li class="dropdown-item px-4-5">
+                                    <input class="form-check-input" type="checkbox" data-bind="attr: { id: name }">
+                                    <label class="form-check-label"
+                                           data-bind="text: name, attr: { for: name }"></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-8 offset-lg-0 col-xl-9 order-md-1">
+                        <div class="row">
+                            <th:block th:each="product: ${products}">
+                                <div class="album-content col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mb-4 shadow-sm">
+                                        <svg class="bd-placeholder-img card-img-top" width="100%"
+                                             style="height: auto;" xmlns="http://www.w3.org/2000/svg"
+                                             preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                                             aria-label="Placeholder: Thumbnail">
+                                            <title>Placeholder</title>
+                                            <rect width="100%" height="100%" fill="#55595c"></rect>
+                                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail
+                                            </text>
+                                        </svg>
+                                        <div class="card-body">
+                                            <p class="card-text"><b th:text="${product.name}"></b></p>
+                                            <p class="card-text" th:text="${product.description}"></p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-secondary">View
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-secondary buy-button"
+                                                            data-toggle="modal" data-target="#buy"
+                                                            th:data-id="${product.id}">Buy
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted"
+                                                       th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
+                                            </div>
+                                            <small class="text-muted"
+                                                   th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-lg-none d-block">
+        <ul class="nav nav-pills nav-justified bg-dark navbar-dark shadow-sm" id="mobile_tab">
+            <li class="nav-item">
+                <a class="nav-link overrider active" data-toggle="tab" href="#store">
+                    <i class="far fa-store-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link overrider" data-toggle="tab" href="#cart">
+                    <i class="fal fa-shopping-cart"></i>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane container-fluid active bg-light py-4" id="store">
+                <div class="col-lg-12 offset-lg-0 col-xl-10 offset-xl-1">
+                    <div class="row">
+                        <div class="col-sm-10 offset-sm-1 col-lg-8 offset-lg-0 col-xl-9 order-lg-2">
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <div class="dropdown overrider mb-4">
+                                        <button class="btn btn-secondary dropdown-toggle w-100" type="button"
+                                                id="categories" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Categories
+                                        </button>
+                                        <ul class="dropdown-menu w-100" aria-labelledby="categories"
+                                            data-bind="foreach: categories">
+                                            <li class="dropdown-item px-4-5">
+                                                <input class="form-check-input" type="checkbox"
+                                                       data-bind="attr: { id: name }">
+                                                <label class="form-check-label"
+                                                       data-bind="text: name, attr: { for: name }"></label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="dropdown overrider mb-4">
+                                        <button class="btn btn-outline-dark dropdown-toggle w-100" type="button"
+                                                id="companies" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Companies
+                                        </button>
+                                        <ul class="dropdown-menu w-100" aria-labelledby="companies"
+                                            data-bind="foreach: companies">
+                                            <li class="dropdown-item px-4-5">
+                                                <input class="form-check-input" type="checkbox"
+                                                       data-bind="attr: { id: name }">
+                                                <label class="form-check-label"
+                                                       data-bind="text: name, attr: { for: name }"></label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-10 offset-sm-1 col-lg-8 offset-lg-0 col-xl-9 order-lg-1">
+                                <div class="row">
+                                    <th:block th:each="product: ${products}">
+                                        <div class="album-content col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="card mb-4 shadow-sm">
+                                                <svg class="bd-placeholder-img card-img-top"
+                                                     style="width: 100%; height: auto;"
+                                                     xmlns="http://www.w3.org/2000/svg" focusable="false" role="img"
+                                                     aria-label="Placeholder: Thumbnail">
+                                                    <title>Placeholder</title>
+                                                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail
+                                                    </text>
+                                                </svg>
+                                                <div class="card-body">
+                                                    <p class="card-text"><b th:text="${product.name}"></b></p>
+                                                    <p class="card-text" th:text="${product.description}"></p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-outline-secondary">View
+                                                            </button>
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-outline-secondary  buy-button"
+                                                                    data-toggle="modal" data-target="#buy"
+                                                                    th:data-id="${product.id}">Buy
+                                                            </button>
+                                                        </div>
+                                                        <small class="text-muted"
+                                                               th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
+                                                    </div>
+                                                    <small class="text-muted"
+                                                           th:text="${product.price + '€/Kg | ' + product.quantity + 'Kg'}"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane container-fluid bg-light pb-4 pt-5" id="cart">
+                <div class="col-lg-12 offset-lg-0 col-xl-10 offset-xl-1">
+                    <div class="row">
+                        <div class="col-sm-10 offset-sm-1 col-lg-4 offset-lg-0 col-xl-3 order-lg-2 mb-3">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted" th:data-count="${items.size()}"
+                                      style="flex: 1">Your Cart</span>
+                                <span class="badge badge-secondary badge-pill" th:text="${items.size()}"></span>
+                                <a class="nav-link float-right clear pr-0">
+                                    <i class="fas fa-trash" style="border-width: 1px;">
+                                    </i>
+                                </a>
+                            </h4>
+                            <ul class="list-group">
+                                <th:block th:each="instance: ${items}">
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div style="flex: 1;">
+                                            <h6 class="my-0 cart-name" th:text="${instance.key.name}"></h6>
+                                            <small class="text-muted form-group">
+                                                <span th:text="${instance.value[0]}"></span>
+                                            </small>
+                                        </div>
+                                        <span class="text-muted pt-2" th:text="${instance.value[1]}"></span>
+                                        <button class="nav-link float-right remove-product pr-0"
+                                                th:id="${instance.key.getId()}" type="button">
+                                            <i class="fas fa-trash" style="border-width: 1px;"></i>
+                                        </button>
+                                    </li>
+                                </th:block>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Total (USD)</span>
+                                    <strong th:text="${totalCart}"></strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="buy" class="modal fade " role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body input-group">
+
+                    <input id="quantity" class="form-control" type="number" name="quantity" placeholder="Quantity">
+                    <div class="input-group-append">
+                        <button class="btn bg-white btn-outline-default" data-dismiss="modal" type="button"
+                                id="submit" min='0'>
+                            Shop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

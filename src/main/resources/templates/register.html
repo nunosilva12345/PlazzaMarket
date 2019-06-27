@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <meta charset="uft-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Plazza Market</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/all.css" type="text/css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css" type="text/css">
+    <link rel="stylesheet" href="css/plazza-market/sign-x.css" type="text/css">
+    <link rel="stylesheet" href="css/plazza-market/signup.css" type="text/css">
+    <link rel="shortcut icon" href="content/logo_symbol.ico">
+</head>
+
+<body>
+    <main role="main">
+        <div class="container-fluid overrider">
+            <div class="row">
+                <form class="col-12 col-lg-10 col-xl-8 mt-5 form-sign-x row">
+                    <img class="mb-3 mx-auto" src="content/logo.png" alt>
+                    <h1 class="col-12 h3 mb-5 font-weight-normal text-center">
+                        Sign Up
+                    </h1>
+                    <h4 class="col-12 mb-3">Personal Information</h4>
+                    <div class="col-12 col-sm-6 form-group pr-sm-3">
+                        <label for="firstname">First Name</label>
+                        <input id="firstname" class="form-control" type="text" name="firstname"
+                            placeholder="First Name" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group pl-sm-3">
+                        <label for="lastname">Last Name</label>
+                        <input id="lastname" class="form-control" type="text" name="lastname" placeholder="Last Name" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label for="username">Username</label>
+                        <input id="username" class="form-control" type="text" name="username" placeholder="Username">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" type="email" name="email" placeholder="you@example.com">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label for="password">Password</label>
+                        <input id="password" class="form-control" type="password" name="password"
+                            placeholder="Password">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label for="address">Address</label>
+                        <input id="address" class="form-control" type="text" name="address" placeholder="1234 Main St">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                        <label for="zipCode>">Zip Code</label>
+                        <input id="zipCode" class="form-control" type="text" name="zipCode" placeholder="XXXX-XXX">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 col-sm-6 mb-3">
+                        <label for="accountType">Account type</label>
+                        <select id="accountType" class="form-control custom-select" type="select" name="accountType">
+                            <option value="consumer" selected>Consumer</option>
+                            <option value="producer">Producer</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 form-group d-none" id="website-container">
+                        <label for="website">Website</label>
+                        <input id="website" class="form-control" type="text" name="website"
+                            placeholder="https://www.example.com">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-12 offset-sm-6 col-sm-6 d-flex mt-3">
+                        <a class="btn btn-outline-primary mr-3 flex-1" href="/signin.html">
+                            Sign In
+                        </a>
+                        <button class="btn btn-primary ml-3 flex-1" type="button" id="submit">
+                            Sign Up
+                        </button>
+                    </div>
+                    <p class="col-12 mt-3 mb-4 text-center text-muted">
+                        &copy; 2019 - 2019
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/knockout.min.js"></script>
+    <script src="js/plazza-market/signup.js"></script>
+
+    <script>
+        $(function () {
+            $('#submit').click(function () {
+                let user = $('form').serializeArray().reduce((map, obj) => {
+                    map[obj.name] = obj.value;
+                    return map;
+                }, {});
+
+                user.name = `${user.firstname.trim()} ${user.lastname.trim()}`;
+                delete user.firstname;
+                delete user.lastname;
+
+                let accountType = user.accountType;
+                delete user.accountType;
+                if (accountType === 'consumer')
+                    delete user.website;
+
+                $.ajax({
+                    url: `/api/register/${accountType}`,
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(user),
+                    success: function (response) {
+                        alert("User registered with success!");
+                    }, error: function (response) {
+                        $('.invalid-feedback').removeClass('d-block');
+                        if (!response.responseJSON)
+                            return;
+                        response = response.responseJSON;
+                        for (let key in response) {
+                            if (key == 'name') {
+                                if ($('[name="firstname"]').text().trim().length == 0)
+                                    $('[name="firstname"]').parent().children('.invalid-feedback')
+                                        .addClass('d-block').text(response[key]);
+                                if ($('[name="lastname"]').text().trim().length == 0)
+                                    $('[name="lastname"]').parent().children('.invalid-feedback')
+                                        .addClass('d-block').text(response[key]);
+                            } else
+                                $(`[name="${key}"]`).parent().children('.invalid-feedback')
+                                    .addClass('d-block').text(response[key]);
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+
+</body>
+
+</html>
