@@ -78,6 +78,19 @@
                     }
                 });
             })
+            
+            $('.search-category').click(function () {
+                console.log("Aqui");
+                $.ajax({
+                    url: `/api/products/category` + this.id,
+                    method: 'POST',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        alert('Failed!');
+                    }
+                });
+            })
         });
 
 
@@ -127,13 +140,13 @@
                         </div>
                         <div class="dropdown overrider mt-4">
                             <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="categories"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                                 Categories
                             </button>
                             <ul class="dropdown-menu overrider w-100 mb-4" aria-labelledby="categories"
                                 data-bind="foreach: categories" style="position: relative">
                                 <li class="dropdown-item px-4-5">
-                                    <input class="form-check-input" type="checkbox" data-bind="attr: { id: name }">
+                                    <input class="form-check-input search-category" type="checkbox" data-bind="attr: { id: name }">
                                     <label class="form-check-label"
                                            data-bind="text: name, attr: { for: name }"></label>
                                 </li>

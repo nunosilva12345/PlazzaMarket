@@ -75,6 +75,7 @@ public class ProductController {
         if (!categoria.isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+                
         return new ResponseEntity<List<Product>>(listProductCategory,HttpStatus.OK);
     }
 

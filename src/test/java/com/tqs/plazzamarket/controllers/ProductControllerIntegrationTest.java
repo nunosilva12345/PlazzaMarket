@@ -207,9 +207,14 @@ public class ProductControllerIntegrationTest {
         categoryRepository.saveAndFlush(category);
         
         String responseList = mvc.perform(MockMvcRequestBuilders.get("/api/products/category/" + category.getName())).andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
-        List<Object> list = mapper.readValue(responseList, List.class);
+        List list = mapper.readValue(responseList, List.class);
         
+        
+       
         Assert.assertEquals(list.size(),2);
+        //Assert.assertEquals(mapper.convertValue(list.get(0), Product.class).getName(),product.getName());
+        //Assert.assertEquals(mapper.convertValue(list.get(1), Product.class).getName(),product1.getName());
+
 
     }
 
