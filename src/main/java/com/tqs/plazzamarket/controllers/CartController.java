@@ -4,6 +4,7 @@ package com.tqs.plazzamarket.controllers;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 
 import com.tqs.plazzamarket.entities.Product;
@@ -39,7 +40,6 @@ public class CartController {
         return new ResponseEntity<>(quantity.doubleValue(), HttpStatus.CREATED);
     }
     
-    
     @DeleteMapping(path = "/clear")
     public ResponseEntity<Integer> clearList(HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null) {
@@ -54,5 +54,16 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(size, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/remove/{id}")
+    public ResponseEntity<Integer> removeProduct(@PathVariable("id") int id, HttpSession session) {
+        if (session.getAttribute("user") == null || session.getAttribute("cart") == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart.removeProduct(id)){
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

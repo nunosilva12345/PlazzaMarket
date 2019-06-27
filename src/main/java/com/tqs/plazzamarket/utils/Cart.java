@@ -12,16 +12,11 @@ public class Cart {
     private double total = 0;
 
     public Double add(Product product, Double quantity) {
-        //Double cartQuantity = items.get(product.getId())[0];
-        //quantity = cartQuantity != null ? cartQuantity + quantity : quantity;
         if (product.getQuantity() < quantity)
             return null;
-        double totalCompra = product.getPrice()*quantity;
-        Double[] pair = new Double[2];
-        pair[0] = quantity;
-        pair[1] = totalCompra;
-        items.put(product.getId(), pair);
-        total += product.getPrice()*quantity;
+        double totalCompra = product.getPrice() * quantity;
+        items.put(product.getId(), new Double[] { quantity, totalCompra });
+        total += totalCompra;
         return quantity;
     }
 
@@ -45,4 +40,14 @@ public class Cart {
         items.clear();
         total = 0;
     }
+
+    public boolean removeProduct(int productId) {
+        if (items.containsKey(productId)) {
+            total -= items.get(productId)[1];
+            items.remove(productId);
+            return true;
+        }
+        return false;
+    }
+
 }

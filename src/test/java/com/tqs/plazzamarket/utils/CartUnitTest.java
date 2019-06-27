@@ -58,5 +58,19 @@ public class CartUnitTest {
         Assert.assertTrue(cart.getTotal() == 0);
     }
 
+    @Test
+    public void testRemoveProductSuccess() {
+        final Double quantity = 4.;
+        cart.add(product, quantity);
+        Assert.assertEquals(true, cart.removeProduct(productId));
+    }
+
+    @Test
+    public void testRemoveProductFail() {
+        final Double quantity = 4.;
+        cart.add(product, quantity);
+        Assert.assertEquals(false, cart.removeProduct(2));
+    }
+
 
 }

@@ -26,13 +26,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
-public class TestAddProductCart {
+public class TestRemoveProductCart {
 
     @LocalServerPort
     private int port;
 
     private WebDriver driver;
-    private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
 
     @Autowired
@@ -47,7 +46,8 @@ public class TestAddProductCart {
     public void setUp() throws Exception {
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080");
+        chromeOptions
+                .addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080");
 
         try {
             newChromeSession(chromeOptions);
@@ -74,31 +74,25 @@ public class TestAddProductCart {
     }
 
     @Test
-    public void testUntitledTestCase() throws Exception {
-        driver.get("http://localhost:" + port + "/");
-        driver.findElement(By.id("username")).click();
+    public void testRemoveProductCart() throws Exception {
+        WebDriverWait wait = new WebDriverWait(driver, 300);
+        driver.get(String.format("http://localhost:%d", port));
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("username")).sendKeys("luispaisalves");
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
-        WebDriverWait wait = new WebDriverWait(driver, 300);
         wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]")))
                 .click();
         driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("1");
-        driver.findElement(By.id("quantity")).click();
-        driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("2");
-        driver.findElement(By.id("quantity")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick |
-        // id=quantity | ]]
+        driver.findElement(By.id("quantity")).sendKeys("1.5");
         driver.findElement(By.id("submit")).click();
-        assertEquals(p.getName(),
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-                        "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart'])[1]/following::h6[1]")))
-                        .getText());
+        wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Potato' and @class='my-0 cart-name'])[1]/following::button[1]")))
+                .click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]/following::span[1]")));
     }
 
     @After

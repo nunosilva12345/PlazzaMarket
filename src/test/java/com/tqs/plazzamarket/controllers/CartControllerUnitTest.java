@@ -63,6 +63,7 @@ public class CartControllerUnitTest {
         map.put("productId", productId);
         Mockito.when(product.getId()).thenReturn(productId);
         BDDMockito.when(cart.add(product, quantity)).thenReturn(quantity);
+        BDDMockito.when(cart.removeProduct(productId)).thenReturn(true);
         BDDMockito.given(productRepository.findById(productId)).willReturn(Optional.of(product));
     }
 
@@ -85,5 +86,15 @@ public class CartControllerUnitTest {
                 .getResponse().getContentAsString();
 
         Assert.assertTrue(Integer.valueOf(result) == 0);
+    }
+
+    @Test
+    public void testRemoveProduct() throws Exception {
+        String result = mvc
+                .perform(MockMvcRequestBuilders.delete("/api/cart/remove/" + product.getId())
+                        .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+        Assert.assertEquals(product.getId(), Integer.parseInt(result));
     }
 }

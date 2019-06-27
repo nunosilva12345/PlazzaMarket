@@ -1,19 +1,24 @@
 package com.tqs.plazzamarket.web;
 
+import java.util.concurrent.TimeUnit;
+
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Product;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
-import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,13 +31,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
-public class TestAddProductCart {
+public class TestClearCart {
 
     @LocalServerPort
     private int port;
 
     private WebDriver driver;
-    private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
 
     @Autowired
@@ -74,17 +78,18 @@ public class TestAddProductCart {
     }
 
     @Test
-    public void testUntitledTestCase() throws Exception {
-        driver.get("http://localhost:" + port + "/");
+    public void testCleanCart() throws Exception {
+        String url = String.format("http://localhost:%d/", port);
+        WebDriverWait wait = new WebDriverWait(driver, 300);
+        driver.get(url);
         driver.findElement(By.id("username")).click();
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("username")).sendKeys("luispaisalves");
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
-        WebDriverWait wait = new WebDriverWait(driver, 300);
-        wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]")))
+        driver.findElement(
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]"))
                 .click();
         driver.findElement(By.id("quantity")).clear();
         driver.findElement(By.id("quantity")).sendKeys("1");
@@ -95,10 +100,12 @@ public class TestAddProductCart {
         // ERROR: Caught exception [ERROR: Unsupported command [doubleClick |
         // id=quantity | ]]
         driver.findElement(By.id("submit")).click();
-        assertEquals(p.getName(),
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-                        "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart'])[1]/following::h6[1]")))
-                        .getText());
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='1'])[1]/following::a[1]")))
+                .click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]/following::span[1]")));
     }
 
     @After
@@ -110,7 +117,7 @@ public class TestAddProductCart {
         }
     }
 
-    private void newChromeSession(ChromeOptions chromeOptions) {
+    private void newChromeSession(ChromeOptions chromeOptions) throws Exception {
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
