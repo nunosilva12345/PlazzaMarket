@@ -31,6 +31,15 @@ public class CategoryRepositoryTest {
     public void beforeEach() {
         category = new Category("Bulbs");
         entityManager.persistAndFlush(category);
+
+        product = new Product();
+        product.setName("Potato");
+        product.setQuantity(4.0);
+        product.setPrice(5.0);
+        product.setDescription("Test");
+        product.setCategory(category);
+        entityManager.persistAndFlush(product);
+
     }
 
     @Test
@@ -52,4 +61,11 @@ public class CategoryRepositoryTest {
         Assert.assertFalse(found.isPresent());
     }
 
+    @Test
+    public void whensearchProductByCategory(){
+        Optional<Category> categoria = categoryRepository.findById(category.getNome());
+        List<Product> produto = categoria.getProducts();
+        Assert.assertTrue(produto.size() == 1);
+
+    }
 }

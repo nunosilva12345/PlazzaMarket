@@ -68,4 +68,15 @@ public class ProductController {
     }
 
 
+    @GetMapping(path = "/products/category/{category}")
+    public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
+        Optional<Category> categoria = categoryRepository.findById(category);
+        List<Product> = categoria.getProducts();
+        if (producer.isPresent()) {
+            return new ResponseEntity<>(producer.get().getProducts(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<List<Product>>(HttpStatus.OK);
+    }
+
+
 }
