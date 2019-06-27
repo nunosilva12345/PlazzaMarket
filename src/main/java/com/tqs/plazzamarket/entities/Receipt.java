@@ -21,10 +21,6 @@ public class Receipt implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "product_id")
-	private Product product;
-
 	private double price;
 
 	@OneToOne(mappedBy = "receipt")
@@ -36,14 +32,6 @@ public class Receipt implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Product getProduct() {
-		return this.product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
 	}
 
 	public double getPrice() {
@@ -70,7 +58,6 @@ public class Receipt implements Serializable {
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		result = prime * result + ((sale == null) ? 0 : sale.hashCode());
 		return result;
 	}
@@ -84,7 +71,7 @@ public class Receipt implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Receipt receipt = (Receipt) obj;
-		return id == receipt.id && Objects.equals(product, receipt.product) && price == receipt.price
+		return id == receipt.id && price == receipt.price
 				&& Objects.equals(sale, receipt.sale);
 	}
 }

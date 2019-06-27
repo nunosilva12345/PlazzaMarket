@@ -10,7 +10,9 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Product;
+import com.tqs.plazzamarket.entities.Sale;
 import com.tqs.plazzamarket.repositories.ProductRepository;
+import com.tqs.plazzamarket.repositories.SaleRepository;
 import com.tqs.plazzamarket.utils.Cart;
 
 import org.junit.Assert;
@@ -43,11 +45,17 @@ public class CartControllerUnitTest {
     @MockBean
     private ProductRepository productRepository;
 
+    @MockBean
+    private SaleRepository saleRepository;
+
     @Mock
     private Consumer consumer;
 
     @Mock
     private Product product;
+
+    @Mock
+    private Sale sale;
 
     @Mock
     private Cart cart;
@@ -65,6 +73,7 @@ public class CartControllerUnitTest {
         BDDMockito.when(cart.add(product, quantity)).thenReturn(quantity);
         BDDMockito.when(cart.removeProduct(productId)).thenReturn(true);
         BDDMockito.given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        BDDMockito.given(saleRepository.saveAndFlush(sale)).willReturn(sale);
     }
 
     @Test
@@ -74,7 +83,6 @@ public class CartControllerUnitTest {
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn()
                 .getResponse().getContentAsString();
-        // Map obj = mapper.readValue(result, Map.class);
         Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
     }
 
@@ -96,5 +104,14 @@ public class CartControllerUnitTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
                 .getResponse().getContentAsString();
         Assert.assertEquals(product.getId(), Integer.parseInt(result));
+    }
+
+    @Test
+    public void testConfirmBuy() throws Exception {
+        mvc
+            .perform(MockMvcRequestBuilders.post("/api/cart/confirm")
+                    .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
+            .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+            .getResponse().getContentAsString();
     }
 }
