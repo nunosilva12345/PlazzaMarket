@@ -39,6 +39,22 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(quantity.doubleValue(), HttpStatus.CREATED);
     }
+    
+    @DeleteMapping(path = "/clear")
+    public ResponseEntity<Integer> clearList(HttpSession session) {
+        if (session.getAttribute("user") == null || session.getAttribute("cart") == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.clearList();
+        System.out.println("DONE");
+        int size = cart.size();
+        System.out.println("SIZE: " + size);
+        if (size != 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(size, HttpStatus.OK);
+    }
 
     @DeleteMapping(path = "/remove/{id}")
     public ResponseEntity<Integer> removeProduct(@PathVariable("id") int id, HttpSession session) {

@@ -92,6 +92,17 @@ public class CartControllerIntegrationTest {
         Assert.assertEquals(map.get("quantity"), Double.parseDouble(result));
     }
 
+
+    @Test
+    public void testClearCard() throws Exception {
+        cart.add(product, 4.);
+        String result = mvc
+                .perform(MockMvcRequestBuilders.delete("/api/cart/clear").sessionAttr("cart", cart).sessionAttr("user", consumer))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+        Assert.assertTrue(Integer.valueOf(result) == 0);
+    }
+
     @Test
     public void testRemoveProductToCart() throws Exception {
         cart.add(product, 4.);
@@ -100,8 +111,5 @@ public class CartControllerIntegrationTest {
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
                 .getResponse().getContentAsString();
-    }
-
-    
-
+    }    
 }

@@ -47,6 +47,16 @@ public class CartUnitTest {
         Assert.assertEquals(quantity, cart.add(product, quantity));
         Assert.assertEquals(1, cart.size());
     }
+    
+    @Test
+    public void testClearCard(){
+        final double quantity = 4.;
+        cart.add(product, quantity);
+        Assert.assertEquals(1, cart.size());
+        cart.clearList();
+        Assert.assertEquals(0, cart.size());
+        Assert.assertTrue(cart.getTotal() == 0);
+    }
 
     @Test
     public void testRemoveProductSuccess() {

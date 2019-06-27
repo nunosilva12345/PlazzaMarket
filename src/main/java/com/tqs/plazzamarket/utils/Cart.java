@@ -35,6 +35,11 @@ public class Cart {
     public Map<Integer, Double[]> getItems() {
         return this.items;
     }
+    
+    public void clearList(){
+        items.clear();
+        total = 0;
+    }
 
     public boolean removeProduct(int productId) {
         if (items.containsKey(productId)) {
