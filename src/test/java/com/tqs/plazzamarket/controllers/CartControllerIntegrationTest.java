@@ -111,5 +111,14 @@ public class CartControllerIntegrationTest {
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
                 .getResponse().getContentAsString();
-    }    
+    }
+
+    @Test
+    public void testConfirmBuy() throws Exception {
+        mvc
+                .perform(MockMvcRequestBuilders.post("/api/cart/confirm")
+                        .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+    }
 }

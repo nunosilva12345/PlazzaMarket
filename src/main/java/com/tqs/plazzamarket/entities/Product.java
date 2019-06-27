@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Objects;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.persistence.*;
 
@@ -23,9 +22,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_name")
     private Category category;
 
+
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<Receipt> receipts = new ArrayList<>();
+    private List<Sale> sales;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -61,13 +61,6 @@ public class Product implements Serializable {
         category.getProducts().add(this);
     }
 
-    public List<Receipt> getReceipts() {
-        return receipts;
-    }
-
-    public void setReceipts(List<Receipt> receipts) {
-        this.receipts = receipts;
-    }
 
     public Producer getProducer() {
         return producer;
@@ -116,7 +109,6 @@ public class Product implements Serializable {
         result = prime * result + ((producer == null) ? 0 : producer.hashCode());
         temp = Double.doubleToLongBits(quantity);
         result = prime * result + (int) (temp ^ (temp >>> 32));
-        result = prime * result + ((receipts == null) ? 0 : receipts.hashCode());
         return result;
     }
 
@@ -130,7 +122,7 @@ public class Product implements Serializable {
             return false;
         Product product = (Product) obj;
         return id == product.id && Objects.equals(name, product.name) && Objects.equals(category, product.category)
-                && Objects.equals(receipts, product.receipts) && Objects.equals(producer, product.producer)
+                && Objects.equals(producer, product.producer)
                 && Objects.equals(description, product.description) && price == product.price
                 && quantity == product.quantity;
     }
@@ -141,7 +133,6 @@ public class Product implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", categoty=" + category + '\'' +
-                ", receipts=" + receipts +
                 ", producer=" + producer +
                 ", description='" + description + '\'' +
                 ", price=" + price +

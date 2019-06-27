@@ -16,6 +16,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tqs.plazzamarket.utils.Status;
 
 @Entity
@@ -26,6 +27,7 @@ public class Sale implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "consumer_username")
 	private Consumer consumer;
@@ -33,6 +35,10 @@ public class Sale implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_id")
 	private Receipt receipt;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "productid")
+	private Product product;
 
 	private double quantity;
 
@@ -61,6 +67,14 @@ public class Sale implements Serializable {
 
 	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public double getQuantity() {
