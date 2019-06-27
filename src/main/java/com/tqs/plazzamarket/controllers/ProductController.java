@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.controllers;
 
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
@@ -66,6 +67,15 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
+    
+    @GetMapping(path = "/products/category/{category}")
+    public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
+        Optional<Category> categoria = categoryRepository.findById(category);
+        List<Product> listProductCategory = categoria.get().getProducts();
+        if (!categoria.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<List<Product>>(listProductCategory,HttpStatus.OK);
+    }
 
 }
