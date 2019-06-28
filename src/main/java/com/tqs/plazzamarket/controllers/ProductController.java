@@ -72,10 +72,8 @@ public class ProductController {
     public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
         Optional<Category> categoria = categoryRepository.findById(category);
         List<Product> listProductCategory = categoria.get().getProducts();
-        if (!categoria.isPresent()) {
+        if (!categoria.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-                
         return new ResponseEntity<List<Product>>(listProductCategory,HttpStatus.OK);
     }
 
