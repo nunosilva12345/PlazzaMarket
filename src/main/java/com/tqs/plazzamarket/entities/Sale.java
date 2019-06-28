@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -31,10 +30,6 @@ public class Sale implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "consumer_username")
 	private Consumer consumer;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "receipt_id")
-	private Receipt receipt;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "productid")
@@ -59,14 +54,6 @@ public class Sale implements Serializable {
 
 	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;
-	}
-
-	public Receipt getReceipt() {
-		return receipt;
-	}
-
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
 	}
 
 	public Product getProduct() {
@@ -102,7 +89,6 @@ public class Sale implements Serializable {
 		long temp;
 		temp = Double.doubleToLongBits(quantity);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((receipt == null) ? 0 : receipt.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
@@ -116,7 +102,7 @@ public class Sale implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Sale sale = (Sale) obj;
-		return id == sale.id && Objects.equals(consumer, sale.consumer) && Objects.equals(receipt, sale.receipt)
-				&& quantity == sale.quantity && Objects.equals(status, sale.status);
+		return id == sale.id && Objects.equals(consumer, sale.consumer) && quantity == sale.quantity
+				&& Objects.equals(status, sale.status);
 	}
 }

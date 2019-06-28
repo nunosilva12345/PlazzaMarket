@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +40,7 @@ public class ProductController {
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
         Producer producer = (Producer) httpSession.getAttribute("user");
         if (producer != null)
-            product.setProducer(producer);
+            product.setProducer(producerRepository.getOne(producer.getUsername()));
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
     }
 
@@ -62,19 +61,16 @@ public class ProductController {
     @GetMapping(path = "/products/{username}")
     public ResponseEntity<List<Product>> listProducerProducts(@PathVariable("username") String username) {
         Optional<Producer> producer = producerRepository.findById(username);
-        if (producer.isPresent()) {
+        if (producer.isPresent())
             return new ResponseEntity<>(producer.get().getProducts(), HttpStatus.OK);
-        }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     
     @GetMapping(path = "/products/category/{category}")
     public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
-        Optional<Category> categoria = categoryRepository.findById(category);
-        List<Product> listProductCategory = categoria.get().getProducts();
-        if (!categoria.isPresent())
+        Optional<Category> optional = categoryRepository.findById(category);
+        if (!optional.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<List<Product>>(listProductCategory,HttpStatus.OK);
+        return new ResponseEntity<List<Product>>(optional.get().getProducts(), HttpStatus.OK);
     }
-
 }

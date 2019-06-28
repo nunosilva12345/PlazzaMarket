@@ -2,6 +2,7 @@ package com.tqs.plazzamarket.repositories;
 
 import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Product;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -32,14 +35,15 @@ public class ProductRepositoryTest {
     @Before
     public void beforeEach() {
         Category category = new Category("Bulbs");
-        entityManager.persistAndFlush(category);
+        category = entityManager.persistAndFlush(category);
         product = new Product();
         product.setName("Potato");
         product.setQuantity(4.0);
         product.setPrice(5.0);
         product.setDescription("Test");
         product.setCategory(category);
-        entityManager.persistAndFlush(product);
+        product = entityManager.persistAndFlush(product);
+        System.out.println("INITIALIZING: " + product.getId());
     }
 
     @Test
@@ -56,12 +60,10 @@ public class ProductRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void whenGetByID_removeProduct() {
-        int size_beforeDelete = (int) productRepository.count();
         productRepository.deleteById(product.getId());
-        int size_afterDelete = (int) productRepository.count();
-        Assert.assertFalse(size_beforeDelete == size_afterDelete);
-        Assert.assertEquals(size_beforeDelete, size_afterDelete + 1);
+        Assert.assertFalse(productRepository.findById(product.getId()).isPresent());
     }
 
     @Test
@@ -78,6 +80,6 @@ public class ProductRepositoryTest {
 
     @After
     public void afterEach() {
-        entityManager.clear();
+        productRepository.deleteAll();
     }
 }

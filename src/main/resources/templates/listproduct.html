@@ -16,6 +16,11 @@
             background-color: transparent;
             border: 0;
         }
+
+        .search-category {
+            background-color: transparent;
+            border: 0;
+        }
     </style>
 
     <script>
@@ -76,20 +81,7 @@
                         alert('Failed!');
                     }
                 });
-            })
-
-            $('.search-category').click(function () {
-                console.log(this);
-                $.ajax({
-                    url: `/api/products/category/${this.id}`,
-                    method: 'GET',
-                    success: function (response) {
-                        location.reload();
-                    }, error: function (response) {
-                        alert('Failed!');
-                    }
-                });
-            })
+            });
         });
 
 
@@ -136,35 +128,6 @@
                                 <button class="nav-link float-right pr-0 confirm-buy py-0" type="button">
                                     <i class="fas fa-shopping-cart"></i>
                                 </button>
-                            </div>
-                            <div class="dropdown overrider mt-4">
-                                <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="categories"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Categories
-                                </button>
-                                <ul class="dropdown-menu overrider w-100 mb-4" aria-labelledby="categories"
-                                    data-bind="foreach: categories" style="position: relative">
-                                    <li class="dropdown-item px-4-5">
-                                        <input class="form-check-input search-category" type="checkbox"
-                                            data-bind="attr: { id: name }">
-                                        <label class="form-check-label"
-                                            data-bind="text: name, attr: { for: name }"></label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown overrider mt-4">
-                                <button class="btn btn-outline-dark dropdown-toggle w-100" type="button" id="companies"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Companies
-                                </button>
-                                <ul class="dropdown-menu override w-100" aria-labelledby="companies"
-                                    data-bind="foreach: companies">
-                                    <li class="dropdown-item px-4-5">
-                                        <input class="form-check-input" type="checkbox" data-bind="attr: { id: name }">
-                                        <label class="form-check-label"
-                                            data-bind="text: name, attr: { for: name }"></label>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                         <div class="col-md-7 col-lg-8 offset-lg-0 col-xl-9 order-md-1">
@@ -227,44 +190,6 @@
                     <div class="col-lg-12 offset-lg-0 col-xl-10 offset-xl-1">
                         <div class="row">
                             <div class="col-sm-10 offset-sm-1 col-lg-8 offset-lg-0 col-xl-9 order-lg-2">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="dropdown overrider mb-4">
-                                            <button class="btn btn-secondary dropdown-toggle w-100" type="button"
-                                                id="categories" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                Categories
-                                            </button>
-                                            <ul class="dropdown-menu w-100" aria-labelledby="categories"
-                                                data-bind="foreach: categories">
-                                                <li class="dropdown-item px-4-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        data-bind="attr: { id: name }">
-                                                    <label class="form-check-label"
-                                                        data-bind="text: name, attr: { for: name }"></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-6">
-                                        <div class="dropdown overrider mb-4">
-                                            <button class="btn btn-outline-dark dropdown-toggle w-100" type="button"
-                                                id="companies" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                Companies
-                                            </button>
-                                            <ul class="dropdown-menu w-100" aria-labelledby="companies"
-                                                data-bind="foreach: companies">
-                                                <li class="dropdown-item px-4-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        data-bind="attr: { id: name }">
-                                                    <label class="form-check-label"
-                                                        data-bind="text: name, attr: { for: name }"></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-sm-10 offset-sm-1 col-lg-8 offset-lg-0 col-xl-9 order-lg-1">
                                     <div class="row">
                                         <th:block th:each="product: ${products}">

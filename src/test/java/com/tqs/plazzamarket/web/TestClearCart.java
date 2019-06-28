@@ -18,7 +18,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +37,9 @@ public class TestClearCart {
 
     private WebDriver driver;
     private StringBuffer verificationErrors = new StringBuffer();
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ConsumerRepository consumerRepository;
@@ -69,11 +71,15 @@ public class TestClearCart {
         consumer.setZipCode("3060-500");
         consumerRepository.saveAndFlush(consumer);
 
+        Category category = new Category("Flowers");
+        category = categoryRepository.saveAndFlush(category);
+
         p = new Product();
         p.setName("Potato");
         p.setQuantity(4);
         p.setPrice(5);
         p.setDescription("test");
+        p.setCategory(category);
         productRepository.saveAndFlush(p);
     }
 

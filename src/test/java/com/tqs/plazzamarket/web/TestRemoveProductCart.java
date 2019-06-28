@@ -1,7 +1,9 @@
 package com.tqs.plazzamarket.web;
 
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Product;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
@@ -35,6 +37,9 @@ public class TestRemoveProductCart {
     private StringBuffer verificationErrors = new StringBuffer();
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private ConsumerRepository consumerRepository;
 
     @Autowired
@@ -65,11 +70,15 @@ public class TestRemoveProductCart {
         consumer.setZipCode("3060-500");
         consumerRepository.saveAndFlush(consumer);
 
+        Category category = new Category("Flowers");
+        category = categoryRepository.saveAndFlush(category);
+
         p = new Product();
         p.setName("Potato");
         p.setQuantity(4);
         p.setPrice(5);
         p.setDescription("test");
+        p.setCategory(category);
         productRepository.saveAndFlush(p);
     }
 
