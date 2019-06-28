@@ -46,7 +46,7 @@
     <div class="container">
         <h1 class="mt-2">Pending Reservations</h1>
         <p></p>
-        <table class="table table-striped">
+        <table class="table table-striped" th:data-count="${sales.size()}">
             <thead>
             <tr>
                 <th scope="col-3">Name Product</th>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -21,11 +22,11 @@ public class Producer extends BaseUser implements Serializable {
     @NotNull(message = "Website is mandatory")
     private String website;
 
-    @OneToMany(mappedBy = "producer")
+    @OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "producer")
+    @OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Receipt> receipts = new ArrayList<>();
 
     public String getWebsite() {

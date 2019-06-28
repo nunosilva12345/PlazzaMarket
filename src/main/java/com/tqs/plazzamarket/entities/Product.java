@@ -24,7 +24,7 @@ public class Product implements Serializable {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
 
     @JsonIgnore

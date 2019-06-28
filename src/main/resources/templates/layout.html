@@ -24,10 +24,9 @@
                     url: `/api/logout`,
                     method: 'POST',
                     success: function (response) {
-                        alert("logout");
-                        location.href = "/"
+                        location.href = "/";
                     }, error: function (response) {
-                        alert("ERROR");
+                        location.href = "/";
                     }
                 })
             });

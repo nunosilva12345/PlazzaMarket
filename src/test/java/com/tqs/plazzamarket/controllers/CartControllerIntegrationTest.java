@@ -8,8 +8,10 @@ import javax.ws.rs.core.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Product;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.utils.Cart;
@@ -45,6 +47,9 @@ public class CartControllerIntegrationTest {
     @Autowired
     private ConsumerRepository consumerRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     private Consumer consumer;
 
     private Product product;
@@ -56,15 +61,17 @@ public class CartControllerIntegrationTest {
     @Before
     public void beforeEach() {
         Double quantity = 4.;
-        Integer productId = 1;
+
+        Category category = new Category("Flowers");
+        category = categoryRepository.saveAndFlush(category);
 
         product = new Product();
-        product.setId(productId);
         product.setQuantity(quantity);
         product.setPrice(5);
         product.setDescription("test");
         product.setName("Potato");
-        productRepository.saveAndFlush(product);
+        product.setCategory(category);
+        product = productRepository.saveAndFlush(product);
 
         consumer = new Consumer();
         consumer.setUsername("luiso");
@@ -79,13 +86,13 @@ public class CartControllerIntegrationTest {
 
         map = new HashMap<>();
         map.put("quantity", quantity);
-        map.put("productId", productId);
+        map.put("productId", product.getId());
     }
 
     @Test
     public void testAddProductToCard() throws Exception {
         String result = mvc
-                .perform(MockMvcRequestBuilders.post("/api/cart/add").contentType(MediaType.APPLICATION_JSON).accept("application/json;charset=UTF-8")
+                .perform(MockMvcRequestBuilders.post("/api/cart/add").contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(map)).sessionAttr("cart", cart).sessionAttr("user", consumer))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn()
                 .getResponse().getContentAsString();

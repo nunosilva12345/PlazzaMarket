@@ -1,8 +1,10 @@
 package com.tqs.plazzamarket.controllers;
 
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.entities.Sale;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.repositories.SaleRepository;
@@ -37,6 +39,9 @@ public class SaleControllerIntegration {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     private Product product;
 
     private Producer producer;
@@ -58,6 +63,9 @@ public class SaleControllerIntegration {
         Double quantity = 4.;
         Integer productId = 1;
 
+        Category category = new Category("Flowers");
+        category = categoryRepository.saveAndFlush(category);
+
         product = new Product();
         product.setId(productId);
         product.setQuantity(quantity);
@@ -65,6 +73,7 @@ public class SaleControllerIntegration {
         product.setProducer(producer);
         product.setDescription("test");
         product.setName("Potato");
+        product.setCategory(category);
         product = productRepository.saveAndFlush(product);
 
         sale = new Sale();
