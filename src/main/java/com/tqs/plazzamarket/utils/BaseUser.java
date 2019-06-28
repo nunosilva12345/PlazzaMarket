@@ -110,7 +110,7 @@ public abstract class BaseUser implements Serializable {
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
-			return false;
+			return false;;
 		BaseUser baseUser = (BaseUser) obj;
 		return Objects.equals(username, baseUser.username) && Objects.equals(name, baseUser.name)
 				&& Objects.equals(email, baseUser.email) && Objects.equals(password, baseUser.password)

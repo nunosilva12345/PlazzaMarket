@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class ProductController {
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
         Producer producer = (Producer) httpSession.getAttribute("user");
         if (producer != null)
-            product.setProducer(producer);
+            product.setProducer(producerRepository.getOne(producer.getUsername()));
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
     }
 
@@ -66,6 +65,5 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 
 }

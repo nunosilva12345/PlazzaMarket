@@ -1,0 +1,40 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{./layoutProducer}">
+
+<body>
+
+<main role="main" layout:fragment="content">
+
+    <div class="container">
+        <h1 class="mt-2">History Sales</h1>
+        <p></p>
+        <table class="table table-striped" th:data-count="${receipts.size()}">
+            <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Producer</th>
+                <th scope="col">Consumer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="receipt : ${receipts}">
+                <tr>
+                    <td th:text="${receipt.productName}"></td>
+                    <td th:text="${receipt.quantity}"></td>
+                    <td th:text="${receipt.price}"></td>
+                    <td th:text="${receipt.producer.username}"></td>
+                    <td th:text="${receipt.consumer.username}"></td>
+                </tr>
+            </th:block>
+
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+</body>
+
+</html>

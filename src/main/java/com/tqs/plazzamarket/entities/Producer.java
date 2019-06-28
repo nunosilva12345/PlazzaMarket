@@ -1,26 +1,33 @@
 package com.tqs.plazzamarket.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tqs.plazzamarket.utils.BaseUser;
 
 import org.hibernate.validator.constraints.URL;
 
 @Entity
-public class Producer extends BaseUser {
+public class Producer extends BaseUser implements Serializable {
     private static final long serialVersionUID = 5290073270256936397L;
 
     @URL
     @NotNull(message = "Website is mandatory")
     private String website;
 
-    @OneToMany(mappedBy = "producer")
+    @OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Receipt> receipts = new ArrayList<>();
 
     public String getWebsite() {
         return this.website;

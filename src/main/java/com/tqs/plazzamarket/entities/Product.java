@@ -24,7 +24,7 @@ public class Product implements Serializable {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
 
     @JsonIgnore
@@ -93,6 +93,14 @@ public class Product implements Serializable {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    public void subtractQuantity(double quantity) {
+        this.quantity -= quantity;
+    }
+
+    public void addQuantity(double quantity) {
+        this.quantity += quantity;
     }
 
     @Override
