@@ -81,6 +81,9 @@ public class CartController {
         for(int key : items.keySet()) {
             Double[] pair = items.get(key);
             Sale sale = new Sale();
+            Product product = productRepository.getOne(key);
+            product.subtractQuantity(pair[0]);
+            productRepository.saveAndFlush(product);
             sale.setProduct(productRepository.getOne(key));
             sale.setConsumer((Consumer) session.getAttribute("user"));
             sale.setQuantity(pair[0]);

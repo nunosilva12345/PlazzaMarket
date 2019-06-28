@@ -95,6 +95,14 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
+    public void subtractQuantity(double quantity) {
+        this.quantity -= quantity;
+    }
+
+    public void addQuantity(double quantity) {
+        this.quantity += quantity;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

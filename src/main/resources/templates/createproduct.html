@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
-    layout:decorate="~{./layout}">
+    layout:decorate="~{./layoutProducer}">
 
 <head>
 
@@ -63,6 +63,7 @@
                     success: function (response) {
                         $('#failed-div').removeClass('d-block');
                         $('#success-div').addClass('d-block');
+                        location.href="/listproduct"
                     }, error: function (response) {
                         $('#failed-div').addClass('d-block');
                         $('#success-div').removeClass('d-block');

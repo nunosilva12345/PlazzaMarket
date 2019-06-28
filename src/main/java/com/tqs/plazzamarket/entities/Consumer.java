@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.entities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,14 +9,19 @@ import javax.persistence.OneToMany;
 
 import javax.persistence.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tqs.plazzamarket.utils.BaseUser;
 
 @Entity
-public class Consumer extends BaseUser {
+public class Consumer extends BaseUser implements Serializable {
     private static final long serialVersionUID = -595322532177722111L;
     
     @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL)
     private List<Sale> sales = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "producer")
+    private List<Receipt> receipts = new ArrayList<>();
 
     public List<Sale> getSales() {
         return sales;
@@ -23,6 +29,14 @@ public class Consumer extends BaseUser {
 
     public void setSales(List<Sale> sales) {
         this.sales = sales;
+    }
+
+    public List<Receipt> getReceipts() {
+        return receipts;
+    }
+
+    public void setReceipts(List<Receipt> receipts) {
+        this.receipts = receipts;
     }
 
     @Override

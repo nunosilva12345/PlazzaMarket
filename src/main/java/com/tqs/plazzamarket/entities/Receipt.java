@@ -1,5 +1,7 @@
 package com.tqs.plazzamarket.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Id;
 
 import java.io.Serializable;
@@ -23,8 +25,19 @@ public class Receipt implements Serializable {
 
 	private double price;
 
-	@OneToOne(mappedBy = "receipt")
-	private Sale sale;
+	private String productName;
+
+	private Double quantity;
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "consume_id")
+	private Consumer consumer;
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "producer_id")
+	private Producer producer;
 
 	public int getId() {
 		return this.id;
@@ -42,12 +55,36 @@ public class Receipt implements Serializable {
 		this.price = price;
 	}
 
-	public Sale getSale() {
-		return this.sale;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setSale(Sale sale) {
-		this.sale = sale;
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Double getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Double quantity) {
+		this.quantity = quantity;
+	}
+
+	public Consumer getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
+	}
+
+	public Producer getProducer() {
+		return producer;
+	}
+
+	public void setProducer(Producer producer) {
+		this.producer = producer;
 	}
 
 	@Override
@@ -58,7 +95,6 @@ public class Receipt implements Serializable {
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((sale == null) ? 0 : sale.hashCode());
 		return result;
 	}
 
@@ -71,7 +107,6 @@ public class Receipt implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Receipt receipt = (Receipt) obj;
-		return id == receipt.id && price == receipt.price
-				&& Objects.equals(sale, receipt.sale);
+		return id == receipt.id && price == receipt.price;
 	}
 }

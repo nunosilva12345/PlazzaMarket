@@ -40,7 +40,7 @@ public class ProductController {
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
         Producer producer = (Producer) httpSession.getAttribute("user");
         if (producer != null)
-            product.setProducer(producer);
+            product.setProducer(producerRepository.getOne(producer.getUsername()));
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
     }
 
@@ -66,6 +66,5 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 
 }

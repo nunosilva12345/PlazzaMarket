@@ -1,0 +1,95 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{./layoutProducer}">
+
+<head>
+    <script>
+
+        $(function () {
+            $('.accept').click(function () {
+                let id = this.id;
+                console.log(id);
+                console.log("accept");
+                $.ajax({
+                    url: `/api/sale/accept/` + id,
+                    method: 'GET',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        console.error(response);
+                    }
+                })
+
+            });
+
+            $('.reject').click(function () {
+                console.log("remove");
+                let id = this.id;
+                $.ajax({
+                    url: `/api/sale/reject/` + id,
+                    method: 'GET',
+                    success: function (response) {
+                        location.reload();
+                    }, error: function (response) {
+                        console.error(response);
+                    }
+                })
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+
+<main role="main" layout:fragment="content">
+
+    <div class="container">
+        <h1 class="mt-2">Pending Reservations</h1>
+        <p></p>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col-3">Name Product</th>
+                <th scope="col-2">Quantity</th>
+                <th scope="col-2">Total</th>
+                <th scope="col-2">User</th>
+                <th scope="col-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="sale : ${sales}">
+                <tr>
+                    <td th:text="${sale.product.name}"></td>
+                    <td th:text="${sale.quantity}"></td>
+                    <td th:text="${sale.quantity*sale.product.price}"></td>
+                    <td th:text="${sale.consumer.username}"></td>
+                    <td>
+                        <button class="fas fa-check accept"
+                                th:id="${sale.id}"
+                                style=" font-size: 20px;
+                                                color: #2cc80c;
+                                                background-color:transparent;
+                                                border-color:transparent;
+                                                float: right;">
+                        </button>
+                        <button class="fas fa-times reject"
+                                th:id="${sale.id}"
+                                style=" font-size: 20px;
+                                                color: #C80000;
+                                                background-color:transparent;
+                                                border-color:transparent;
+                                                float: right;">
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
+
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+</body>
+
+</html>
