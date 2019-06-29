@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -16,7 +17,7 @@ public class Category implements Serializable {
 	@Id
 	private String name;
 
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Product> products = new ArrayList<>();
 
 	public Category() {

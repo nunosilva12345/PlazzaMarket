@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class ProductController {
     @Autowired
     private ProducerRepository producerRepository;
 
+    @Transactional
     @ApiOperation(value = "Create Product", response = Product.class)
     @PostMapping(path = "/products/add", consumes = "application/json")
     public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> productJson, HttpSession httpSession) {

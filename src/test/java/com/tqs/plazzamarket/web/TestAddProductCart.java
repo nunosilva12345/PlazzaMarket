@@ -2,9 +2,11 @@ package com.tqs.plazzamarket.web;
 
 import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Consumer;
+import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
+import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
 import java.util.concurrent.TimeUnit;
@@ -94,13 +96,7 @@ public class TestAddProductCart {
                 By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='View'])[1]/following::button[1]")))
                 .click();
         driver.findElement(By.id("quantity")).clear();
-        driver.findElement(By.id("quantity")).sendKeys("1");
-        driver.findElement(By.id("quantity")).click();
-        driver.findElement(By.id("quantity")).clear();
         driver.findElement(By.id("quantity")).sendKeys("2");
-        driver.findElement(By.id("quantity")).click();
-        // ERROR: Caught exception [ERROR: Unsupported command [doubleClick |
-        // id=quantity | ]]
         driver.findElement(By.id("submit")).click();
         assertEquals(p.getName(),
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(

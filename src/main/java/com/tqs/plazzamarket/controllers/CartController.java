@@ -4,7 +4,6 @@ package com.tqs.plazzamarket.controllers;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 
 import com.tqs.plazzamarket.entities.Consumer;
