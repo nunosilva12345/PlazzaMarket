@@ -7,8 +7,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Admin;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
+import com.tqs.plazzamarket.repositories.AdminRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 
@@ -43,6 +45,9 @@ public class AuthenticationControllerIntegrationTest {
 
     @Autowired
     private ProducerRepository producerRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Before
     public void beforeEach() {
@@ -147,6 +152,22 @@ public class AuthenticationControllerIntegrationTest {
         Map<String, String> credentials = new HashMap<>();
         credentials.put("username", producer.getUsername());
         credentials.put("password", producer.getPassword());
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/login").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @Transactional
+    public void testLoginAdmin() throws  Exception {
+        Admin admin = new Admin();
+        admin.setUsername("luiso");
+        admin.setPassword("12345678");
+        adminRepository.saveAndFlush(admin);
+
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", admin.getUsername());
+        credentials.put("password", admin.getPassword());
 
         mvc.perform(MockMvcRequestBuilders.post("/api/login").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());

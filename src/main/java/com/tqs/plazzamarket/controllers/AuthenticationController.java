@@ -7,8 +7,10 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Admin;
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
+import com.tqs.plazzamarket.repositories.AdminRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
@@ -39,6 +41,9 @@ public class AuthenticationController {
 
     @Autowired
     private ProducerRepository producerRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Autowired
     private Validator validator;
@@ -94,6 +99,15 @@ public class AuthenticationController {
             if (!producer.getPassword().equals(password))
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             httpSession.setAttribute(userAttr, producer);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        Optional<Admin> adminOpt = adminRepository.findById(username);
+        if (adminOpt.isPresent()) {
+            Admin admin = adminOpt.get();
+            if (!admin.getPassword().equals(password))
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            httpSession.setAttribute(userAttr, admin);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
