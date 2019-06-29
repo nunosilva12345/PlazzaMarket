@@ -5,14 +5,11 @@
 <script>
     $(function () {
         $('.remove').click(function () {
-            console.log("remove");
-            let id = this.id
-            console.log(id);
+            let id = this.id;
             $.ajax({
                 url: `/api/products/remove/` + id,
                 method: 'GET',
                 success: function (response) {
-                    alert("Product removed with success!");
                     location.reload();
                 }, error: function (response) {
                     console.error(response);
