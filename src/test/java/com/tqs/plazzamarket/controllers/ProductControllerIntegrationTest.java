@@ -176,7 +176,7 @@ public class ProductControllerIntegrationTest {
         String responseList = mvc.perform(MockMvcRequestBuilders.get("/api/products/" + producer.getUsername())).andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
         List<Object> list = mapper.readValue(responseList, List.class);
 
-        Assert.assertEquals(list.size(),2);
+        Assert.assertEquals(2, list.size());
 
     }
     
@@ -211,7 +211,7 @@ public class ProductControllerIntegrationTest {
         
         
        
-        Assert.assertEquals(list.size(),2);
+        Assert.assertEquals(2, list.size());
         //Assert.assertEquals(mapper.convertValue(list.get(0), Product.class).getName(),product.getName());
         //Assert.assertEquals(mapper.convertValue(list.get(1), Product.class).getName(),product1.getName());
 

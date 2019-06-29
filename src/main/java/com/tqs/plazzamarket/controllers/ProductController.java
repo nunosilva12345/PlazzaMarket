@@ -53,13 +53,13 @@ public class ProductController {
     }
 
     @ApiOperation(value = "List all products", response = List.class)
-    @GetMapping(path = "/products/")
+    @GetMapping(path = "/products")
     public @ResponseBody Iterable<Product> findAll() {
         return productRepository.findAll();
     }
 
     @ApiOperation(value = "Remove product by id")
-    @GetMapping(path = "/products/remove/{id}")
+    @DeleteMapping(path = "/products/remove/{id}")
     public ResponseEntity<Object> removeProduct(@ApiParam("product id") @PathVariable("id") int id) {
         Optional<Product> product = productRepository.findById(id);
         if (!product.isPresent())
