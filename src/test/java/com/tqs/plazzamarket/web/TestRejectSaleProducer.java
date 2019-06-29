@@ -128,7 +128,7 @@ public class TestRejectSaleProducer {
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Pending Reservations"))).click();
-        driver.findElement(By.xpath(String.format(".//*[@class='fas fa-times reject' and @id='%d']", sale.getId()))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(".//*[@class='fas fa-times reject' and @id='%d']", sale.getId())))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
         driver.findElement(By.linkText("History Sales")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
@@ -139,7 +139,7 @@ public class TestRejectSaleProducer {
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
-        driver.findElement(By.linkText("Shopping History")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Shopping History"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
     }
 

@@ -30,95 +30,116 @@
                     }
                 })
             });
+
+            $('li a.nav-link').each((i, element) => {
+                if ($(element).attr('href') == location.pathname)
+                    $(element).addClass('active');
+            });
         });
     </script>
 </head>
 
 <body class="bg-light">
-<header>
+    <header>
 
-    <nav class="navbar navbar-expand navbar-dark bg-dark shadow-sm d-md-flex d-none">
-        <a class="navbar-brand overrider" href="/listproduct">
-            <img src="content/logo_symbol.png">
-        </a>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/listproduct">
-                        <i class="far fa-home"></i> Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/createproduct">
-                        <i class="fas fa-plus"></i> Create Product
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pendingreservations">
-                        <i class="fas fa-cart-arrow-down"></i> Pending Reservations
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/historysales">
-                        <i class="fas fa-history"></i> History Sales
-                    </a>
-                </li>
-            </ul>
-            <form class="form-inline mb-0">
-                <div class="form-row">
-                    <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0 logout" id="logout" >Logout</button>
-                </div>
-            </form>
-        </div>
-    </nav>
+        <nav class="navbar navbar-expand navbar-dark bg-dark shadow-sm d-md-flex d-none">
+            <a class="navbar-brand overrider" href="/listproduct">
+                <img src="content/logo_symbol.png">
+            </a>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listproduct">
+                            <i class="far fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/createproduct">
+                            <i class="fas fa-plus"></i> Create Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pendingreservations">
+                            <i class="fas fa-cart-arrow-down"></i> Pending Reservations
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/historysales">
+                            <i class="fas fa-history"></i> History Sales
+                        </a>
+                    </li>
+                </ul>
+                <form class="form-inline mb-0">
+                    <div class="form-row">
+                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0 logout"
+                            id="logout">Logout</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
 
-    <!-- Mobile and Very Small Screens -->
-    <nav class="navbar navbar-dark bg-dark shadow-sm d-flex d-md-none">
-        <div class="navbar-collapse">
-            <button class="navbar-toggler overrider py-2 float-left ml-n2" type="button" data-toggle="collapse"
+        <!-- Mobile and Very Small Screens -->
+        <nav class="navbar navbar-dark bg-dark shadow-sm d-flex d-md-none">
+            <div class="navbar-collapse">
+                <button class="navbar-toggler overrider py-2 float-left ml-n2" type="button" data-toggle="collapse"
                     data-target="#mobile_navbar">
-                <span class="fas fa-bars"></span>
-            </button>
-            <form class="form-inline mb-0 float-right">
-                <div class="form-row">
-                    <div class="input-group">
-                        <input id="autocomplete" class="form-control w-auto" type="text"
-                               placeholder="Search For Products">
-                        <div class="input-group-append">
-                            <button class="btn bg-white btn-outline-default my-0 my-sm-0">
-                                <i class="far fa-search"></i>
-                            </button>
+                    <span class="fas fa-bars"></span>
+                </button>
+                <form class="form-inline mb-0 float-right">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <input id="autocomplete" class="form-control w-auto" type="text"
+                                placeholder="Search For Products">
+                            <div class="input-group-append">
+                                <button class="btn bg-white btn-outline-default my-0 my-sm-0">
+                                    <i class="far fa-search"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="collapse navbar-collapse" id="mobile_navbar">
-            <hr>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link active pt-0" href="/listproduct">
-                        <i class="far fa-home"></i> Home
-                    </a>
-                </li>
-                <div class="dropdown-divider"></div>
-                <li class="nav-item pr-1">
-                    <a class="nav-link float-left" href="/listproduct">
-                        <div class="navbar-brand overrider mh-3 mr-2">
-                            <img src="content/logo_symbol.png">
-                        </div>
-                        Plazza Market
-                    </a>
-                    <a class="nav-link float-right logout">
-                        <i class="fal fa-sign-out-alt" style="border-width: 1px;"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+                </form>
+            </div>
+            <div class="collapse navbar-collapse" id="mobile_navbar">
+                <hr>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link pt-0" href="/listproduct">
+                            <i class="far fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/createproduct">
+                            <i class="fas fa-plus"></i> Create Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pendingreservations">
+                            <i class="fas fa-cart-arrow-down"></i> Pending Reservations
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/historysales">
+                            <i class="fas fa-history"></i> History Sales
+                        </a>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <li class="nav-item pr-1">
+                        <a class="nav-link float-left" href="/listproduct">
+                            <div class="navbar-brand overrider mh-3 mr-2">
+                                <img src="content/logo_symbol.png">
+                            </div>
+                            Plazza Market
+                        </a>
+                        <a class="nav-link float-right logout">
+                            <i class="fal fa-sign-out-alt" style="border-width: 1px;"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-<th:block layout:fragment="content" />
+    <th:block layout:fragment="content" />
 </body>
 
 </html>

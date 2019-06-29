@@ -115,6 +115,7 @@ public class WebController {
 			if(receipt.getConsumer().getUsername().equals(user.getUsername()))
 				receipts.add(receipt);
 		}
+		model.addAttribute("categories", categoryRepository.findAll());
 		model.addAttribute("receipts", receipts);
 		return "historyShopping";
 	}

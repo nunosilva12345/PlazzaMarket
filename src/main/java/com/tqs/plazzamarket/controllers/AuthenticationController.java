@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Consumer;

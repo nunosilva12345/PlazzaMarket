@@ -144,7 +144,7 @@
                                                 <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail
                                                 </text>
                                             </svg>
-                                            <div class="card-body">
+                                            <div class="card-body" th:data-category="${product.category.name}">
                                                 <p class="card-text"><b th:text="${product.name}"></b></p>
                                                 <p class="card-text" th:text="${product.description}"></p>
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -204,7 +204,7 @@
                                                         <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail
                                                         </text>
                                                     </svg>
-                                                    <div class="card-body">
+                                                    <div class="card-body" th:data-category="${product.category.name}">
                                                         <p class="card-text"><b th:text="${product.name}"></b></p>
                                                         <p class="card-text" th:text="${product.description}"></p>
                                                         <div class="d-flex justify-content-between align-items-center">
