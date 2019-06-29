@@ -128,7 +128,7 @@ public class TestConfirmSaleProducer {
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Pending Reservations"))).click();
-        driver.findElement(By.xpath(String.format(".//*[@class='fas fa-check accept' and @id='%d']", sale.getId()))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(".//*[@class='fas fa-check accept' and @id='%d']", sale.getId())))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
         driver.findElement(By.linkText("History Sales")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='1']")));
@@ -142,7 +142,7 @@ public class TestConfirmSaleProducer {
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
-        driver.findElement(By.linkText("Shopping History")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Shopping History"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='1']")));
         assertEquals(sale.getProduct().getName(), wait.until(ExpectedConditions.presenceOfElementLocated(
                 (By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Consumer'])[1]/following::td[1]"))))

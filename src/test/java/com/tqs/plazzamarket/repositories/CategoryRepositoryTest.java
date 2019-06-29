@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.repositories;
 
 import com.tqs.plazzamarket.entities.Category;
+import com.tqs.plazzamarket.entities.Product;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,8 @@ import java.util.Optional;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CategoryRepositoryTest {
 
+    private Product product;
+    
     private Category category;
 
     @Autowired
@@ -31,6 +34,14 @@ public class CategoryRepositoryTest {
     public void beforeEach() {
         category = new Category("Bulbs");
         entityManager.persistAndFlush(category);
+        
+        product = new Product();
+        product.setName("Potato");
+        product.setQuantity(4.0);
+        product.setPrice(5.0);
+        product.setDescription("Test");
+        product.setCategory(category);
+        entityManager.persistAndFlush(product);
     }
 
     @Test
@@ -50,6 +61,14 @@ public class CategoryRepositoryTest {
     public void failWhenGetById() {
         Optional<Category> found = categoryRepository.findById("Flowers");
         Assert.assertFalse(found.isPresent());
+    }
+    
+    @Test
+    public void whensearchProductByCategory(){
+        Optional<Category> categoria = categoryRepository.findById(category.getName());
+        List<Product> produto = categoria.get().getProducts();
+        Assert.assertTrue(produto.size() == 1);
+
     }
 
 }

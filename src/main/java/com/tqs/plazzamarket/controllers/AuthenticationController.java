@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs.plazzamarket.entities.Consumer;
@@ -15,17 +14,15 @@ import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
 import com.tqs.plazzamarket.utils.Cart;
 
+import com.tqs.plazzamarket.services.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,18 +37,25 @@ public class AuthenticationController {
     @Autowired
     private ProducerRepository producerRepository;
 
+    @Autowired
+    private Validator validator;
+
     @PostMapping(path = "/register/consumer", consumes = "application/json")
     public ResponseEntity registerConsumer(@RequestBody Map<String, Object> consumerMap) {
-        @Valid
         Consumer consumer = mapper.convertValue(consumerMap, Consumer.class);
+        Map<String, String> errors = validator.validate(consumer);
+        if (errors != null)
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         ResponseEntity<? extends Object> re = usernameExists(consumer);
         return re != null ? re : new ResponseEntity<>(consumerRepository.saveAndFlush(consumer), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/register/producer")
     public ResponseEntity registerProducer(@RequestBody Map<String, Object> producerMap) {
-        @Valid
         Producer producer = mapper.convertValue(producerMap, Producer.class);
+        Map<String, String> errors = validator.validate(producer);
+        if (errors != null)
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         ResponseEntity<? extends Object> re = usernameExists(producer);
         return re != null ? re : new ResponseEntity<>(producerRepository.saveAndFlush(producer), HttpStatus.CREATED);
     }
@@ -92,21 +96,10 @@ public class AuthenticationController {
 
     @PostMapping(path = "/logout")
     public ResponseEntity logout(HttpSession httpSession) {
+        if (httpSession.getAttribute("user") == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         httpSession.invalidate();
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 
     private ResponseEntity<? extends Object> usernameExists(BaseUser bu) {

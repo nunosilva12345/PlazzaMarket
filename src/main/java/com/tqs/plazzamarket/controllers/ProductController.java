@@ -1,5 +1,6 @@
 package com.tqs.plazzamarket.controllers;
 
+import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
@@ -60,10 +61,16 @@ public class ProductController {
     @GetMapping(path = "/products/{username}")
     public ResponseEntity<List<Product>> listProducerProducts(@PathVariable("username") String username) {
         Optional<Producer> producer = producerRepository.findById(username);
-        if (producer.isPresent()) {
+        if (producer.isPresent())
             return new ResponseEntity<>(producer.get().getProducts(), HttpStatus.OK);
-        }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
+    
+    @GetMapping(path = "/products/category/{category}")
+    public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
+        Optional<Category> optional = categoryRepository.findById(category);
+        if (!optional.isPresent())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<List<Product>>(optional.get().getProducts(), HttpStatus.OK);
+    }
 }

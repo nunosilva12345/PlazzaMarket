@@ -13,7 +13,10 @@ public class CategoryController {
 
     @GetMapping(path = "/category/init")
     public void init() {
-        Category c = new Category("Flowers");
-        categoryRepository.saveAndFlush(c);
+        String[] names = new String[] {
+            "Flowers", "Bulbs",
+        };
+        for (String name : names)
+            categoryRepository.saveAndFlush(new Category(name));
     }
 }

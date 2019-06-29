@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.tqs.plazzamarket.entities.*;
+import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 import com.tqs.plazzamarket.repositories.ReceiptRepository;
@@ -13,12 +14,13 @@ import org.springframework.ui.Model;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,6 +37,9 @@ public class WebController {
 	@Autowired
 	private ReceiptRepository receiptRepository;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
 	@GetMapping(value = "/")
 	public String login(Model model) {
 		return "login";
@@ -46,19 +51,24 @@ public class WebController {
 	}
 
 	@GetMapping(value = "/createproduct")
-	public String createProduct(Model model) {
+	public String createProduct(Model model, HttpSession session) {
+		if (session.getAttribute("user") == null)
+			return "redirect";
 		return "createproduct";
 	}
 
 	@GetMapping(value = "/listproduct")
 	public String listProduct(Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
+		if (user == null)
+			return "redirect";
 		model.addAttribute("user", user);
-		if (user.getClass()== Consumer.class) {
+		if (user.getClass() == Consumer.class) {
 			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
 			model.addAttribute("products", productRepository.findAll());
 			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "listproduct";
 		} else {
 			model.addAttribute("products", producerRepository.getOne(user.getUsername()).getProducts());
@@ -66,10 +76,22 @@ public class WebController {
 		}
 	}
 
-	@GetMapping(value = "/home")
-	public String homepage(Model model) {
-		model.addAttribute("produtos", productRepository.findAll());
-    	return "listproducts";
+	@GetMapping(value = "/listproduct/{category}")
+	public String listProduct(@PathVariable("category") String category, Model model, HttpSession httpSession) {
+		BaseUser user = (BaseUser) httpSession.getAttribute("user");
+		if (user == null)
+			return "redirect";
+		model.addAttribute("user", user);
+		Optional<Category> optional = categoryRepository.findById(category);
+		if (user.getClass() == Consumer.class && optional.isPresent()) {
+			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
+			model.addAttribute("products", optional.get().getProducts());
+			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
+			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
+			model.addAttribute("categories", categoryRepository.findAll());
+			return "listproduct";
+		}
+		return "redirect";
 	}
 
 	@GetMapping(value = "/pendingreservations")
@@ -93,6 +115,7 @@ public class WebController {
 			if(receipt.getConsumer().getUsername().equals(user.getUsername()))
 				receipts.add(receipt);
 		}
+		model.addAttribute("categories", categoryRepository.findAll());
 		model.addAttribute("receipts", receipts);
 		return "historyShopping";
 	}

@@ -50,25 +50,30 @@
     <script src="js/knockout.min.js"></script>
 
     <script>
-        $(function () {
-            $('#submit').click(function () {
-                let user = $('form').serializeArray().reduce((map, obj) => {
-                    map[obj.name] = obj.value;
-                    return map;
-                }, {});
-                console.log(user)
+        function login() {
+            let user = $('form').serializeArray().reduce((map, obj) => {
+                map[obj.name] = obj.value;
+                return map;
+            }, {});
+            $.ajax({
+                url: `/api/login`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(user),
+                success: function (response) {
+                    location.href = "/listproduct"
+                }, error: function (response) {
+                    alert("ERROR");
+                }
+            });
+        }
 
-                $.ajax({
-                    url: `/api/login`,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(user),
-                    success: function (response) {
-                        location.href = "/listproduct"
-                    }, error: function (response) {
-                        alert("ERROR");
-                    }
-                })
+        $(function () {
+            $('#submit').click(login);
+            $(window).on('keypress', function () {
+                let key = event.which || event.keyCode;
+                if (key == 13)
+                    login();
             });
         });
     </script>

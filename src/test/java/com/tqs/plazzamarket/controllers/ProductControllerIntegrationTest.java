@@ -53,10 +53,13 @@ public class ProductControllerIntegrationTest {
 
     @Autowired
     private ProducerRepository producerRepository;
+    
+    private Category category;
 
     @Before
     public void beforeEach() {
         productRepository.deleteAll();
+        categoryRepository.deleteAll();
         categoryRepository.deleteAll();
     }
 
@@ -174,6 +177,44 @@ public class ProductControllerIntegrationTest {
         List<Object> list = mapper.readValue(responseList, List.class);
 
         Assert.assertEquals(list.size(),2);
+
+    }
+    
+    
+    @Test
+    @Transactional
+    public void testSearchProductCategory() throws Exception {
+        Category category = new Category("Flowers");
+        categoryRepository.saveAndFlush(category);
+
+        Product product = new Product();
+        product.setQuantity(4);
+        product.setPrice(5);
+        product.setDescription("test");
+        product.setName("Red Potato");
+        product.setCategory(category);
+        productRepository.saveAndFlush(product);
+
+
+        Product product1 = new Product();
+        product1.setQuantity(10);
+        product1.setPrice(3);
+        product1.setDescription("test too");
+        product1.setName("Sweet Potato");
+        product1.setCategory(category);
+        productRepository.saveAndFlush(product1);
+        
+        categoryRepository.saveAndFlush(category);
+        
+        String responseList = mvc.perform(MockMvcRequestBuilders.get("/api/products/category/" + category.getName())).andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+        List list = mapper.readValue(responseList, List.class);
+        
+        
+       
+        Assert.assertEquals(list.size(),2);
+        //Assert.assertEquals(mapper.convertValue(list.get(0), Product.class).getName(),product.getName());
+        //Assert.assertEquals(mapper.convertValue(list.get(1), Product.class).getName(),product1.getName());
+
 
     }
 

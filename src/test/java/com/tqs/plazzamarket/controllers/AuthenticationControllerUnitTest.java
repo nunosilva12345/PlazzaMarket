@@ -5,6 +5,7 @@ import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
+import com.tqs.plazzamarket.services.Validator;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -34,6 +35,9 @@ public class AuthenticationControllerUnitTest {
     @MockBean
     private ProducerRepository producerRepository;
 
+    @MockBean
+    private Validator validator;
+
     @Test
     public void testConsumerRegister() throws Exception {
         Consumer consumer = new Consumer();
@@ -43,6 +47,7 @@ public class AuthenticationControllerUnitTest {
         consumer.setPassword("12345678");
         consumer.setAddress("Aveiro");
         consumer.setZipCode("3060-500");
+        BDDMockito.given(validator.validate(consumer)).willReturn(null);
         BDDMockito.given(consumerRepository.saveAndFlush(consumer)).willReturn(consumer);
         String result = mvc
                 .perform(MockMvcRequestBuilders.post("/api/register/consumer/").contentType(MediaType.APPLICATION_JSON)
@@ -63,6 +68,7 @@ public class AuthenticationControllerUnitTest {
         producer.setAddress("Aveiro");
         producer.setZipCode("3060-500");
         producer.setWebsite("https://www.example.com");
+        BDDMockito.given(validator.validate(producer)).willReturn(null);
         BDDMockito.given(producerRepository.saveAndFlush(producer)).willReturn(producer);
         String result = mvc
                 .perform(MockMvcRequestBuilders.post("/api/register/producer/").contentType(MediaType.APPLICATION_JSON)

@@ -24,13 +24,14 @@
                     <h4 class="col-12 mb-3">Personal Information</h4>
                     <div class="col-12 col-sm-6 form-group pr-sm-3">
                         <label for="firstname">First Name</label>
-                        <input id="firstname" class="form-control" type="text" name="firstname"
-                            placeholder="First Name" required>
+                        <input id="firstname" class="form-control" type="text" name="firstname" placeholder="First Name"
+                            required>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-12 col-sm-6 form-group pl-sm-3">
                         <label for="lastname">Last Name</label>
-                        <input id="lastname" class="form-control" type="text" name="lastname" placeholder="Last Name" required>
+                        <input id="lastname" class="form-control" type="text" name="lastname" placeholder="Last Name"
+                            required>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-12 form-group">
@@ -74,7 +75,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-12 offset-sm-6 col-sm-6 d-flex mt-3">
-                        <a class="btn btn-outline-primary mr-3 flex-1" href="/signin.html">
+                        <a class="btn btn-outline-primary mr-3 flex-1" href="/">
                             Sign In
                         </a>
                         <button class="btn btn-primary ml-3 flex-1" type="button" id="submit">
@@ -95,49 +96,56 @@
     <script src="js/plazza-market/signup.js"></script>
 
     <script>
-        $(function () {
-            $('#submit').click(function () {
-                let user = $('form').serializeArray().reduce((map, obj) => {
-                    map[obj.name] = obj.value;
-                    return map;
-                }, {});
+        function register() {
+            let user = $('form').serializeArray().reduce((map, obj) => {
+                map[obj.name] = obj.value;
+                return map;
+            }, {});
 
-                user.name = `${user.firstname.trim()} ${user.lastname.trim()}`;
-                delete user.firstname;
-                delete user.lastname;
+            user.name = `${user.firstname.trim()} ${user.lastname.trim()}`;
+            delete user.firstname;
+            delete user.lastname;
 
-                let accountType = user.accountType;
-                delete user.accountType;
-                if (accountType === 'consumer')
-                    delete user.website;
+            let accountType = user.accountType;
+            delete user.accountType;
+            if (accountType === 'consumer')
+                delete user.website;
 
-                $.ajax({
-                    url: `/api/register/${accountType}`,
-                    method: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify(user),
-                    success: function (response) {
-                        alert("User registered with success!");
-                    }, error: function (response) {
-                        $('.invalid-feedback').removeClass('d-block');
-                        if (!response.responseJSON)
-                            return;
-                        response = response.responseJSON;
-                        for (let key in response) {
-                            if (key == 'name') {
-                                if ($('[name="firstname"]').text().trim().length == 0)
-                                    $('[name="firstname"]').parent().children('.invalid-feedback')
-                                        .addClass('d-block').text(response[key]);
-                                if ($('[name="lastname"]').text().trim().length == 0)
-                                    $('[name="lastname"]').parent().children('.invalid-feedback')
-                                        .addClass('d-block').text(response[key]);
-                            } else
-                                $(`[name="${key}"]`).parent().children('.invalid-feedback')
+            $.ajax({
+                url: `/api/register/${accountType}`,
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(user),
+                success: function (response) {
+                    alert("User registered with success!");
+                }, error: function (response) {
+                    $('.invalid-feedback').removeClass('d-block');
+                    if (!response.responseJSON)
+                        return;
+                    response = response.responseJSON;
+                    for (let key in response) {
+                        if (key == 'name') {
+                            if ($('[name="firstname"]').text().trim().length == 0)
+                                $('[name="firstname"]').parent().children('.invalid-feedback')
                                     .addClass('d-block').text(response[key]);
-                        }
+                            if ($('[name="lastname"]').text().trim().length == 0)
+                                $('[name="lastname"]').parent().children('.invalid-feedback')
+                                    .addClass('d-block').text(response[key]);
+                        } else
+                            $(`[name="${key}"]`).parent().children('.invalid-feedback')
+                                .addClass('d-block').text(response[key]);
                     }
-                })
+                }
+            });
+        }
+
+        $(function () {
+            $('#submit').click(register);
+            $(window).on('keypress', function () {
+                let key = event.which || event.keyCode;
+                if (key == 13)
+                    register();
             });
         });
     </script>

@@ -5,17 +5,17 @@
     <meta charset="uft-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Plazza Market</title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/all.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/all.css}" type="text/css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css" type="text/css">
-    <link rel="stylesheet" th:href="@{css/plazza-market/index.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/plazza-market/signup.css}" type="text/css">
-    <link rel="shortcut icon" href="content/logo_symbol.ico">
+    <link rel="stylesheet" th:href="@{/css/plazza-market/index.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/plazza-market/signup.css}" type="text/css">
+    <link rel="shortcut icon" href="/content/logo_symbol.ico">
 
-    <script th:src="@{js/jquery.min.js}"></script>
-    <script th:src="@{js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{js/knockout.min.js}"></script>
-    <script th:src="@{js/plazza-market/index.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/knockout.min.js}"></script>
+    <script th:src="@{/js/plazza-market/index.js}"></script>
 
     <script>
         $(function () {
@@ -28,8 +28,17 @@
                     }, error: function (response) {
                         location.href = "/";
                     }
-                })
+                });
             });
+
+            $('li a.nav-link').each((i, element) => {
+                if ($(element).attr('href') == location.pathname)
+                    $(element).addClass('active');
+            });
+
+            let name = '/listproduct/';
+            if (location.pathname.substr(0, name.length) == name && location.pathname.length > name.length)
+                $('li.dropdown a.nav-link').addClass('active');
         });
     </script>
 </head>
@@ -39,12 +48,12 @@
 
         <nav class="navbar navbar-expand navbar-dark bg-dark shadow-sm d-md-flex d-none">
             <a class="navbar-brand overrider" href="/listproduct">
-                <img src="content/logo_symbol.png">
+                <img src="/content/logo_symbol.png">
             </a>
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/listproduct">
+                        <a class="nav-link" href="/listproduct">
                             <i class="far fa-home"></i> Home
                         </a>
                     </li>
@@ -53,13 +62,22 @@
                             <i class="fas fa-history"></i> Shopping History
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <th:block th:each="category: ${categories}">
+                                <a class="dropdown-item search-category" th:href="${ '/listproduct/' + category.name }" th:id="${category.name}" th:text="${category.name}"></a>
+                            </th:block>
+                        </div>
+                    </li>
                 </ul>
                 <form class="form-inline mb-0">
                     <div class="form-row">
-                        <input id="autocomplete" class="form-control" type="text" placeholder="Search For Products">
-                        <input id="search" class="btn bg-white btn-outline-default my-0 my-sm-0 mx-2" type="button"
-                            value="Search" />
-                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0 logout" id="logout" >Logout</button>
+                        <button type="button" class="btn bg-white btn-outline-default my-0 my-sm-0 logout"
+                            id="logout">Logout</button>
                     </div>
                 </form>
             </div>
@@ -72,25 +90,12 @@
                     data-target="#mobile_navbar">
                     <span class="fas fa-bars"></span>
                 </button>
-                <form class="form-inline mb-0 float-right">
-                    <div class="form-row">
-                        <div class="input-group">
-                            <input id="autocomplete" class="form-control w-auto" type="text"
-                                placeholder="Search For Products">
-                            <div class="input-group-append">
-                                <button class="btn bg-white btn-outline-default my-0 my-sm-0">
-                                    <i class="far fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
             <div class="collapse navbar-collapse" id="mobile_navbar">
                 <hr>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link active pt-0" href="/listproduct">
+                        <a class="nav-link pt-0" href="/listproduct">
                             <i class="far fa-home"></i> Home
                         </a>
                     </li>
@@ -99,11 +104,22 @@
                             <i class="fas fa-history"></i> Shopping History
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <th:block th:each="category: ${categories}">
+                                <a class="dropdown-item search-category" th:id="${category.name}" th:href="${ '/listproduct/' + category.name }" th:text="${category.name}"></a>
+                            </th:block>
+                        </div>
+                    </li>
                     <div class="dropdown-divider"></div>
                     <li class="nav-item pr-1">
                         <a class="nav-link float-left" href="/listproduct">
                             <div class="navbar-brand overrider mh-3 mr-2">
-                                <img src="content/logo_symbol.png">
+                                <img src="/content/logo_symbol.png">
                             </div>
                             Plazza Market
                         </a>
