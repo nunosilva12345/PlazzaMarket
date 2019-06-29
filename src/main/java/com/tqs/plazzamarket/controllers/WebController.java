@@ -9,6 +9,8 @@ import com.tqs.plazzamarket.repositories.SaleRepository;
 import com.tqs.plazzamarket.utils.BaseUser;
 import com.tqs.plazzamarket.utils.Cart;
 import com.tqs.plazzamarket.utils.Status;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
+@Api(value="Web Controller", description="Web pages controller")
 public class WebController {
 	@Autowired
 	private ProductRepository productRepository;
@@ -50,6 +53,8 @@ public class WebController {
 		return "register";
 	}
 
+
+	@ApiOperation(value = "Returns page to create product")
 	@GetMapping(value = "/createproduct")
 	public String createProduct(Model model, HttpSession session) {
 		if (session.getAttribute("user") == null)
@@ -57,6 +62,7 @@ public class WebController {
 		return "createproduct";
 	}
 
+	@ApiOperation(value = "Returns home page")
 	@GetMapping(value = "/listproduct")
 	public String listProduct(Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
@@ -76,6 +82,7 @@ public class WebController {
 		}
 	}
 
+	@ApiOperation(value = "Returns page products of a category")
 	@GetMapping(value = "/listproduct/{category}")
 	public String listProduct(@PathVariable("category") String category, Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
@@ -94,6 +101,7 @@ public class WebController {
 		return "redirect";
 	}
 
+	@ApiOperation(value = "Returns page with pending reservations")
 	@GetMapping(value = "/pendingreservations")
 	public String pendingReservations(Model model, HttpSession session) {
 		BaseUser user = (BaseUser) session.getAttribute("user");
@@ -107,6 +115,7 @@ public class WebController {
 		return "listPendingReservations";
 	}
 
+	@ApiOperation(value = "Returns page with shopping history")
 	@GetMapping(value = "/historyshopping")
 	public String historyShopping(Model model, HttpSession session) {
 		Consumer user = (Consumer) session.getAttribute("user");
@@ -120,6 +129,7 @@ public class WebController {
 		return "historyShopping";
 	}
 
+	@ApiOperation(value = "Returns page with sales history")
 	@GetMapping(value = "/historysales")
 	public String historySales(Model model, HttpSession session) {
 		Producer user = (Producer) session.getAttribute("user");
