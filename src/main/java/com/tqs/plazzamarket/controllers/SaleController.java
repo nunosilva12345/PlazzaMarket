@@ -8,6 +8,9 @@ import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ReceiptRepository;
 import com.tqs.plazzamarket.repositories.SaleRepository;
 import com.tqs.plazzamarket.utils.Status;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/sale")
+@Api(value="Cart", description="Operations with sales")
 public class SaleController {
 
     @Autowired
@@ -35,8 +39,9 @@ public class SaleController {
         return new ResponseEntity(saleRepository.findAll(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Accept sale by id")
     @GetMapping(value = "/accept/{id}")
-    public ResponseEntity<Integer> acceptSale(@PathVariable int id,  HttpSession session) {
+    public ResponseEntity<Integer> acceptSale(@ApiParam("sale id") @PathVariable int id, HttpSession session) {
         if (session.getAttribute("user") == null)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Optional<Sale> sale = saleRepository.findById(id);
@@ -56,8 +61,9 @@ public class SaleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Reject sale by id")
     @GetMapping(value = "/reject/{id}")
-    public ResponseEntity<Integer> rejectSale(@PathVariable int id,  HttpSession session) {
+    public ResponseEntity<Integer> rejectSale(@ApiParam("sale id") @PathVariable int id,  HttpSession session) {
         if (session.getAttribute("user") == null)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Optional<Sale> sale = saleRepository.findById(id);

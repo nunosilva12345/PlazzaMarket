@@ -15,6 +15,9 @@ import com.tqs.plazzamarket.repositories.SaleRepository;
 import com.tqs.plazzamarket.utils.Cart;
 
 import com.tqs.plazzamarket.utils.Status;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/cart")
+@Api(value="Cart", description="Operations with cart")
 public class CartController {
     @Autowired
     private ProductRepository productRepository;
@@ -29,6 +33,7 @@ public class CartController {
     @Autowired
     private SaleRepository saleRepository;
 
+    @ApiOperation(value = "Add product to cart")
     @PostMapping(path = "/add", consumes = "application/json")
     public ResponseEntity<Double> add(@RequestBody Map<String, Object> content, HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null)
@@ -46,7 +51,8 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(quantity.doubleValue(), HttpStatus.CREATED);
     }
-    
+
+    @ApiOperation(value = "Clear cart")
     @DeleteMapping(path = "/clear")
     public ResponseEntity<Integer> clearList(HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null) {
@@ -61,8 +67,9 @@ public class CartController {
         return new ResponseEntity<>(size, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Remove product by id")
     @DeleteMapping(path = "/remove/{id}")
-    public ResponseEntity<Integer> removeProduct(@PathVariable("id") int id, HttpSession session) {
+    public ResponseEntity<Integer> removeProduct(@ApiParam("product id") @PathVariable("id") int id, HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Cart cart = (Cart) session.getAttribute("cart");
@@ -72,6 +79,7 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Confirm shopping cart")
     @PostMapping(path = "/confirm")
     public ResponseEntity<Integer> confirmBuy(HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null)

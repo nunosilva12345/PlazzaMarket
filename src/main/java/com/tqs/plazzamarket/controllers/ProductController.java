@@ -6,6 +6,9 @@ import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
+@Api(value="Product", description="Operations with products")
 public class ProductController {
 
     @Autowired
@@ -29,6 +33,7 @@ public class ProductController {
     @Autowired
     private ProducerRepository producerRepository;
 
+    @ApiOperation(value = "Create Product", response = Product.class)
     @PostMapping(path = "/products/add", consumes = "application/json")
     public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> productJson, HttpSession httpSession) {
         Product product = new Product();
@@ -44,13 +49,15 @@ public class ProductController {
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "List all products", response = List.class)
     @GetMapping(path = "/products/")
     public @ResponseBody Iterable<Product> findAll() {
         return productRepository.findAll();
     }
 
+    @ApiOperation(value = "Remove product by id")
     @GetMapping(path = "/products/remove/{id}")
-    public ResponseEntity<Object> removeProduct(@PathVariable("id") int id) {
+    public ResponseEntity<Object> removeProduct(@ApiParam("product id") @PathVariable("id") int id) {
         Optional<Product> product = productRepository.findById(id);
         if (!product.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -58,16 +65,18 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "List of user's products", response = List.class)
     @GetMapping(path = "/products/{username}")
-    public ResponseEntity<List<Product>> listProducerProducts(@PathVariable("username") String username) {
+    public ResponseEntity<List<Product>> listProducerProducts(@ApiParam("username") @PathVariable("username") String username) {
         Optional<Producer> producer = producerRepository.findById(username);
         if (producer.isPresent())
             return new ResponseEntity<>(producer.get().getProducts(), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    
+
+    @ApiOperation(value = "List of category's products", response = List.class)
     @GetMapping(path = "/products/category/{category}")
-    public ResponseEntity<List<Product>> searchProductsCategory(@PathVariable("category") String category) {
+    public ResponseEntity<List<Product>> searchProductsCategory(@ApiParam("category name") @PathVariable("category") String category) {
         Optional<Category> optional = categoryRepository.findById(category);
         if (!optional.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

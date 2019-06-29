@@ -16,6 +16,8 @@ import com.tqs.plazzamarket.utils.Cart;
 
 import com.tqs.plazzamarket.services.Validator;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/api")
+@Api(value="Authentication", description="Authentication Operations")
 public class AuthenticationController {
     @Autowired
     private ObjectMapper mapper;
@@ -40,6 +43,7 @@ public class AuthenticationController {
     @Autowired
     private Validator validator;
 
+    @ApiOperation(value = "Register consumer", response = Consumer.class)
     @PostMapping(path = "/register/consumer", consumes = "application/json")
     public ResponseEntity registerConsumer(@RequestBody Map<String, Object> consumerMap) {
         Consumer consumer = mapper.convertValue(consumerMap, Consumer.class);
@@ -50,6 +54,7 @@ public class AuthenticationController {
         return re != null ? re : new ResponseEntity<>(consumerRepository.saveAndFlush(consumer), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Register producer", response = Producer.class)
     @PostMapping(path = "/register/producer")
     public ResponseEntity registerProducer(@RequestBody Map<String, Object> producerMap) {
         Producer producer = mapper.convertValue(producerMap, Producer.class);
@@ -60,6 +65,7 @@ public class AuthenticationController {
         return re != null ? re : new ResponseEntity<>(producerRepository.saveAndFlush(producer), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Login")
     @PostMapping(path = "/login", consumes = "application/json")
     public ResponseEntity login(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
         final String uKey = "username";
@@ -94,6 +100,7 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Logout")
     @PostMapping(path = "/logout")
     public ResponseEntity logout(HttpSession httpSession) {
         if (httpSession.getAttribute("user") == null)
