@@ -64,7 +64,7 @@ public class WebController {
 	public String createProduct(Model model, HttpSession session) {
 		if (session.getAttribute("user") == null)
 			return REDIRECT;
-		model.addAttribute("categories", categoryRepository.findAll());
+		model.addAttribute(CATEGORIES, categoryRepository.findAll());
 		return "createproduct";
 	}
 
@@ -73,12 +73,12 @@ public class WebController {
 	public String listProduct(Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
 		if (user == null)
-			return "redirect";
+			return REDIRECT;
 		model.addAttribute("user", user);
 		if (user.getClass() == Consumer.class) {
 			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
 			model.addAttribute(PRODUCTS, productRepository.findAll());
-			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
+			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), Map.Entry<Integer, Double[]>::getValue)));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
 			model.addAttribute(CATEGORIES, categoryRepository.findAll());
 			return "listproduct";
@@ -98,7 +98,7 @@ public class WebController {
 		if (user.getClass() == Consumer.class && optional.isPresent()) {
 			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
 			model.addAttribute(PRODUCTS, optional.get().getProducts());
-			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
+			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), Map.Entry<Integer, Double[]>::getValue)));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
 			model.addAttribute(CATEGORIES, categoryRepository.findAll());
 			return "listproduct";

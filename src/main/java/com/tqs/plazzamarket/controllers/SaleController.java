@@ -1,6 +1,5 @@
 package com.tqs.plazzamarket.controllers;
 
-
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Receipt;
 import com.tqs.plazzamarket.entities.Sale;
@@ -11,6 +10,9 @@ import com.tqs.plazzamarket.utils.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/sale")
-@Api(value="Cart", description="Operations with sales")
+@Api(tags = { "Sale" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Sale", description = "Operations with sales")
+})
 public class SaleController {
 
     @Autowired

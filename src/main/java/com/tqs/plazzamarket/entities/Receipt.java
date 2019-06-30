@@ -1,6 +1,5 @@
 package com.tqs.plazzamarket.entities;
 
-
 import javax.persistence.Id;
 
 import java.io.Serializable;
@@ -8,6 +7,9 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+
+import com.tqs.plazzamarket.utils.Utilities;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,11 +28,9 @@ public class Receipt implements Serializable {
 
 	private Double quantity;
 
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "consume_id")
 	private Consumer consumer;
-
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "producer_id")
@@ -91,17 +91,15 @@ public class Receipt implements Serializable {
 		result = prime * result + id;
 		long temp;
 		temp = Double.doubleToLongBits(price);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
+		return Utilities.hashCodeFinal(result, temp);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		int equality = Utilities.isEqualsBase(this, obj);
+		if (equality != 0)
+			return equality == 1;
+		if (!(obj instanceof Receipt))
 			return false;
 		Receipt receipt = (Receipt) obj;
 		return id == receipt.id && price == receipt.price;

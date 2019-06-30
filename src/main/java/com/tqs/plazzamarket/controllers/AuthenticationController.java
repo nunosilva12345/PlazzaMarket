@@ -21,6 +21,9 @@ import com.tqs.plazzamarket.services.Validator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -29,7 +32,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api")
-@Api(value="Authentication", description="Authentication Operations")
+@Api(tags = { "Authentication" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Authentication", description = "Authentication Operations")
+})
 public class AuthenticationController {
 
     private static final String USERNAME = "username";
