@@ -102,6 +102,22 @@ public class AuthenticationController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Login Admin")
+    @PostMapping(path = "/admin/login", consumes = "application/json")
+    public ResponseEntity adminLogin(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
+        final String uKey = "username";
+        final String pKey = "password";
+        final String userAttr = "user";
+
+        if (!credentials.containsKey(uKey) || !credentials.containsKey(pKey))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        String username = credentials.get(uKey).toString();
+        String password = credentials.get(pKey).toString();
+
         Optional<Admin> adminOpt = adminRepository.findById(username);
         if (adminOpt.isPresent()) {
             Admin admin = adminOpt.get();
@@ -113,6 +129,7 @@ public class AuthenticationController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
 
     @ApiOperation(value = "Logout")
     @PostMapping(path = "/logout")

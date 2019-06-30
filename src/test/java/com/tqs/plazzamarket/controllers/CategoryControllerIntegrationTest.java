@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tqs.plazzamarket.entities.Admin;
 import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import org.junit.Assert;
@@ -33,18 +34,18 @@ public class CategoryControllerIntegrationTest {
 
     private Category category;
 
-
     @Before
     public void beforeEach() {
         categoryRepository.deleteAll();
     }
 
     @Test
-    public void createCategoryTest() throws Exception{
+    public void createCategoryTest() throws Exception {
         category = new Category("Flowers");
         String result = mvc
-                .perform(MockMvcRequestBuilders.post("/api/category/addcategory").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(category)))
+                .perform(
+                        MockMvcRequestBuilders.post("/api/category/addcategory").contentType(MediaType.APPLICATION_JSON)
+                                .sessionAttr("user", new Admin()).content(mapper.writeValueAsString(category)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
@@ -52,13 +53,11 @@ public class CategoryControllerIntegrationTest {
     }
 
     @Test
-    public void findAllTest() throws Exception{
+    public void findAllTest() throws Exception {
         category = new Category("Flowers");
         categoryRepository.saveAndFlush(category);
-        String response = mvc
-                .perform(MockMvcRequestBuilders.get("/api/category/"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
-                .getResponse().getContentAsString();
+        String response = mvc.perform(MockMvcRequestBuilders.get("/api/category/"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
     }
 
     @Test
@@ -66,11 +65,9 @@ public class CategoryControllerIntegrationTest {
         category = new Category("Flowers");
         categoryRepository.saveAndFlush(category);
         String response = mvc
-                .perform(MockMvcRequestBuilders.delete("/api/category/delete/Flowers"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
-                .getResponse().getContentAsString();
+                .perform(MockMvcRequestBuilders.delete("/api/category/delete/Flowers").sessionAttr("user", new Admin()))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
         Assert.assertEquals("true", response);
     }
-
 
 }

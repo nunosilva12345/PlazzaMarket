@@ -99,14 +99,14 @@ public class ProductControllerUnitTest {
 
     @Test
     public void testRemoveProductOk() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(String.format("/api/products/remove/%d", product.getId()))
+        mvc.perform(MockMvcRequestBuilders.delete(String.format("/api/products/remove/%d", product.getId())).sessionAttr("user", producer)
                 .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(product)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     public void testRemoveProductBadRequest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(String.format("/api/products/remove/%d", product.getId() + 1))
+        mvc.perform(MockMvcRequestBuilders.delete(String.format("/api/products/remove/%d", product.getId() + 1)).sessionAttr("user", producer)
                 .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(product)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
