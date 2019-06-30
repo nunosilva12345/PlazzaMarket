@@ -33,6 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api")
 @Api(value="Authentication", description="Authentication Operations")
 public class AuthenticationController {
+
+    private final String USERNAME = "username";
+
     @Autowired
     private ObjectMapper mapper;
 
@@ -73,7 +76,7 @@ public class AuthenticationController {
     @ApiOperation(value = "Login")
     @PostMapping(path = "/login", consumes = "application/json")
     public ResponseEntity login(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
-        final String uKey = "username";
+        final String uKey = USERNAME;
         final String pKey = "password";
         final String userAttr = "user";
 
@@ -108,7 +111,7 @@ public class AuthenticationController {
     @ApiOperation(value = "Login Admin")
     @PostMapping(path = "/admin/login", consumes = "application/json")
     public ResponseEntity adminLogin(@RequestBody Map<String, Object> credentials, HttpSession httpSession) {
-        final String uKey = "username";
+        final String uKey = USERNAME;
         final String pKey = "password";
         final String userAttr = "user";
 
@@ -143,7 +146,7 @@ public class AuthenticationController {
     private ResponseEntity<? extends Object> usernameExists(BaseUser bu) {
         if (consumerRepository.existsById(bu.getUsername()) || producerRepository.existsById(bu.getUsername())) {
             Map<String, String> error = new HashMap<>();
-            error.put("username", "Username already in use!");
+            error.put(USERNAME, "Username already in use!");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
         return null;

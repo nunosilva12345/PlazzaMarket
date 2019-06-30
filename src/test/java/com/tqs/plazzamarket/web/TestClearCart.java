@@ -107,8 +107,10 @@ public class TestClearCart {
         // id=quantity | ]]
         driver.findElement(By.id("submit")).click();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-                "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='1'])[1]/following::a[1]")))
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='1'])[1]/following::a[1]")));
+        assertEquals("1", element.getAttribute("data-count"));
+        element
                 .click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
                 "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]/following::span[1]")));

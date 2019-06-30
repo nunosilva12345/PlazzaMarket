@@ -15,7 +15,8 @@ import com.tqs.plazzamarket.utils.BaseUser;
 @Entity
 public class Consumer extends BaseUser implements Serializable {
     private static final long serialVersionUID = -595322532177722111L;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales = new ArrayList<>();
 

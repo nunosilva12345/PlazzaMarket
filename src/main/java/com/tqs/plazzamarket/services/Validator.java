@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class Validator {
     @Autowired
-    private javax.validation.Validator validator;
+    private javax.validation.Validator javaValidator;
 
     public <T> Map<String, String> validate(T object) {
-        Set<ConstraintViolation<T>> violations = validator.validate(object);
-        if (violations.size() != 0) {
+        Set<ConstraintViolation<T>> violations = javaValidator.validate(object);
+        if (!violations.isEmpty()) {
             Map<String, String> result = new HashMap<>();
             for (ConstraintViolation<T> violation : violations) {
                 List<String> nodes = new ArrayList<>();
