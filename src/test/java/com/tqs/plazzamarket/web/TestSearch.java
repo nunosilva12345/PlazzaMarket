@@ -126,7 +126,8 @@ public class TestSearch {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[@data-category='Bulbs']")));
 
         driver.get(url + "listproduct/Flowers");
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[@data-category='Flowers']")));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[@data-category='Flowers']")));
+        assertEquals("Flowers", element.getAttribute("data-category"));
 
     }
 

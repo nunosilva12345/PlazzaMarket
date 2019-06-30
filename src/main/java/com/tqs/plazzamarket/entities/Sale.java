@@ -3,7 +3,6 @@ package com.tqs.plazzamarket.entities;
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
-import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Enumerated;
@@ -15,7 +14,6 @@ import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tqs.plazzamarket.utils.Status;
 
 @Entity
@@ -26,7 +24,6 @@ public class Sale implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "consumer_username")
 	private Consumer consumer;

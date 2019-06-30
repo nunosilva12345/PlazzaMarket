@@ -91,6 +91,6 @@ public class ProductController {
         Optional<Category> optional = categoryRepository.findById(category);
         if (!optional.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<List<Product>>(optional.get().getProducts(), HttpStatus.OK);
+        return new ResponseEntity<>(optional.get().getProducts(), HttpStatus.OK);
     }
 }

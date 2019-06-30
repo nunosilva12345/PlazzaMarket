@@ -1,10 +1,10 @@
 package com.tqs.plazzamarket.controllers;
 
-// import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Product;
@@ -80,13 +80,16 @@ public class CartController {
 
     @ApiOperation(value = "Confirm shopping cart")
     @PostMapping(path = "/confirm")
+    @Transactional
     public ResponseEntity<Integer> confirmBuy(HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("cart") == null)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Cart cart = (Cart) session.getAttribute("cart");
         Map<Integer, Double[]> items = cart.getItems();
-        for(int key : items.keySet()) {
-            Double[] pair = items.get(key);
+
+        for (Map.Entry<Integer,Double[]> entry : items.entrySet()) {
+            int key = entry.getKey();
+            Double[] pair = entry.getValue();
             Sale sale = new Sale();
             Product product = productRepository.getOne(key);
             product.subtractQuantity(pair[0]);

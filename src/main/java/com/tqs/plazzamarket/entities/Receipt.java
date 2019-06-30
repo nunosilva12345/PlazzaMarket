@@ -1,14 +1,11 @@
 package com.tqs.plazzamarket.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Id;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;

@@ -93,7 +93,8 @@ public class TestRemoveProduct {
         driver.findElement(By.id("password")).sendKeys("12345678");
         driver.findElement(By.id("submit")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(Integer.toString(product.getId())))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
+        assertEquals("0", element.getAttribute("data-count"));
     }
 
     @After
