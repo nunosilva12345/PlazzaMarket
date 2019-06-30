@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,17 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api")
 @Api(value="Authentication", description="Authentication Operations")
 public class AuthenticationController {
 
-    private final String USERNAME = "username";
+    private static final String USERNAME = "username";
 
     @Autowired
     private ObjectMapper mapper;
@@ -151,4 +149,18 @@ public class AuthenticationController {
         }
         return null;
     }
+
+    @ApiOperation(value = "List all producers")
+    @GetMapping(path = "/producers")
+    public ResponseEntity<List<Producer>> listProducers() {
+        return new ResponseEntity<>(producerRepository.findAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "List all consumers")
+    @GetMapping(path = "/consumers")
+    public ResponseEntity<List<Consumer>> listConsumers() {
+        return new ResponseEntity<>(consumerRepository.findAll(), HttpStatus.OK);
+    }
+
+
 }
