@@ -1,6 +1,8 @@
 package com.tqs.plazzamarket.controllers;
 
+import com.tqs.plazzamarket.entities.Admin;
 import com.tqs.plazzamarket.entities.Category;
+import com.tqs.plazzamarket.entities.Consumer;
 import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
@@ -38,7 +40,9 @@ public class ProductController {
     @Transactional
     @ApiOperation(value = "Create Product", response = Product.class)
     @PostMapping(path = "/products/add", consumes = "application/json")
-    public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> productJson, HttpSession httpSession) {
+    public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> productJson, HttpSession session) {
+        if (session.getAttribute("user") == null || session.getAttribute("user").getClass() != Producer.class)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Product product = new Product();
         product.setName(productJson.get("name").toString());
         product.setDescription(productJson.get("description").toString());
@@ -46,7 +50,7 @@ public class ProductController {
         product.setQuantity(Double.parseDouble(productJson.get("quantity").toString()));
         if (productJson.containsKey("category"))
             product.setCategory(categoryRepository.getOne(productJson.get("category").toString()));
-        Producer producer = (Producer) httpSession.getAttribute("user");
+        Producer producer = (Producer) session.getAttribute("user");
         if (producer != null)
             product.setProducer(producerRepository.getOne(producer.getUsername()));
         return new ResponseEntity<>(productRepository.saveAndFlush(product), HttpStatus.CREATED);
@@ -60,10 +64,14 @@ public class ProductController {
 
     @ApiOperation(value = "Remove product by id")
     @DeleteMapping(path = "/products/remove/{id}")
-    public ResponseEntity<Object> removeProduct(@ApiParam("product id") @PathVariable("id") int id) {
+    public ResponseEntity<Object> removeProduct(@ApiParam("product id") @PathVariable("id") int id, HttpSession session) {
+        if (session.getAttribute("user") == null || session.getAttribute("user") == Consumer.class)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         Optional<Product> product = productRepository.findById(id);
         if (!product.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (session.getAttribute("user").getClass() != Admin.class && !product.get().getProducer().getUsername().equals(((Producer) session.getAttribute("user")).getUsername()))
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         productRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

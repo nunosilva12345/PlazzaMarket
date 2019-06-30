@@ -169,7 +169,7 @@ public class AuthenticationControllerIntegrationTest {
         credentials.put("username", admin.getUsername());
         credentials.put("password", admin.getPassword());
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/login").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(MockMvcRequestBuilders.post("/api/admin/login").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
