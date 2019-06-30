@@ -101,7 +101,7 @@ public class TestRemoveProductCart {
                 By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Potato' and @class='my-0 cart-name'])[1]/following::button[1]")))
                 .click();
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]/following::span[1]")));
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]")));
         assertEquals("0", element.getAttribute("data-count"));
     }
 

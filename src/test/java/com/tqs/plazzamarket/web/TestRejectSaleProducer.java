@@ -141,7 +141,7 @@ public class TestRejectSaleProducer {
         driver.findElement(By.id("submit")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Shopping History"))).click();
         WebElement element1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='0']")));
-        assertEquals("0", element.getAttribute("data-count"));
+        assertEquals("0", element1.getAttribute("data-count"));
     }
 
     @After

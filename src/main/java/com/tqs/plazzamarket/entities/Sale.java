@@ -14,7 +14,6 @@ import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tqs.plazzamarket.utils.Status;
 
 @Entity
