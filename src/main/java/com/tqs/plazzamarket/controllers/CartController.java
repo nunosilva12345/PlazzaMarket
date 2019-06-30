@@ -17,6 +17,9 @@ import com.tqs.plazzamarket.utils.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/cart")
-@Api(value="Cart", description="Operations with cart")
+@Api(tags = { "Cart" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Cart", description = "Operations with cart")
+})
 public class CartController {
     @Autowired
     private ProductRepository productRepository;

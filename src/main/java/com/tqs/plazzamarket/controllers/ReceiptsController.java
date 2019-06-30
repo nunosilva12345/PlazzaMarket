@@ -4,6 +4,9 @@ import com.tqs.plazzamarket.entities.Receipt;
 import com.tqs.plazzamarket.repositories.ReceiptRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api")
-@Api(value="Receipts", description="Receipt Operations")
+@Api(tags = { "Receipts" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Receipts", description = "Receipt Operations")
+})
 public class ReceiptsController {
     @Autowired
     private ReceiptRepository receiptRepository;

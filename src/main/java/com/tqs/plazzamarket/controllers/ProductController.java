@@ -11,6 +11,9 @@ import com.tqs.plazzamarket.repositories.ProductRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
-@Api(value="Product", description="Operations with products")
+@Api(tags = { "Product" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Product", description = "Operations with products")
+})
 public class ProductController {
 
     @Autowired

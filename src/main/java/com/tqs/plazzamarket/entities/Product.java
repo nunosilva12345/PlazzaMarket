@@ -1,6 +1,7 @@
 package com.tqs.plazzamarket.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tqs.plazzamarket.utils.Utilities;
 
 import java.util.List;
 import java.util.Objects;
@@ -116,17 +117,15 @@ public class Product implements Serializable {
         result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + ((producer == null) ? 0 : producer.hashCode());
         temp = Double.doubleToLongBits(quantity);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return Utilities.hashCodeFinal(result, temp);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        int equality = Utilities.isEqualsBase(this, obj);
+        if (equality != 0)
+            return equality == 1;
+        if (!(obj instanceof Product))
             return false;
         Product product = (Product) obj;
         return id == product.id && Objects.equals(name, product.name) && Objects.equals(category, product.category)

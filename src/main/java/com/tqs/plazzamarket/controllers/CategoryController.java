@@ -6,6 +6,9 @@ import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,10 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(path = "/api/category")
-@Api(value="Category", description="Operations with categories")
+@Api(tags = { "Category" })
+@SwaggerDefinition(tags = {
+    @Tag(name = "Category", description = "Operations with categories")
+})
 public class CategoryController {
     @Autowired
     private ObjectMapper mapper;
