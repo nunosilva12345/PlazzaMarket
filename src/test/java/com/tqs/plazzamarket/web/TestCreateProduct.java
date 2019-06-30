@@ -94,7 +94,8 @@ public class TestCreateProduct {
         driver.findElement(By.id("description")).clear();
         driver.findElement(By.id("description")).sendKeys("test");
         driver.findElement(By.id("submit")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='1']")));
+        WebElement element1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//table[@data-count='1']")));
+        assertEquals("1", element1.getAttribute("data-count"));
     }
 
     @After

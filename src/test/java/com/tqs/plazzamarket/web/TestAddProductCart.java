@@ -2,11 +2,9 @@ package com.tqs.plazzamarket.web;
 
 import com.tqs.plazzamarket.entities.Category;
 import com.tqs.plazzamarket.entities.Consumer;
-import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 import com.tqs.plazzamarket.repositories.CategoryRepository;
 import com.tqs.plazzamarket.repositories.ConsumerRepository;
-import com.tqs.plazzamarket.repositories.ProducerRepository;
 import com.tqs.plazzamarket.repositories.ProductRepository;
 
 import java.util.concurrent.TimeUnit;
@@ -53,7 +51,8 @@ public class TestAddProductCart {
     public void setUp() throws Exception {
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080");
+        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage",
+                "--window-size=1920,1080");
 
         try {
             newChromeSession(chromeOptions);
@@ -102,6 +101,11 @@ public class TestAddProductCart {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
                         "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart'])[1]/following::h6[1]")))
                         .getText());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By
+                .xpath("(.//*[normalize-space(text()) and normalize-space(.)='Total (USD)'])[1]/following::button[1]")))
+                .click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath(".//span[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0']")));
     }
 
     @After

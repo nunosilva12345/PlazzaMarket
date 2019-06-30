@@ -1,12 +1,12 @@
 package com.tqs.plazzamarket.utils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tqs.plazzamarket.entities.Producer;
 import com.tqs.plazzamarket.entities.Product;
 
-public class Cart {
+public class Cart implements Serializable {
     private Map<Integer, Double[]> items = new HashMap<>();
 
     private double total = 0;

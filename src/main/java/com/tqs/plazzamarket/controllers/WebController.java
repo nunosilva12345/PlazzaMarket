@@ -27,6 +27,13 @@ import java.util.stream.Collectors;
 
 @Controller
 public class WebController {
+
+	private final String REDIRECT = "redirect";
+
+	private final String PRODUCTS = "products";
+
+	private final String CATEGORIES = "categories";
+
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -56,7 +63,7 @@ public class WebController {
 	@GetMapping(value = "/createproduct")
 	public String createProduct(Model model, HttpSession session) {
 		if (session.getAttribute("user") == null)
-			return "redirect";
+			return REDIRECT;
 		return "createproduct";
 	}
 
@@ -69,13 +76,13 @@ public class WebController {
 		model.addAttribute("user", user);
 		if (user.getClass() == Consumer.class) {
 			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
-			model.addAttribute("products", productRepository.findAll());
+			model.addAttribute(PRODUCTS, productRepository.findAll());
 			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
 			model.addAttribute("categories", categoryRepository.findAll());
 			return "listproduct";
 		} else {
-			model.addAttribute("products", producerRepository.getOne(user.getUsername()).getProducts());
+			model.addAttribute(PRODUCTS, producerRepository.getOne(user.getUsername()).getProducts());
 			return "listProducerProducts";
 		}
 	}
@@ -84,18 +91,18 @@ public class WebController {
 	public String listProduct(@PathVariable("category") String category, Model model, HttpSession httpSession) {
 		BaseUser user = (BaseUser) httpSession.getAttribute("user");
 		if (user == null)
-			return "redirect";
+			return REDIRECT;
 		model.addAttribute("user", user);
 		Optional<Category> optional = categoryRepository.findById(category);
 		if (user.getClass() == Consumer.class && optional.isPresent()) {
 			Map<Integer, Double[]> items = ((Cart) httpSession.getAttribute("cart")).getItems();
-			model.addAttribute("products", optional.get().getProducts());
+			model.addAttribute(PRODUCTS, optional.get().getProducts());
 			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
 			model.addAttribute("categories", categoryRepository.findAll());
 			return "listproduct";
 		}
-		return "redirect";
+		return REDIRECT;
 	}
 
 	@Transactional

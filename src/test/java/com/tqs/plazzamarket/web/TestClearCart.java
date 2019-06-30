@@ -110,8 +110,9 @@ public class TestClearCart {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
                 "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='1'])[1]/following::a[1]")))
                 .click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-                "(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]/following::span[1]")));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Your Cart' and @data-count='0'])[1]")));
+        assertEquals("0", element.getAttribute("data-count"));
     }
 
     @After
