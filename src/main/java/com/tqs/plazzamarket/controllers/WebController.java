@@ -121,6 +121,20 @@ public class WebController {
 	}
 
 	@Transactional
+	@GetMapping(value = "/pendingreservationsconsumer")
+	public String pendingReservationsConsumer(Model model, HttpSession session) {
+		BaseUser user = (BaseUser) session.getAttribute("user");
+		List<Sale> sales = new ArrayList<>();
+		for(Sale sale : saleRepository.findAll()) {
+			if(sale.getConsumer().getUsername().equals(user.getUsername()) && sale.getStatus()== Status.PROCESSING) {
+				sales.add(sale);
+			}
+		}
+		model.addAttribute("sales", sales);
+		return "listPendingReservationsConsumer";
+	}
+
+	@Transactional
 	@GetMapping(value = "/historyshopping")
 	public String historyShopping(Model model, HttpSession session) {
 		Consumer user = (Consumer) session.getAttribute("user");

@@ -46,46 +46,49 @@
     <div class="container">
         <h1 class="mt-2">Pending Reservations</h1>
         <p></p>
-        <table class="table table-striped" th:data-count="${sales.size()}">
-            <thead>
-            <tr>
-                <th scope="col-3">Name Product</th>
-                <th scope="col-2">Quantity</th>
-                <th scope="col-2">Total</th>
-                <th scope="col-2">User</th>
-                <th scope="col-1"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="sale : ${sales}">
+
+            <div class="table-responsive">
+                <table class="table table-striped" th:data-count="${sales.size()}">
+                <thead>
                 <tr>
-                    <td th:text="${sale.product.name}"></td>
-                    <td th:text="${sale.quantity}"></td>
-                    <td th:text="${sale.quantity*sale.product.price}"></td>
-                    <td th:text="${sale.consumer.username}"></td>
-                    <td>
-                        <button class="fas fa-check accept"
-                                th:id="${sale.id}"
-                                style=" font-size: 20px;
+                    <th scope="col-3">Name Product</th>
+                    <th scope="col-2">Quantity</th>
+                    <th scope="col-2">Total</th>
+                    <th scope="col-2">User</th>
+                    <th scope="col-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="sale : ${sales}">
+                    <tr>
+                        <td th:text="${sale.product.name}"></td>
+                        <td th:text="${sale.quantity}"></td>
+                        <td th:text="${sale.quantity*sale.product.price}"></td>
+                        <td th:text="${sale.consumer.username}"></td>
+                        <td>
+                            <button class="fas fa-check accept"
+                                    th:id="${sale.id}"
+                                    style=" font-size: 20px;
                                                 color: #2cc80c;
                                                 background-color:transparent;
                                                 border-color:transparent;
                                                 float: right;">
-                        </button>
-                        <button class="fas fa-times reject"
-                                th:id="${sale.id}"
-                                style=" font-size: 20px;
+                            </button>
+                            <button class="fas fa-times reject"
+                                    th:id="${sale.id}"
+                                    style=" font-size: 20px;
                                                 color: #C80000;
                                                 background-color:transparent;
                                                 border-color:transparent;
                                                 float: right;">
-                        </button>
-                    </td>
-                </tr>
-            </th:block>
-
-            </tbody>
+                            </button>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
         </table>
+            </div>
+
     </div>
 
 </main>
