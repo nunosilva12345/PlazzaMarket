@@ -136,10 +136,29 @@ def display(session: URLSession):
                 print()
                 input("Press [ENTER] to continue...")
             elif option == 2:
-                # response = session.get('/api/')
-                pass
+                response = session.get("/api/consumers")
+                if response.status_code == 200:
+                    response = response.json()
+                    clear()
+                    print("Consumers:")
+                    for i, consumer in enumerate(response):
+                        print("{} - {}: {}".format(i + 1, consumer['username'], consumer["name"]))
+                else:
+                    print("Unable to obtain data!")
+                print()
+                input("Press [ENTER] to continue...")
             elif option == 3:
-                pass
+                response = session.get("/api/producers")
+                if response.status_code == 200:
+                    response = response.json()
+                    clear()
+                    print("Producers:")
+                    for i, producer in enumerate(response):
+                        print("{} - {}: {}".format(i + 1, producer['username'], producer["name"]))
+                else:
+                    print("Unable to obtain data!")
+                print()
+                input("Press [ENTER] to continue...")
             elif option == 4:
                 response = session.get("/api/products")
                 if response.status_code == 200:
@@ -162,7 +181,29 @@ def display(session: URLSession):
                 print()
                 input("Press [ENTER] to continue...")
             elif option == 5:
-                pass
+                response = session.get("/api/receipts")
+                if response.status_code == 200:
+                    response = response.json()
+                    clear()
+                    print("Receipts:")
+                    for i, receipt in enumerate(response):
+                        producer = receipt['producer']
+                        consumer = receipt['consumer']
+                        print(
+                            "{} - {} (id: {}) [price = {:.2f}, quantity = {:.2f}, consumer = {}, producer = {}]".format(
+                                i + 1,
+                                receipt['productName'],
+                                receipt['id'],
+                                float(receipt["price"]),
+                                float(receipt["quantity"]),
+                                consumer['name'],
+                                producer['name'],
+                            )
+                        )
+                else:
+                    print("Unable to obtain data!")
+                print()
+                input("Press [ENTER] to continue...")
             elif option == 6:
                 response = session.get("/api/sale/all")
                 if response.status_code == 200:

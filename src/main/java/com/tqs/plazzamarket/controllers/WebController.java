@@ -64,6 +64,7 @@ public class WebController {
 	public String createProduct(Model model, HttpSession session) {
 		if (session.getAttribute("user") == null)
 			return REDIRECT;
+		model.addAttribute("categories", categoryRepository.findAll());
 		return "createproduct";
 	}
 

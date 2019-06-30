@@ -91,14 +91,9 @@
                         <label for="category">Category</label>
                         <select id="category" class="form-control custom-select" type="select" name="category">
                             <option value selected>Category</option>
-                            <option value="Bulbs">Bulbs</option>
-                            <option value="Flowers">Flowers</option>
-                            <option value="Fruits">Fruits</option>
-                            <option value="Fungi">Fungi</option>
-                            <option value="Leaves">Leaves</option>
-                            <option value="Roots">Roots</option>
-                            <option value="Seeds">Seeds</option>
-                            <option value="Tubers">Tubers</option>
+                            <th:block th:each="category: ${categories}">
+                                <option th:value="${category.name}" th:text="${category.name}"></option>
+                            </th:block>
                         </select>
                     </div>
                     <div class="col-12 form-group">
