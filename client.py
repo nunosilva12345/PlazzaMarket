@@ -47,8 +47,15 @@ def create(session: URLSession):
             exited, option = True, int(option)
 
             if option == 1:
-                pass
-
+                clear()
+                print('Creating category:')
+                response = session.post('/api/category/addcategory', json = Holder(name = input('Name: ')).json())
+                print()
+                if response.status_code == 201:
+                    print('Category created with success!', end = ' ')
+                else:
+                    print('Failed to create category!', end = ' ')
+                input('Press [ENTER] to continue...')
 
 def delete(session: URLSession):
     failed = exited = False
@@ -61,25 +68,35 @@ def delete(session: URLSession):
             print()
 
         print("1 - Delete Category")
-        print("2 - Delete Consumer")
-        print("3 - Delete Producer")
-        print("4 - Delete Product")
-        print("5 - Back")
+        print("2 - Delete Product")
+        print("3 - Back")
 
         option = input("--> ")
-        failed = not option.isdigit() or not (1 <= int(option) <= 5)
+        failed = not option.isdigit() or not (1 <= int(option) <= 3)
 
         if not failed:
             exited, option = True, int(option)
 
             if option == 1:
-                pass
+                clear()
+                print('Deleting category:')
+                response = session.delete('/api/category/delete/{}'.format(input('Name: ')))
+                print()
+                if response.status_code == 200:
+                    print('Category deleted with success!', end = ' ')
+                else:
+                    print('Failed to delete category!', end = ' ')
+                input('Press [ENTER] to continue...')
             elif option == 2:
-                pass
-            elif option == 3:
-                pass
-            elif option == 4:
-                pass
+                clear()
+                print('Deleting product:')
+                response = session.delete('/api/products/remove/{}'.format(input('Id: ')))
+                print()
+                if response.status_code == 200:
+                    print('Product deleted with success!', end = ' ')
+                else:
+                    print('Failed to delete product!', end = ' ')
+                input('Press [ENTER] to continue...')
 
 
 def display(session: URLSession):
@@ -131,9 +148,10 @@ def display(session: URLSession):
                     print("Products:")
                     for i, product in enumerate(response):
                         print(
-                            "{} - {} [price = {:.2f}, quantity = {:.2f}]\n\t{}".format(
+                            "{} - {} (id: {}) [price = {:.2f}, quantity = {:.2f}]\n\tDescription: {}".format(
                                 i + 1,
-                                product["name"],
+                                product['name'],
+                                product['id'],
                                 float(product["price"]),
                                 float(product["quantity"]),
                                 product["description"],
@@ -153,14 +171,17 @@ def display(session: URLSession):
                     print("Sales:")
                     for i, sale in enumerate(response):
                         product = sale['product']
+                        consumer = sale['consumer']
                         print(
-                            "{} - {} [price = {:.2f}, quantity = {:.2f}]: {}\n\t{}".format(
+                            "{} - {} (id: {}) [price = {:.2f}, quantity = {:.2f}, consumer = {}]: {}\n\tDescription: {}".format(
                                 i + 1,
-                                product["name"],
+                                product['name'],
+                                product['id'],
                                 float(product["price"]),
                                 float(sale["quantity"]),
+                                consumer['name'],
                                 sale['status'],
-                                product["description"]
+                                product["description"],
                             )
                         )
                 else:

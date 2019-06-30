@@ -67,7 +67,7 @@ public class ProductController {
     public ResponseEntity<Object> removeProduct(@ApiParam("product id") @PathVariable("id") int id, HttpSession session) {
         if (session.getAttribute("user") == null || session.getAttribute("user") == Consumer.class)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        Optional<Product> product = productRepository.findById(id);
+        Optional<Product> product = productRepository.findById(id); 
         if (!product.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         if (session.getAttribute("user").getClass() != Admin.class && !product.get().getProducer().getUsername().equals(((Producer) session.getAttribute("user")).getUsername()))

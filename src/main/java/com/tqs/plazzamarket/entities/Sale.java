@@ -24,7 +24,7 @@ public class Sale implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "consumer_username")
 	private Consumer consumer;
 
