@@ -1,8 +1,6 @@
 package com.tqs.plazzamarket.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -171,5 +169,36 @@ public class AuthenticationControllerIntegrationTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/api/admin/login").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void findAllProducersTest() throws Exception{
+        Producer producer = new Producer();
+        producer.setUsername("luiso");
+        producer.setName("Luis Oliveira");
+        producer.setEmail("luis@ua.pt");
+        producer.setPassword("12345678");
+        producer.setAddress("Aveiro");
+        producer.setZipCode("3060-500");
+        producer.setWebsite("https://www.example.com");
+        String response = mvc
+                .perform(MockMvcRequestBuilders.get("/api/producers"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+    }
+
+    @Test
+    public void findAllConsumersTest() throws Exception{
+        Consumer consumer = new Consumer();
+        consumer.setUsername("luiso");
+        consumer.setName("Luis Oliveira");
+        consumer.setEmail("luis@ua.pt");
+        consumer.setPassword("12345678");
+        consumer.setAddress("Aveiro");
+        consumer.setZipCode("3060-500");
+        String response = mvc
+                .perform(MockMvcRequestBuilders.get("/api/consumers"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
     }
 }

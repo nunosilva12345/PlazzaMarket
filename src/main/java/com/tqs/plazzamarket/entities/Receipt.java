@@ -27,12 +27,12 @@ public class Receipt implements Serializable {
 	private Double quantity;
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "consume_id")
 	private Consumer consumer;
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "producer_id")
 	private Producer producer;
 

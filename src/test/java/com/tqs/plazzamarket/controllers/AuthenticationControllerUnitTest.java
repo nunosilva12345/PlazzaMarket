@@ -23,9 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AuthenticationController.class)
@@ -141,5 +139,42 @@ public class AuthenticationControllerUnitTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/api/admin/login").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(credentials))).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void findAllProducersTest() throws Exception{
+        Producer producer = new Producer();
+        producer.setUsername("luiso");
+        producer.setName("Luis Oliveira");
+        producer.setEmail("luis@ua.pt");
+        producer.setPassword("12345678");
+        producer.setAddress("Aveiro");
+        producer.setZipCode("3060-500");
+        producer.setWebsite("https://www.example.com");
+        List<Producer> producers = new ArrayList<>();
+        producers.add(producer);
+        BDDMockito.given(producerRepository.findAll()).willReturn(producers);
+        String response = mvc
+                .perform(MockMvcRequestBuilders.get("/api/producers"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+    }
+
+    @Test
+    public void findAllConsumersTest() throws Exception{
+        Consumer consumer = new Consumer();
+        consumer.setUsername("luiso");
+        consumer.setName("Luis Oliveira");
+        consumer.setEmail("luis@ua.pt");
+        consumer.setPassword("12345678");
+        consumer.setAddress("Aveiro");
+        consumer.setZipCode("3060-500");
+        List<Consumer> consumers= new ArrayList<>();
+        consumers.add(consumer);
+        BDDMockito.given(consumerRepository.findAll()).willReturn(consumers);
+        String response = mvc
+                .perform(MockMvcRequestBuilders.get("/api/consumers"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+                .getResponse().getContentAsString();
     }
 }
