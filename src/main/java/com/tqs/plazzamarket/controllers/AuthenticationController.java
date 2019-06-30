@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value="Authentication", description="Authentication Operations")
 public class AuthenticationController {
 
-    private final String USERNAME = "username";
+    private static final String USERNAME = "username";
 
     @Autowired
     private ObjectMapper mapper;

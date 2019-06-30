@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
 @Controller
 public class WebController {
 
-	private final String REDIRECT = "redirect";
+	private static final String REDIRECT = "redirect";
 
-	private final String PRODUCTS = "products";
+	private static final String PRODUCTS = "products";
 
-	private final String CATEGORIES = "categories";
+	private static final String CATEGORIES = "categories";
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -79,7 +79,7 @@ public class WebController {
 			model.addAttribute(PRODUCTS, productRepository.findAll());
 			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
-			model.addAttribute("categories", categoryRepository.findAll());
+			model.addAttribute(CATEGORIES, categoryRepository.findAll());
 			return "listproduct";
 		} else {
 			model.addAttribute(PRODUCTS, producerRepository.getOne(user.getUsername()).getProducts());
@@ -99,7 +99,7 @@ public class WebController {
 			model.addAttribute(PRODUCTS, optional.get().getProducts());
 			model.addAttribute("items", items.entrySet().stream().collect(Collectors.toMap(entry -> productRepository.getOne(entry.getKey()), entry -> entry.getValue())));
 			model.addAttribute("totalCart", ((Cart) httpSession.getAttribute("cart")).getTotal());
-			model.addAttribute("categories", categoryRepository.findAll());
+			model.addAttribute(CATEGORIES, categoryRepository.findAll());
 			return "listproduct";
 		}
 		return REDIRECT;
@@ -128,7 +128,7 @@ public class WebController {
 			if(receipt.getConsumer().getUsername().equals(user.getUsername()))
 				receipts.add(receipt);
 		}
-		model.addAttribute("categories", categoryRepository.findAll());
+		model.addAttribute(CATEGORIES, categoryRepository.findAll());
 		model.addAttribute("receipts", receipts);
 		return "historyShopping";
 	}
